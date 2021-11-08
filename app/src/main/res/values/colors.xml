@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="grey">	#A9A9A9</color>
+    <color name="light_green">#a6f1a6</color>
+    <color name="green">#64e674</color>
+    <color name="red">#E74C3C</color>
+    <color name="light_red">#F1948A</color>
+    <color name="light_grey">#F0F0F0</color>
+    <color name="food_expense_colour">#F89191</color>
+    <color name="food_expense_colour_bg">#30F89191</color>
+    <color name="shopping_expense_colour">#F1F04A</color>
+    <color name="shopping_expense_colour_bg">#30F1F04A</color>
+    <color name="gym_expense_colour">#3EF147</color>
+    <color name="gym_expense_colour_bg">#303EF147</color>
+    <color name="medical_expense_colour">#8c8279</color>
+    <color name="medical_expense_colour_bg">#308c8279</color>
+    <color name="house_rent_expense_colour">#2DF1F1</color>
+    <color name="house_rent_expense_colour_bg">#302DF1F1</color>
+    <color name="travel_expense_colour">#2727F1</color>
+    <color name="travel_expense_colour_bg">#302727F1</color>
+    <color name="free_hand_money_expense_colour">#0CEA23</color>
+    <color name="free_hand_money_expense_colour_bg">#300CEA23</color>
+    <color name="investing_expense_colour">#F324DF</color>
+    <color name="investing_expense_colour_bg">#30F324DF</color>
+    <color name="emi_expense_colour">#EC1F1F</color>
+    <color name="emi_expense_colour_bg">#30EC1F1F</color>
+    <color name="misc_expense_colour">#006f62</color>
+    <color name="misc_expense_colour_bg">#30006f62</color>
+    <color name="black_gd">#30000000</color>
+    <color name="tt">#F0F0F0</color>
+    <color name="text_colour">#85000000</color>
+    <color name="button_bg">#4d8679</color>
+    <color name="bg_expense_list_1">#C0BDFF</color>
+    <color name="bg_expense_list_2">#CAF1DE</color>
+    <color name="bg_expense_list_3">#E1F8DC</color>
+    <color name="bg_expense_list_4">#FEF8DD</color>
+    <color name="bg_expense_list_5">#FFE7C7</color>
+    <color name="bg_expense_list_6">#B7E5EB</color>
+    <color name="bg_expense_list_7">#FFE4E1</color>
+
+</resources>

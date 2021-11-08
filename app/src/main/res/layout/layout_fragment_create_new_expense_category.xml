@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.viewmodel.ExpenseCategoryDialogViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bottom_sheet_top"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="Create Expense Category"
+                android:textColor="@color/text_colour"
+                android:textSize="18sp"
+                android:textStyle="bold"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_category_title_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Category Name"
+                android:textColor="@color/text_colour"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label" />
+
+            <TextView
+                android:id="@+id/tv_category_price_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="15dp"
+                android:layout_marginTop="5dp"
+                android:text="Target price per month"
+                android:textColor="@color/text_colour"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_category_title_header"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_category_title_header" />
+
+            <EditText
+                android:id="@+id/et_category_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/bg_rounded_edittext"
+                android:gravity="center"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:onTextChanged="@{(text, start, before, count) -> viewmodel.onExpenseTargetPriceChanged(text)}"
+                android:padding="10dp"
+                android:singleLine="true"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_category_price_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_category_price_label"
+                app:layout_constraintTop_toBottomOf="@+id/tv_category_title_header" />
+
+
+            <Spinner
+                android:id="@+id/spinner_expense_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/bg_rounded_edittext"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_category_title_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/tv_category_title_header"
+                app:layout_constraintTop_toTopOf="@+id/tv_category_title_header" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_add_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bottom_sheet_bottom_button"
+            android:onClick="@{() -> viewmodel.insertExpenseCategory()}"
+            android:text="Add New Category"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cl_main_content"
+            app:layout_constraintStart_toStartOf="@+id/cl_main_content"
+            app:layout_constraintTop_toBottomOf="@id/cl_main_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
