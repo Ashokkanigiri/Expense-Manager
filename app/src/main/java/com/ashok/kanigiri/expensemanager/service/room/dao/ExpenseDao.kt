@@ -25,4 +25,7 @@ interface ExpenseDao {
 
     @Query("SELECT SUM(expensePrice) from expense WHERE expenseCategoryId =:expenseCategoryId")
     fun getUtilizedPriceForCategory(expenseCategoryId: String): Double
+
+    @Query("SELECT SUM(expensePrice) from expense")
+    fun getTotalExpenses(): LiveData<Double>
 }

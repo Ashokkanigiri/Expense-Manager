@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutHomeFragmentBinding
 import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModel
+import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModelEvent
+import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.*
@@ -37,8 +40,27 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewmodel = viewmodel
+        observeViewModel()
         setupActionBar()
         setUpExpenditureGraph()
+        loadSalaryDetailsFromSharedPrefs()
+    }
+
+    private fun observeViewModel() {
+        viewmodel.event.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is HomeViewModelEvent.IsSalaryUpdated -> {
+                    loadSalaryDetailsFromSharedPrefs()
+                }
+            }
+        })
+    }
+
+    private fun loadSalaryDetailsFromSharedPrefs() {
+       binding.salary =  SharedPreferenceService.getUserSalary(requireContext())
+        binding.invalidateAll()
     }
 
     private fun setUpExpenditureGraph() {

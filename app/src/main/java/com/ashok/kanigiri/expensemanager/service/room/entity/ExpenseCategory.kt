@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class ExpenseCategory(
     val expenseCategoryId: String,
     val expenseCategoryTargetPrice: Double,
-    val totalUtilizedPrice: String,
+    val totalUtilizedPrice: Double,
     val expenseType: ExpenseTypes,
     val createdDate: String
 )

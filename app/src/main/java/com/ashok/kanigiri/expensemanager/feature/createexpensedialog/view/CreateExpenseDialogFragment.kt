@@ -86,7 +86,6 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
         })
         viewmodel.hideDialog.observe(viewLifecycleOwner, Observer {
             if (it) {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.IS_EXPENSE_CREATED_KEY, true)
                 dismiss()
             }
         })

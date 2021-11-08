@@ -29,7 +29,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
             val expenseCategory = ExpenseCategory(
                 expenseCategoryId = UUID.randomUUID().toString(),
                 expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
-                totalUtilizedPrice = "0",
+                totalUtilizedPrice = 0.0,
                 expenseType = AppUtils.findExpenseType(expenseCategoryName.get() ?: ""),
                 createdDate = System.currentTimeMillis().toString()
             )

@@ -52,15 +52,6 @@ class ManageExpensesFragment : Fragment(){
         binding.viewmodel = viewmodel
         observeViewModel()
         setupActionBar()
-        handlePreviousData()
-    }
-
-    private fun handlePreviousData() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(AppConstants.IS_EXPENSE_CREATED_KEY)?.observe(viewLifecycleOwner, Observer {
-            if(it){
-                viewmodel.adapter.notifyItemChanged(viewmodel.selectedAdapterPosition)
-            }
-        })
     }
 
     private fun observeViewModel() {

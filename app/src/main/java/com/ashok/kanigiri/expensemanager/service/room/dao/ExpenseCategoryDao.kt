@@ -18,4 +18,13 @@ interface ExpenseCategoryDao {
 
     @Query("SELECT expenseCategoryTargetPrice FROM ExpenseCategory WHERE expenseCategoryId =:categoryId")
     fun getTotalExpensePriceForCategory(categoryId: String): Double
+
+    @Query("SELECT SUM(expenseCategoryTargetPrice) FROM expensecategory")
+    fun getTotalAllotedCategoryPrice(): Double
+
+    @Query("SELECT totalUtilizedPrice from expensecategory WHERE expenseCategoryId =:categoryId")
+    fun getUtilizedPriceForCategory(categoryId: String): Double
+
+    @Query("UPDATE expensecategory SET totalUtilizedPrice =:total+totalUtilizedPrice WHERE expenseCategoryId =:categoryId")
+    fun updateUtilizedPriceForCategory(categoryId: String, total: Double)
 }

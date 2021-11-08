@@ -45,6 +45,8 @@ class CreateExpenseDialogViewModel @Inject constructor(private val roomRepositor
                 val expense = Expense(expenseCategoryId = expenseId?:"", expenseId = UUID.randomUUID().toString(), expenseName = expenseName?:"", createdDate = selectedDate?:"", expensePrice = expensePrice?.toDouble()?:0.0)
                 viewModelScope.launch (Dispatchers.IO){
                     roomRepository.getExpenseDao().insertExpenses(expense)
+                    roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expense.expenseCategoryId, expense.expensePrice)
+
                     hideDialog.postValue(true)
                     isExpenseCreated = true
                 }

@@ -14,7 +14,6 @@ class ManageExpensesViewModel @Inject constructor( val roomRepository: RoomRepos
     val adapter = ManageExpensesAdapter(this)
     val createNewExpense = SingleLiveEvent<ExpenseCategory>()
     val navigateToExpenseList = SingleLiveEvent<ExpenseCategory>()
-    val getUtilizedPrice = SingleLiveEvent<String>()
     var selectedAdapterPosition = 0
 
     fun setAdapter(): ManageExpensesAdapter{
@@ -33,9 +32,4 @@ class ManageExpensesViewModel @Inject constructor( val roomRepository: RoomRepos
     fun navigateToExpenseListFragment(expenseCategory: ExpenseCategory){
         navigateToExpenseList.postValue(expenseCategory)
     }
-
-    fun getUtilizedPrice(expenseCatId: String): Double{
-        return roomRepository.getExpenseDao().getUtilizedPriceForCategory(expenseCatId)
-    }
-
 }
