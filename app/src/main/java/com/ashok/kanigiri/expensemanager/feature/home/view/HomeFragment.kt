@@ -74,29 +74,36 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.isRotationEnabled = false
 
         val yValues = ArrayList<PieEntry>()
-
-        yValues.add(PieEntry(34f, "PartyA"))
-        yValues.add(PieEntry(23f, "PartyB"))
-        yValues.add(PieEntry(14f, "PartyC"))
-        yValues.add(PieEntry(35f, "PartyD"))
-        yValues.add(PieEntry(40f, "PartyE"))
-        yValues.add(PieEntry(23f, "PartyF"))
-
-        val pieDataSet = PieDataSet(yValues, "Demo")
-        pieDataSet.sliceSpace = 1.5f
-        pieDataSet.selectionShift = 5f
-        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS+ColorTemplate.MATERIAL_COLORS+ColorTemplate.PASTEL_COLORS, 200)
+        viewmodel.getAllExpenseCategorys.observe(viewLifecycleOwner, Observer {list->
+            list?.forEach {
+                val percent = (it.totalUtilizedPrice.toFloat()/SharedPreferenceService.getUserSalary(requireContext()))
+                yValues.add(PieEntry(percent, it.expenseType.expenseLitral))
+            }
+            val pieDataSet = PieDataSet(yValues, "Demo")
+            pieDataSet.sliceSpace = 1.5f
+            pieDataSet.selectionShift = 5f
+            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS+ColorTemplate.MATERIAL_COLORS+ColorTemplate.PASTEL_COLORS, 200)
 
 
-        val pieData = PieData(pieDataSet)
-        pieData.setValueTextSize(10f)
-        pieData.setValueTextColor(Color.BLACK)
+            val pieData = PieData(pieDataSet)
+            pieData.setValueTextSize(10f)
+            pieData.setValueTextColor(Color.BLACK)
 
-        binding.expenditureChart.data = pieData
-        binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
-        val desc = Description()
-        desc.isEnabled = false
-        binding.expenditureChart.description = desc
+            binding.expenditureChart.data = pieData
+            binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
+            val desc = Description()
+            desc.isEnabled = false
+            binding.expenditureChart.description = desc
+        })
+
+//        yValues.add(PieEntry(34f, "PartyA"))
+//        yValues.add(PieEntry(23f, "PartyB"))
+//        yValues.add(PieEntry(14f, "PartyC"))
+//        yValues.add(PieEntry(35f, "PartyD"))
+//        yValues.add(PieEntry(40f, "PartyE"))
+//        yValues.add(PieEntry(23f, "PartyF"))
+
+
     }
 
     private fun setupActionBar() {

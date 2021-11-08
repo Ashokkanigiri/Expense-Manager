@@ -85,6 +85,24 @@ fun ProgressBar.setUpProgress(totalExpense: String, utilizedExpense: String) {
     }
 }
 
+@BindingAdapter("set_total_expense_progress", "set_utilized_expense_progress")
+fun ProgressBar.seteUpProgress(totalExpense: Double, utilizedExpense: Double) {
+    val percent = ((utilizedExpense / totalExpense) * 100).toInt()
+    this.progress = percent
+    this.progressTintList = when {
+        percent > 80 -> {
+            ColorStateList.valueOf(Color.parseColor("#EC1F1F"))
+        }
+        (percent > 30 && percent < 80) -> {
+            ColorStateList.valueOf(Color.parseColor("#F1948A"))
+        }
+        percent < 30 -> {
+            ColorStateList.valueOf(Color.parseColor("#a6f1a6"))
+        }
+        else -> ColorStateList.valueOf(Color.parseColor("#EC1F1F"))
+    }
+}
+
 @BindingAdapter("setRandomBackground")
 fun ConstraintLayout.setRandomBackground(expenseCategory: String) {
     val list = listOf<ColorStateList>(
