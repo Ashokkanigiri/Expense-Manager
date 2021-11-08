@@ -94,5 +94,8 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
                 binding.etExpenseValueField.setError(it)
             }
         })
+        viewmodel.getReserveCash()?.let {
+            binding.reserveCash = it
+        }
     }
 }

@@ -60,6 +60,9 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
                 dialog?.dismiss()
             }
         })
+        dialogViewModel.reserveCash()?.let {
+            binding.reserveCash = it
+        }
     }
 
     private fun setUpCategorySpinner() {

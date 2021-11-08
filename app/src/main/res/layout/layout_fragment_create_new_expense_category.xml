@@ -7,6 +7,10 @@
     <data>
 
         <variable
+            name="reserveCash"
+            type="Double" />
+
+        <variable
             name="viewmodel"
             type="com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.viewmodel.ExpenseCategoryDialogViewModel" />
     </data>
@@ -114,6 +118,21 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/tv_category_title_header"
                 app:layout_constraintTop_toTopOf="@+id/tv_category_title_header" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="12sp"
+                tools:text="**Reserve cash"
+                android:layout_marginStart="15dp"
+                android:text="@{`** You can add upto Rs. `+reserveCash+` From this Category`}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/et_category_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_category_price_label" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
