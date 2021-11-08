@@ -3,7 +3,6 @@ package com.ashok.kanigiri.expensemanager.utils
 import android.content.Intent
 import android.util.SparseArray
 import androidx.core.util.forEach
-import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +11,11 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ashok.kanigiri.expensemanager.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
+/**
+ * Manages the various graphs needed for a [BottomNavigationView].
+ *
+ * This sample is a workaround until the Navigation Component supports multiple back stacks.
+ */
 fun BottomNavigationView.setupWithNavController(
     navGraphIds: List<Int>,
     fragmentManager: FragmentManager,
@@ -47,7 +50,8 @@ fun BottomNavigationView.setupWithNavController(
         }
 
         // Save to the map
-        graphIdToTagMap[graphId]=fragmentTag
+//        graphIdToTagMap[graphId] = fragmentTag
+        graphIdToTagMap.put(graphId, fragmentTag)
 
         // Attach or detach nav host fragment depending on whether it's the selected item.
         if (this.selectedItemId == graphId) {
@@ -152,7 +156,7 @@ private fun BottomNavigationView.setupDeepLinks(
             containerId
         )
         // Handle Intent
-        if (navHostFragment.navController.handleDeepLink(intent) && selectedItemId != navHostFragment.navController.graph.id) {
+        if (navHostFragment.navController.handleDeepLink(intent)) {
             this.selectedItemId = navHostFragment.navController.graph.id
         }
     }
@@ -165,10 +169,10 @@ private fun BottomNavigationView.setupItemReselected(
     setOnNavigationItemReselectedListener { item ->
         val newlySelectedItemTag = graphIdToTagMap[item.itemId]
         val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
-                as NavHostFragment?
-        val navController = selectedFragment?.navController
+                as NavHostFragment
+        val navController = selectedFragment.navController
         // Pop the back stack to the start destination of the current navController graph
-        navController?.popBackStack(
+        navController.popBackStack(
             navController.graph.startDestination, false
         )
     }
