@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,5 +32,22 @@ class LoginFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event ->
+            when(event){
+                is LoginViewModelEvent.NavigateToCreateAccountPage ->{
+                    navigateToCreateAccountScreen()
+                }
+            }
+        })
+    }
+
+    private fun navigateToCreateAccountScreen() {
+        findNavController().navigate(
+            LoginFragmentDirections.actionLoginFragmentToCreateAccountFragment()
+        )
     }
 }

@@ -30,6 +30,7 @@
         <entry key="app/src/main/res/layout/custum_action_bar.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/item_expense_manager.xml" value="0.1998036370175537" />
         <entry key="app/src/main/res/layout/layout_fragment_add_expense.xml" value="0.17132589054526762" />
+        <entry key="app/src/main/res/layout/layout_fragment_create_account.xml" value="0.2858120251847125" />
         <entry key="app/src/main/res/layout/layout_fragment_create_expense.xml" value="0.375" />
         <entry key="app/src/main/res/layout/layout_fragment_create_new_expense_category.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_fragment_expense_list.xml" value="0.24635416666666668" />

@@ -3,6 +3,7 @@ package com.ashok.kanigiri.expensemanager.feature.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ashok.kanigiri.expensemanager.service.models.UserLoginModel
+import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,6 +13,7 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     var userNameTextField = MutableLiveData<String>()
     var passwordTextField = MutableLiveData<String>()
     var loginButtonEnabledStatus = MutableLiveData<Boolean>()
+    val event = SingleLiveEvent<LoginViewModelEvent>()
 
     var userLogin = UserLoginModel(username = "", password = "")
 
@@ -42,6 +44,6 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     }
 
     fun onCreateNewAccountClicked(){
-
+        event.postValue(LoginViewModelEvent.NavigateToCreateAccountPage)
     }
 }
