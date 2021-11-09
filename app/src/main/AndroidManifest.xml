@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseManager">
         <activity
-            android:name=".feature.login.LoginActivity"
+            android:name=".feature.welcome.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

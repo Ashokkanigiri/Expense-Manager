@@ -143,6 +143,8 @@
             android:layout_marginBottom="20dp"
             android:text="new user ? you can Sign Up clicking here"
             android:textSize="14sp"
+            android:padding="5dp"
+            android:onClick="@{()-> viewmodel.onCreateNewAccountClicked()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_start" />

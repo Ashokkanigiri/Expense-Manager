@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(): ViewModel() {
 
     var userNameTextField = MutableLiveData<String>()
     var passwordTextField = MutableLiveData<String>()
@@ -17,14 +17,14 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     fun onUsernameFieldTextChangedListener(s: CharSequence?){
         s?.let {
-           userLogin = userLogin.copy(username = it.toString())
+            userLogin = userLogin.copy(username = it.toString())
         }
         handleLoginButtonEnableStatus(userLogin)
     }
 
     fun onPasswordFieldTextChangedListener(s: CharSequence?){
         s?.let {
-           userLogin = userLogin.copy(password = it.toString())
+            userLogin = userLogin.copy(password = it.toString())
         }
         handleLoginButtonEnableStatus(userLogin)
     }
@@ -41,4 +41,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     }
 
+    fun onCreateNewAccountClicked(){
+
+    }
 }
