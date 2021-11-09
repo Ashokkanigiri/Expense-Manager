@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_shopping_basket_24.xml" value="0.24307692307692308" />
         <entry key="app/src/main/res/drawable/ic_baseline_supervised_user_circle_24.xml" value="0.262037037037037" />
         <entry key="app/src/main/res/drawable/ic_outline_money_24.xml" value="0.2101851851851852" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2640625" />
         <entry key="app/src/main/res/layout/custum_action_bar.xml" value="0.24635416666666668" />

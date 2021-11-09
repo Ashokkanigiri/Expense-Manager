@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.ashok.kanigiri.expensemanager.R
@@ -116,4 +117,14 @@ fun ConstraintLayout.setRandomBackground(expenseCategory: String) {
     )
 
     this.setBackgroundTintList(list.random());
+}
+
+@BindingAdapter("loginButtonEnabledStatus")
+fun TextView.loginButtonEnabledStatus(bool: Boolean){
+    if(bool){
+        this.setTextColor(resources.getColor(R.color.button_bg))
+    }else{
+        this.setTextColor(resources.getColor(R.color.grey))
+    }
+    this.isEnabled = bool
 }
