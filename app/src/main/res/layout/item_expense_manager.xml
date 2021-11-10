@@ -36,7 +36,7 @@
                 android:layout_height="200dp"
                 android:layout_gravity="start"
                 android:onClick="@{() ->viewmodel.navigateToExpenseListFragment(expense)}"
-                set_expense_title_background="@{expense.expenseType.expenseLitral}">
+                set_expense_title_background="@{expense.expenseCategoryName}">
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -82,7 +82,7 @@
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    set_expense_category_image="@{expense.expenseType.expenseLitral}"
+                    set_expense_category_image="@{expense.expenseCategoryName}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,7 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{expense.expenseType.expenseLitral}"
+                    android:text="@{expense.expenseCategoryName}"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"

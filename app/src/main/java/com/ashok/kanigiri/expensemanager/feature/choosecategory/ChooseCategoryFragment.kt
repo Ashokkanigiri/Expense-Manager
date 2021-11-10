@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentChooseCategoryBinding
@@ -32,6 +34,19 @@ class ChooseCategoryFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
         setUpRecyclerView()
+        observeViewmodel()
+    }
+
+    private fun observeViewmodel() {
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event->
+            when(event){
+                is ChooseCategoryViewmodelEvent.OpenCreateExpenseDialog->{
+                   findNavController().navigate(
+                       ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToExpenseCategoryDialogFragment()
+                   )
+                }
+            }
+        })
     }
 
     private fun setUpRecyclerView() {

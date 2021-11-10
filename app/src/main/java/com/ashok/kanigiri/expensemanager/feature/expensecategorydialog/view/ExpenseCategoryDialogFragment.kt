@@ -50,7 +50,6 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dialogViewModel
-        setUpCategorySpinner()
         observeViewModel()
     }
 
@@ -62,42 +61,6 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
         })
         dialogViewModel.reserveCash()?.let {
             binding.reserveCash = it
-        }
-    }
-
-    private fun setUpCategorySpinner() {
-        val list = ArrayList<String>()
-        list.add(ExpenseTypes.FOOD.expenseLitral)
-        list.add(ExpenseTypes.GYM.expenseLitral)
-        list.add(ExpenseTypes.HOUSE_RENT.expenseLitral)
-        list.add(ExpenseTypes.INVESTING.expenseLitral)
-        list.add(ExpenseTypes.MEDICAL.expenseLitral)
-        list.add(ExpenseTypes.MONTHLY_EMI.expenseLitral)
-        list.add(ExpenseTypes.SHOPPING.expenseLitral)
-        list.add(ExpenseTypes.TRAVEL.expenseLitral)
-        list.add(ExpenseTypes.MISCELLANEOUS.expenseLitral)
-        list.add(ExpenseTypes.FREE_HAND_MONEY.expenseLitral)
-
-        val adapter =
-            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, list)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerExpenseCategory.adapter = adapter
-        binding.spinnerExpenseCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedPosition: String = (parent?.adapter?.getItem(position) as String)
-                dialogViewModel.expenseCategoryName.set(selectedPosition)
-                Log.d("sakfn", "Item Selected ${(parent.adapter?.getItem(position))}")
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Log.d("sakfn", "Nothing selected")
-            }
-
         }
     }
 

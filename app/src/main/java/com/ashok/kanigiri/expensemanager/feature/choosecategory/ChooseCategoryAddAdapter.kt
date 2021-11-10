@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.ItemAddChooseCategoryBinding
 
-class ChooseCategoryAddAdapter: ListAdapter <Boolean, ChooseCategoryAddViewHolder>(ChooseCategoryDiffUtil()){
+class ChooseCategoryAddAdapter constructor(val viewmodel : ChooseCategoryViewModel): ListAdapter <Boolean, ChooseCategoryAddViewHolder>(ChooseCategoryDiffUtil()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseCategoryAddViewHolder {
         val inflator = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemAddChooseCategoryBinding>(inflator, R.layout.item_add_choose_category, parent, false)
-        return ChooseCategoryAddViewHolder(binding)
+        return ChooseCategoryAddViewHolder(binding, viewmodel)
     }
 
     override fun onBindViewHolder(holder: ChooseCategoryAddViewHolder, position: Int) {
@@ -21,9 +21,9 @@ class ChooseCategoryAddAdapter: ListAdapter <Boolean, ChooseCategoryAddViewHolde
     }
 }
 
-class ChooseCategoryAddViewHolder(val binding: ItemAddChooseCategoryBinding): RecyclerView.ViewHolder(binding.root){
+class ChooseCategoryAddViewHolder(val binding: ItemAddChooseCategoryBinding, val viewmodel: ChooseCategoryViewModel): RecyclerView.ViewHolder(binding.root){
     fun bind(drawable: Boolean){
-
+        binding.viewmodel = viewmodel
     }
 }
 

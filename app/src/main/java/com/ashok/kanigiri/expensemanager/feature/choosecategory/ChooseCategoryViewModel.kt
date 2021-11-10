@@ -4,15 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.ConcatAdapter
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
+import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ChooseCategoryViewModel @Inject constructor(): ViewModel() {
 
-    val addAdapter = ChooseCategoryAddAdapter()
+    val addAdapter = ChooseCategoryAddAdapter(this)
     val itemAdapter = ChooseCategoryItemdapter()
     val concatAdapter = ConcatAdapter(addAdapter, itemAdapter)
+    val event = SingleLiveEvent<ChooseCategoryViewmodelEvent>()
 
     fun setAdapter(): ConcatAdapter{
         return concatAdapter
@@ -40,4 +42,7 @@ class ChooseCategoryViewModel @Inject constructor(): ViewModel() {
         return list
     }
 
+    fun createAccount(){
+        event.postValue(ChooseCategoryViewmodelEvent.OpenCreateExpenseDialog)
+    }
 }

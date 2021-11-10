@@ -62,13 +62,13 @@ class ManageExpensesFragment : Fragment(){
             this.findNavController().navigate(
                 ManageExpensesFragmentDirections.actionAddExpenseFragmentToCreateExpenseDialogFragment(
                     categoryId = it.expenseCategoryId,
-                    categoryName = it.expenseType.expenseLitral
+                    categoryName = it.expenseCategoryName
                 )
             )
         })
         viewmodel.navigateToExpenseList.observe(viewLifecycleOwner, Observer {
             this.findNavController().navigate(
-                ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseListFragment(it.expenseCategoryId, it.expenseType.expenseLitral)
+                ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseListFragment(it.expenseCategoryId, it.expenseCategoryName)
             )
         })
     }

@@ -27,5 +27,13 @@
     <fragment
         android:id="@+id/chooseCategoryFragment"
         android:name="com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryFragment"
-        android:label="ChooseCategoryFragment" />
+        android:label="ChooseCategoryFragment" >
+        <action
+            android:id="@+id/action_chooseCategoryFragment_to_expenseCategoryDialogFragment"
+            app:destination="@id/expenseCategoryDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/expenseCategoryDialogFragment"
+        android:name="com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.view.ExpenseCategoryDialogFragment"
+        android:label="ExpenseCategoryDialogFragment" />
 </navigation>

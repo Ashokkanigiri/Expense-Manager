@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
         viewmodel.getAllExpenseCategorys.observe(viewLifecycleOwner, Observer {list->
             list?.forEach {
                 val percent = (it.totalUtilizedPrice.toFloat()/SharedPreferenceService.getUserSalary(requireContext()))
-                yValues.add(PieEntry(percent, it.expenseType.expenseLitral))
+                yValues.add(PieEntry(percent, it.expenseCategoryName))
             }
             val pieDataSet = PieDataSet(yValues, "Demo")
             pieDataSet.sliceSpace = 1.5f
