@@ -10,7 +10,7 @@ import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 
 @Dao
 interface ExpenseCategoryDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ExpenseCategory)
 
     @Query("SELECT * FROM expensecategory")

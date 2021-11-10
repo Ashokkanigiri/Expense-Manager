@@ -19,6 +19,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="Create Account"
+            android:onClick="@{()-> viewmodel.createAccount()}"
             android:textColor="@color/button_bg"
             android:textSize="16sp"
             android:textStyle="bold"

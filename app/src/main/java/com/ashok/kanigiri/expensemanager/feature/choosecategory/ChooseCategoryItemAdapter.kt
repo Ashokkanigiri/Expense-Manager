@@ -11,12 +11,13 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.ItemAddChooseCategoryBinding
 import com.ashok.kanigiri.expensemanager.databinding.ItemChooseCategoryBinding
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
+import kotlin.math.exp
 
-class ChooseCategoryItemdapter: ListAdapter <String, ChooseCategoryItemViewHolder>(ChooseCategoryItemDiffUtil()){
+class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewModel): ListAdapter <String, ChooseCategoryItemViewHolder>(ChooseCategoryItemDiffUtil()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseCategoryItemViewHolder {
         val inflator = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemChooseCategoryBinding>(inflator, R.layout.item_choose_category, parent, false)
-        return ChooseCategoryItemViewHolder(binding)
+        return ChooseCategoryItemViewHolder(binding, viewmodel)
     }
 
     override fun onBindViewHolder(holder: ChooseCategoryItemViewHolder, position: Int) {
@@ -24,14 +25,16 @@ class ChooseCategoryItemdapter: ListAdapter <String, ChooseCategoryItemViewHolde
     }
 }
 
-class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding): RecyclerView.ViewHolder(binding.root){
+class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val viewmodel: ChooseCategoryViewModel): RecyclerView.ViewHolder(binding.root){
     fun bind(expenseLitral: String){
         binding.expenseLitral = expenseLitral
         binding.clMainLayout.setOnClickListener {
             binding.clCheckedLayout.visibility = View.VISIBLE
+            viewmodel.addCategoryToSelectedList(listOf(expenseLitral))
         }
         binding.clCheckedLayout.setOnClickListener {
             binding.clCheckedLayout.visibility = View.GONE
+            viewmodel.removeFromSelectedCategoryList(expenseLitral)
         }
     }
 }
