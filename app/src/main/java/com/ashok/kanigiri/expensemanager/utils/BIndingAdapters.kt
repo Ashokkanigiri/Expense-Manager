@@ -43,7 +43,7 @@ fun View.setUpExpenseTileBackground(expenseCategory: String) {
             ExpenseTypes.INVESTING.expenseLitral -> R.color.investing_expense_colour_bg
             ExpenseTypes.MONTHLY_EMI.expenseLitral -> R.color.emi_expense_colour_bg
             ExpenseTypes.MISCELLANEOUS.expenseLitral -> R.color.misc_expense_colour_bg
-            else -> R.color.black
+            else -> R.color.black_gd
         }
     )
 }
@@ -62,7 +62,7 @@ fun ImageView.setImageResource(expenseCategory: String) {
             ExpenseTypes.INVESTING.expenseLitral -> R.drawable.ic_baseline_monetization_on_24
             ExpenseTypes.MONTHLY_EMI.expenseLitral -> R.drawable.ic_baseline_payments_24
             ExpenseTypes.MISCELLANEOUS.expenseLitral -> R.drawable.ic_baseline_kitesurfing_24
-            else -> R.color.black
+            else -> R.drawable.ic_baseline_supervisor_account_24
         }
     )
 }

@@ -13,7 +13,7 @@ import com.ashok.kanigiri.expensemanager.databinding.ItemChooseCategoryBinding
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import kotlin.math.exp
 
-class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewModel): ListAdapter <String, ChooseCategoryItemViewHolder>(ChooseCategoryItemDiffUtil()){
+class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewModel): ListAdapter <ExpenseCategory, ChooseCategoryItemViewHolder>(ChooseCategoryItemDiffUtil()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChooseCategoryItemViewHolder {
         val inflator = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemChooseCategoryBinding>(inflator, R.layout.item_choose_category, parent, false)
@@ -26,25 +26,23 @@ class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewMode
 }
 
 class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val viewmodel: ChooseCategoryViewModel): RecyclerView.ViewHolder(binding.root){
-    fun bind(expenseLitral: String){
-        binding.expenseLitral = expenseLitral
+    fun bind(expenseLitral: ExpenseCategory){
+        binding.expense = expenseLitral
         binding.clMainLayout.setOnClickListener {
-            binding.clCheckedLayout.visibility = View.VISIBLE
-            viewmodel.addCategoryToSelectedList(listOf(expenseLitral))
+            viewmodel.updateCategorySelectionStatus(true, expenseLitral.expenseCategoryId)
         }
         binding.clCheckedLayout.setOnClickListener {
-            binding.clCheckedLayout.visibility = View.GONE
-            viewmodel.removeFromSelectedCategoryList(expenseLitral)
+            viewmodel.updateCategorySelectionStatus(false, expenseLitral.expenseCategoryId)
         }
     }
 }
 
-class ChooseCategoryItemDiffUtil: DiffUtil.ItemCallback<String>(){
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+class ChooseCategoryItemDiffUtil: DiffUtil.ItemCallback<ExpenseCategory>(){
+    override fun areItemsTheSame(oldItem: ExpenseCategory, newItem: ExpenseCategory): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+    override fun areContentsTheSame(oldItem: ExpenseCategory, newItem: ExpenseCategory): Boolean {
         return oldItem == newItem
     }
 

@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(primaryKeys = ["expenseCategoryName"])
 data class ExpenseCategory(
     val expenseCategoryId: String,
-    val expenseCategoryTargetPrice: Double,
-    val totalUtilizedPrice: Double,
+    val expenseCategoryTargetPrice: Double?,
+    val totalUtilizedPrice: Double?,
     val expenseCategoryName: String,
-    val createdDate: String
+    val createdDate: String,
+    val isSelected: Boolean
 )

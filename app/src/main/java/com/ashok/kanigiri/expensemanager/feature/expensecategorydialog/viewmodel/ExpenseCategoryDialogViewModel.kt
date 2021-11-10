@@ -45,7 +45,8 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
                         expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
                         totalUtilizedPrice = 0.0,
                         expenseCategoryName = expenseCategoryName.get()?:"",
-                        createdDate = System.currentTimeMillis().toString()
+                        createdDate = System.currentTimeMillis().toString(),
+                        isSelected = true
                     )
 
                     GlobalScope.launch(Dispatchers.IO) {

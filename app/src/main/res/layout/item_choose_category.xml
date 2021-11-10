@@ -5,9 +5,11 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
-            name="expenseLitral"
-            type="String" />
+            name="expense"
+            type="com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +39,7 @@
             android:id="@+id/imageView5"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            set_expense_title_background="@{expenseLitral}"
+            set_expense_title_background="@{expense.expenseCategoryName}"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="TextView"
-            android:text="@{expenseLitral}"
+            android:text="@{expense.expenseCategoryName}"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +60,7 @@
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            set_expense_category_image="@{expenseLitral}"
+            set_expense_category_image="@{expense.expenseCategoryName}"
             app:layout_constraintBottom_toTopOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +73,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_rounded_edittext"
             android:backgroundTint="@color/transparent_black"
-            android:visibility="gone"
+            android:visibility="@{expense.selected ? View.VISIBLE: View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_category_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

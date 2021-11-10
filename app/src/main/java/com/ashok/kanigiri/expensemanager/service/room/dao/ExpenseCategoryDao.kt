@@ -13,6 +13,9 @@ interface ExpenseCategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ExpenseCategory)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(item: List<ExpenseCategory>)
+
     @Query("SELECT * FROM expensecategory")
     fun getAllExpenses(): LiveData<List<ExpenseCategory>>
 
@@ -27,4 +30,7 @@ interface ExpenseCategoryDao {
 
     @Query("UPDATE expensecategory SET totalUtilizedPrice =:total+totalUtilizedPrice WHERE expenseCategoryId =:categoryId")
     fun updateUtilizedPriceForCategory(categoryId: String, total: Double)
+
+    @Query("UPDATE expensecategory SET isSelected =:isCategorySelected WHERE expenseCategoryId =:expenseCategoryId")
+    fun updateCategoryUpdationStatus(isCategorySelected: Boolean, expenseCategoryId: String)
 }

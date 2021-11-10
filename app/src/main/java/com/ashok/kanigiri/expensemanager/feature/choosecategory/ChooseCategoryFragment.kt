@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -36,14 +37,26 @@ class ChooseCategoryFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
         setUpRecyclerView()
+        injectDefaultCategoryList()
         observeViewmodel()
         handleNewExpenseCategoryCreated()
     }
 
+    private fun injectDefaultCategoryList() {
+        viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {
+            if(it?.size == 0){
+                viewmodel.injectDefaultCategorysList()
+            }
+        })
+    }
+
     private fun handleNewExpenseCategoryCreated() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)?.observe(viewLifecycleOwner, Observer {
-            Log.d("kndwknd", "HHH: $it")
+            viewmodel.insertNewCategory(it)
         })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            findNavController().popBackStack()
+        }
     }
 
     private fun observeViewmodel() {
@@ -56,11 +69,13 @@ class ChooseCategoryFragment: Fragment() {
                 }
             }
         })
+        viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {
+            viewmodel.submitItemAdapterData(it)
+        })
     }
 
     private fun setUpRecyclerView() {
         binding.rvChooseCategory.layoutManager = GridLayoutManager(requireContext(), 2)
         viewmodel.submitAddAdapterData()
-        viewmodel.submitItemAdapterData(viewmodel.getDefaultCategorysList())
     }
 }
