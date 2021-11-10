@@ -56,6 +56,12 @@ class CreateAccountFragment : Fragment() {
                 is CreateAccountViewmodelEvent.NavigateToLoginScreen ->{
                     findNavController().popBackStack()
                 }
+                is CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen->{
+                    findNavController().navigate(
+                        CreateAccountFragmentDirections.actionCreateAccountFragmentToChooseCategoryFragment()
+                    )
+                }
+
             }
         })
     }

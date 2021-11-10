@@ -44,5 +44,6 @@
     <color name="bg_expense_list_5">#FFE7C7</color>
     <color name="bg_expense_list_6">#B7E5EB</color>
     <color name="bg_expense_list_7">#FFE4E1</color>
+    <color name="transparent_black">#75000000</color>
 
 </resources>

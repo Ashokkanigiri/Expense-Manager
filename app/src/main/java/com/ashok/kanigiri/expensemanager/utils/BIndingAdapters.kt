@@ -30,7 +30,7 @@ fun setUpHomeProgressTint(view: ProgressBar?, progress: Int) {
 }
 
 @BindingAdapter("set_expense_title_background")
-fun ConstraintLayout.setUpExpenseTileBackground(expenseCategory: String) {
+fun View.setUpExpenseTileBackground(expenseCategory: String) {
     this.setBackgroundResource(
         when (expenseCategory) {
             ExpenseTypes.FOOD.expenseLitral -> R.color.food_expense_colour_bg

@@ -19,5 +19,13 @@
     <fragment
         android:id="@+id/createAccountFragment"
         android:name="com.ashok.kanigiri.expensemanager.feature.createnewaccount.CreateAccountFragment"
-        android:label="CreateAccountFragment" />
+        android:label="CreateAccountFragment" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_chooseCategoryFragment"
+            app:destination="@id/chooseCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseCategoryFragment"
+        android:name="com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryFragment"
+        android:label="ChooseCategoryFragment" />
 </navigation>

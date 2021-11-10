@@ -14,7 +14,7 @@ class CreateAccountViewmodel @Inject constructor(): ViewModel(){
     val event = SingleLiveEvent<CreateAccountViewmodelEvent>()
 
     fun createAccount(){
-        Log.d("kfkwnww", "DDD::  ${Gson().toJson(userLoginModel)}")
+        event.postValue(CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen)
     }
 
     fun saveDateOfBirthFromPicker(dob: String){
