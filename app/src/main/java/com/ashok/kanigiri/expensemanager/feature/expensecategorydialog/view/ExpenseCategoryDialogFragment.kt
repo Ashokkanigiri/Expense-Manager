@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateNewExpenseCategoryBinding
@@ -70,6 +71,10 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
         dialogViewModel.reserveCash()?.let {
             binding.reserveCash = it
         }
+        dialogViewModel.sendCreatedExpenseNameEvent.observe(viewLifecycleOwner, Observer {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.SEND_CREATED_EXPENSE_KEY, it)
+            dialog?.dismiss()
+        })
     }
 
     override fun onDestroy() {

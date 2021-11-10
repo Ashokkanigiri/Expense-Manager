@@ -1,6 +1,7 @@
 package com.ashok.kanigiri.expensemanager.feature.choosecategory
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentChooseCategoryBinding
+import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +37,13 @@ class ChooseCategoryFragment: Fragment() {
         binding.viewmodel = viewmodel
         setUpRecyclerView()
         observeViewmodel()
+        handleNewExpenseCategoryCreated()
+    }
+
+    private fun handleNewExpenseCategoryCreated() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)?.observe(viewLifecycleOwner, Observer {
+            Log.d("kndwknd", "HHH: $it")
+        })
     }
 
     private fun observeViewmodel() {

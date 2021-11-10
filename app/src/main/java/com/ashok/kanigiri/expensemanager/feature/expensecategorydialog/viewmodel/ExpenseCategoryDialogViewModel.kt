@@ -27,35 +27,41 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
     val expenseTargetPrice = ObservableField<String>()
     val expenseCategoryName = ObservableField<String>()
     val event = SingleLiveEvent<Event<Boolean>>()
+    val sendCreatedExpenseNameEvent = SingleLiveEvent<String>()
     var shouldShowExpensePrice = false
 
     fun reserveCash() = SharedPreferenceService.getUserSalary(context) - (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())
 
     fun insertExpenseCategory() {
-        if (expenseTargetPrice.get()?.trim() != "" && expenseTargetPrice.get()?.trim() != null) {
-            val totalPriceGivenForAllCategorys = roomRepository.getCategoryDao().getTotalAllotedCategoryPrice()
-            if((totalPriceGivenForAllCategorys+(expenseTargetPrice.get()?.toDouble()?:0.0))<= SharedPreferenceService.getUserSalary(context)){
-                val expenseCategory = ExpenseCategory(
-                    expenseCategoryId = UUID.randomUUID().toString(),
-                    expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
-                    totalUtilizedPrice = 0.0,
-                    expenseCategoryName = expenseCategoryName.get()?:"",
-                    createdDate = System.currentTimeMillis().toString()
-                )
+        if(!shouldShowExpensePrice){
+            //
+            sendCreatedExpenseNameEvent.postValue(expenseCategoryName.get())
+        }else{
+            if (expenseTargetPrice.get()?.trim() != "" && expenseTargetPrice.get()?.trim() != null) {
+                val totalPriceGivenForAllCategorys = roomRepository.getCategoryDao().getTotalAllotedCategoryPrice()
+                if((totalPriceGivenForAllCategorys+(expenseTargetPrice.get()?.toDouble()?:0.0))<= SharedPreferenceService.getUserSalary(context)){
+                    val expenseCategory = ExpenseCategory(
+                        expenseCategoryId = UUID.randomUUID().toString(),
+                        expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
+                        totalUtilizedPrice = 0.0,
+                        expenseCategoryName = expenseCategoryName.get()?:"",
+                        createdDate = System.currentTimeMillis().toString()
+                    )
 
-                GlobalScope.launch(Dispatchers.IO) {
-                    roomRepository.getCategoryDao().insert(expenseCategory)
-                }
-                event.postValue(Event(true))
-            }else{
-                val diff =  SharedPreferenceService.getUserSalary(context) - (totalPriceGivenForAllCategorys)
-                if(diff == 0.0){
-                   Toast.makeText(context, "MONTHLY SALARY EXHAUSTED, ", Toast.LENGTH_SHORT).show()
+                    GlobalScope.launch(Dispatchers.IO) {
+                        roomRepository.getCategoryDao().insert(expenseCategory)
+                    }
+                    event.postValue(Event(true))
                 }else{
-                    Toast.makeText(context, "MAXIMUM LIMIT REACHED, you can add upto maximum of $diff", Toast.LENGTH_SHORT).show()
+                    val diff =  SharedPreferenceService.getUserSalary(context) - (totalPriceGivenForAllCategorys)
+                    if(diff == 0.0){
+                        Toast.makeText(context, "MONTHLY SALARY EXHAUSTED, ", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(context, "MAXIMUM LIMIT REACHED, you can add upto maximum of $diff", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
+            }
         }
     }
 
@@ -68,5 +74,4 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
         Log.d("ajafjaf", "ON CLEARED")
 
     }
-
 }
