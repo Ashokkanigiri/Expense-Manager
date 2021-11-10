@@ -15,7 +15,7 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     var loginButtonEnabledStatus = MutableLiveData<Boolean>()
     val event = SingleLiveEvent<LoginViewModelEvent>()
 
-    var userLogin = UserLoginModel(username = "", password = "")
+    var userLogin = UserLoginModel(username = "", password = "", dateOfBirth = "", salary = "")
 
     fun onUsernameFieldTextChangedListener(s: CharSequence?){
         s?.let {

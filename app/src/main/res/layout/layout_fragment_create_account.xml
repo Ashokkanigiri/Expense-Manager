@@ -3,6 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="data"
+            type="com.ashok.kanigiri.expensemanager.service.models.UserLoginModel" />
+        <variable
+            name="viewmodel"
+            type="com.ashok.kanigiri.expensemanager.feature.createnewaccount.CreateAccountViewmodel" />
+        <variable
+            name="fragment"
+            type="com.ashok.kanigiri.expensemanager.feature.createnewaccount.CreateAccountFragment" />
+
+    </data>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -27,6 +40,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Create Account"
+                android:onClick="@{() -> viewmodel.createAccount()}"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/guideline_top"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end"
@@ -96,6 +110,7 @@
                 android:layout_marginBottom="15dp"
                 android:text="Return to Login Screen"
                 android:textSize="14sp"
+                android:onClick="@{()-> viewmodel.navigateBackToLoginScreen()}"
                 android:layout_marginTop="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end"
@@ -110,6 +125,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext"
                 android:ems="10"
+                android:text="@={data.username}"
                 android:hint="Please Enter Username here"
                 android:inputType="textPersonName"
                 android:padding="8dp"
@@ -127,6 +143,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext"
                 android:ems="10"
+                android:text="@={data.password}"
                 android:hint="Please Enter Password here"
                 android:inputType="textPassword"
                 android:padding="8dp"
@@ -143,6 +160,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_rounded_edittext"
                 android:padding="8dp"
+                android:text="@{viewmodel.dateOfBirthObserver}"
+                android:onClick="@{()-> fragment.openDatePickerDialog()}"
                 android:singleLine="true"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end"
@@ -169,6 +188,7 @@
                 android:padding="8dp"
                 android:singleLine="true"
                 android:textSize="16sp"
+                android:text="@={data.salary}"
                 android:hint="Please enter your monthly income"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start"
