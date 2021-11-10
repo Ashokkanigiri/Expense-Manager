@@ -35,5 +35,10 @@
     <dialog
         android:id="@+id/expenseCategoryDialogFragment"
         android:name="com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.view.ExpenseCategoryDialogFragment"
-        android:label="ExpenseCategoryDialogFragment" />
+        android:label="ExpenseCategoryDialogFragment" >
+        <argument
+            android:name="shouldShowExpensePrice"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </dialog>
 </navigation>

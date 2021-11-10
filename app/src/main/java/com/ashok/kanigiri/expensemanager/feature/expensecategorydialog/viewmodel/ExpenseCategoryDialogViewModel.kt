@@ -27,6 +27,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
     val expenseTargetPrice = ObservableField<String>()
     val expenseCategoryName = ObservableField<String>()
     val event = SingleLiveEvent<Event<Boolean>>()
+    var shouldShowExpensePrice = false
 
     fun reserveCash() = SharedPreferenceService.getUserSalary(context) - (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())
 

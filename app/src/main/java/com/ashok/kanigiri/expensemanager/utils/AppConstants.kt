@@ -5,4 +5,5 @@ object AppConstants {
     val CATEGORY_NAME_KEY = "categoryName"
     val EXPENSE_CATEGORY_ID = "expenseCategoryId"
     val IS_EXPENSE_CREATED_KEY = "is-expense-created"
+    val SHOULD_SHOW_EXPENSE_PRICE = "shouldShowExpensePrice"
 }

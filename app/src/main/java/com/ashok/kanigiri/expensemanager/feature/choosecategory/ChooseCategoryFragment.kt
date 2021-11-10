@@ -42,7 +42,7 @@ class ChooseCategoryFragment: Fragment() {
             when(event){
                 is ChooseCategoryViewmodelEvent.OpenCreateExpenseDialog->{
                    findNavController().navigate(
-                       ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToExpenseCategoryDialogFragment()
+                       ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToExpenseCategoryDialogFragment(false)
                    )
                 }
             }

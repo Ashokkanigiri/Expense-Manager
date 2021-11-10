@@ -6,6 +6,7 @@
 
     <data>
 
+        <import type="android.view.View"/>
         <variable
             name="reserveCash"
             type="Double" />
@@ -37,6 +38,7 @@
             android:id="@+id/cl_main_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
             android:background="@drawable/bg_bottom_sheet_top"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintHorizontal_bias="0.0"
@@ -78,6 +80,7 @@
                 android:gravity="start"
                 android:padding="15dp"
                 android:layout_marginTop="5dp"
+                android:visibility="@{viewmodel.shouldShowExpensePrice ? View.VISIBLE: View.GONE}"
                 android:text="Target price per month"
                 android:textColor="@color/text_colour"
                 android:textSize="18sp"
@@ -95,6 +98,7 @@
                 android:gravity="center"
                 android:imeOptions="actionDone"
                 android:inputType="number"
+                android:visibility="@{viewmodel.shouldShowExpensePrice ? View.VISIBLE: View.GONE}"
                 android:onTextChanged="@{(text, start, before, count) -> viewmodel.onExpenseTargetPriceChanged(text)}"
                 android:padding="10dp"
                 android:singleLine="true"
@@ -125,10 +129,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
                 android:textSize="12sp"
                 tools:text="**Reserve cash"
                 android:layout_marginStart="15dp"
+                android:visibility="@{viewmodel.shouldShowExpensePrice ? View.VISIBLE: View.GONE}"
                 android:text="@{`** You can add upto Rs. `+reserveCash+` From this Category`}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/et_category_price"

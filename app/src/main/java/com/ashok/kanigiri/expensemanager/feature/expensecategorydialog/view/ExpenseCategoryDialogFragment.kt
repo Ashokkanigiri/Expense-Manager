@@ -14,6 +14,7 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateNewExpenseCategoryBinding
 import com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.viewmodel.ExpenseCategoryDialogViewModel
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
+import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,7 +51,14 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dialogViewModel
+        loadArguments()
         observeViewModel()
+    }
+
+    private fun loadArguments() {
+        arguments?.getBoolean(AppConstants.SHOULD_SHOW_EXPENSE_PRICE)?.let {
+            dialogViewModel.shouldShowExpensePrice = it
+        }
     }
 
     private fun observeViewModel() {
