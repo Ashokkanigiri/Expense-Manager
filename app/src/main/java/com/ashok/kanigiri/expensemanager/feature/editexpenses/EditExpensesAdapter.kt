@@ -38,20 +38,19 @@ class EditExpensesViewHolder(
         binding.expense = expenseCategory
         binding.seekbarMax = viewmodel.salary
         binding.seebarProgress = viewmodel.getTargetPriceForCategory(expenseCategory.expenseCategoryId).toInt()
+//        binding.tvPercentage.text =""+ (viewmodel.getTargetPriceForCategory(expenseCategory.expenseCategoryId)/ viewmodel.salary *100).toInt()+" %"
         binding.sbExpense.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                Log.d("wkfnwkfnw", "onProgressChanged ")
                 binding.textView15.text=""+progress
+                binding.tvPercentage.text =  String.format("%.1f", ((progress.toDouble())/(viewmodel.salary.toDouble())*100))+"%"
                 viewmodel.progressMap.put(expenseCategory.expenseCategoryName, seekBar?.progress?:0)
                 viewmodel.calculateTotalExpenses()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                Log.d("wkfnwkfnw", "onStartTrackingTouch ")
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                Log.d("wkfnwkfnw", "||||||onStopTrackingTouch ${seekBar?.progress}")
                 viewmodel.updateTargetPriceForCategory(expenseCategory.expenseCategoryId, seekBar?.progress?.toDouble()?:0.0)
             }
         })
