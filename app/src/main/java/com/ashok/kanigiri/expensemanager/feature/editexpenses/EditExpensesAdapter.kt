@@ -41,7 +41,7 @@ class EditExpensesViewHolder(
 //        binding.tvPercentage.text =""+ (viewmodel.getTargetPriceForCategory(expenseCategory.expenseCategoryId)/ viewmodel.salary *100).toInt()+" %"
         binding.sbExpense.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.textView15.text=""+progress
+                binding.textView15.text="Rs. "+progress
                 binding.tvPercentage.text =  String.format("%.1f", ((progress.toDouble())/(viewmodel.salary.toDouble())*100))+"%"
                 viewmodel.progressMap.put(expenseCategory.expenseCategoryName, seekBar?.progress?:0)
                 viewmodel.calculateTotalExpenses()

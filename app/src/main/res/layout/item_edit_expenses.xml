@@ -22,64 +22,93 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_rounded_edittext"
-        android:padding="10dp"
         android:layout_margin="5dp">
 
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/sb_expense"
-            android:layout_width="0dp"
-            android:max="@{seekbarMax}"
-            android:progress="@{seebarProgress}"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
+            set_expense_title_background="@{expense.expenseCategoryName}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_start" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="TextView"
-            android:text="@{expense.expenseCategoryName}"
-            android:layout_marginBottom="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView15"
-            app:layout_constraintStart_toStartOf="@+id/guideline_start"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/sb_expense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:max="@{seekbarMax}"
+                android:progress="@{seebarProgress}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start" />
 
-        <TextView
-            android:id="@+id/tv_percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/button_bg"
-            app:layout_constraintBottom_toTopOf="@+id/textView15"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="TextView" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="@{expense.expenseCategoryName}"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView15"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                app:layout_constraintTop_toTopOf="@+id/imageView6"
+                app:layout_constraintVertical_chainStyle="spread_inside"
+                tools:text="Category Name" />
 
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            tools:text="TextView"
-            android:text="@{``+seebarProgress}"
-            app:layout_constraintBottom_toTopOf="@+id/sb_expense"
-            app:layout_constraintStart_toStartOf="@+id/guideline_start" />
+            <TextView
+                android:id="@+id/tv_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/button_bg"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                tools:text="persentage" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:text="@{`Rs. `+seebarProgress}"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_percentage"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                tools:text="Seekbar progress" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="20dp" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="0dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="0dp" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="15dp"
+                set_expense_category_image="@{expense.expenseCategoryName}"
+                app:layout_constraintBottom_toTopOf="@+id/sb_expense"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
