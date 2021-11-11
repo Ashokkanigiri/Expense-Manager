@@ -21,7 +21,7 @@
         android:label="CreateExpenseDialogFragment" >
         <argument
             android:name="categoryId"
-            app:argType="string" />
+            app:argType="integer" />
         <argument
             android:name="categoryName"
             app:argType="string" />
@@ -32,7 +32,7 @@
         android:label="ExpenseListFragment" >
         <argument
             android:name="expenseCategoryId"
-            app:argType="string" />
+            app:argType="integer" />
         <argument
             android:name="categoryName"
             app:argType="string" />

@@ -4,9 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(primaryKeys = ["expenseCategoryName"])
+@Entity
 data class ExpenseCategory(
-    val expenseCategoryId: String,
+    @PrimaryKey(autoGenerate = true)
+    val expenseCategoryId: Int = 0,
     val expenseCategoryTargetPrice: Double?,
     val totalUtilizedPrice: Double?,
     val expenseCategoryName: String,

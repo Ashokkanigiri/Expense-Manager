@@ -67,6 +67,11 @@ class ChooseCategoryFragment: Fragment() {
                        ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToExpenseCategoryDialogFragment(false)
                    )
                 }
+                is ChooseCategoryViewmodelEvent.NavigateToEditExpenses->{
+                    findNavController().navigate(
+                        ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToEditExpenseFragment()
+                    )
+                }
             }
         })
         viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {

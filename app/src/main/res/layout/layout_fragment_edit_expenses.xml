@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="totalExpenses"
+            type="Integer" />
+        <variable
+            name="viewmodel"
+            type="com.ashok.kanigiri.expensemanager.feature.editexpenses.EditExpensesViewmodel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="60dp" />
+
+        <TextView
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Create Account"
+            android:onClick="@{()->viewmodel.createAccount()}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Cancel"
+            android:textColor="@color/red"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/grey"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_edit_expense_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Edit Expenses"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/edit_expenses"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/tv_edit_expense_label"
+            tools:listitem="@layout/item_edit_expenses" />
+
+        <TextView
+            android:id="@+id/tv_total_expenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`Total Expenses :` +viewmodel.totalExpenses}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_edit_expense_label"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintTop_toTopOf="@+id/tv_edit_expense_label" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

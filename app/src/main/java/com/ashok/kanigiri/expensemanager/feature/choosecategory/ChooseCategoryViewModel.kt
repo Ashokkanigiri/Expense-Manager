@@ -18,7 +18,8 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @HiltViewModel
-class ChooseCategoryViewModel @Inject constructor(private val roomRepository: RoomRepository): ViewModel() {
+class ChooseCategoryViewModel @Inject constructor(private val roomRepository: RoomRepository) :
+    ViewModel() {
 
     val addAdapter = ChooseCategoryAddAdapter(this)
     val itemAdapter = ChooseCategoryItemdapter(this)
@@ -26,19 +27,19 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     val event = SingleLiveEvent<ChooseCategoryViewmodelEvent>()
     private val seletedExpenseCategorys = ArrayList<ExpenseCategory>()
 
-    fun setAdapter(): ConcatAdapter{
+    fun setAdapter(): ConcatAdapter {
         return concatAdapter
     }
 
-    fun submitAddAdapterData(){
+    fun submitAddAdapterData() {
         addAdapter.submitList(listOf(true))
     }
 
-    fun submitItemAdapterData(list: List<ExpenseCategory>){
+    fun submitItemAdapterData(list: List<ExpenseCategory>) {
         itemAdapter.submitList(list)
     }
 
-    fun injectDefaultCategorysList(){
+    fun injectDefaultCategorysList() {
         val list = ArrayList<String>()
         list.add(ExpenseTypes.FOOD.expenseLitral)
         list.add(ExpenseTypes.GYM.expenseLitral)
@@ -52,36 +53,49 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
         list.add(ExpenseTypes.FREE_HAND_MONEY.expenseLitral)
         val categoryList = ArrayList<ExpenseCategory>()
         list.forEach {
-            val expenseCategory = ExpenseCategory(UUID.randomUUID().toString(), null, null, it, System.currentTimeMillis().toString(), false)
+            val expenseCategory = ExpenseCategory(
+                expenseCategoryTargetPrice = null,
+                totalUtilizedPrice = null,
+                expenseCategoryName = it,
+                createdDate = System.currentTimeMillis().toString(),
+                isSelected = false
+            )
             categoryList.add(expenseCategory)
         }
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getCategoryDao().insert(categoryList)
         }
     }
 
-    fun openCreateExpenseDialog(){
+    fun openCreateExpenseDialog() {
         event.postValue(ChooseCategoryViewmodelEvent.OpenCreateExpenseDialog)
     }
 
 
-    fun createAccount(){
-
+    fun createAccount() {
+        event.postValue(ChooseCategoryViewmodelEvent.NavigateToEditExpenses)
     }
 
     fun getAllCategorys(): LiveData<List<ExpenseCategory>> {
         return roomRepository.getCategoryDao().getAllExpenses()
     }
 
-    fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategoryId: String){
+    fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategoryId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            roomRepository.getCategoryDao().updateCategoryUpdationStatus(isCategorySelected, expenseCategoryId)
+            roomRepository.getCategoryDao()
+                .updateCategoryUpdationStatus(isCategorySelected, expenseCategoryId)
         }
     }
 
-    fun insertNewCategory(categoryName: String){
-        val expenseCategory = ExpenseCategory(UUID.randomUUID().toString(), null, null, categoryName, System.currentTimeMillis().toString(), true)
-        viewModelScope.launch (Dispatchers.IO){
+    fun insertNewCategory(categoryName: String) {
+        val expenseCategory = ExpenseCategory(
+            expenseCategoryTargetPrice = null,
+            totalUtilizedPrice = null,
+            expenseCategoryName = categoryName,
+            createdDate = System.currentTimeMillis().toString(),
+            isSelected = true
+        )
+        viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getCategoryDao().insert(expenseCategory)
         }
     }

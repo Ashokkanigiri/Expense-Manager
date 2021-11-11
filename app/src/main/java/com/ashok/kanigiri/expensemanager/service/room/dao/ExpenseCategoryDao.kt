@@ -20,7 +20,7 @@ interface ExpenseCategoryDao {
     fun getAllExpenses(): LiveData<List<ExpenseCategory>>
 
     @Query("SELECT expenseCategoryTargetPrice FROM ExpenseCategory WHERE expenseCategoryId =:categoryId")
-    fun getTotalExpensePriceForCategory(categoryId: String): Double
+    fun getTotalExpensePriceForCategory(categoryId: Int): Double
 
     @Query("SELECT SUM(expenseCategoryTargetPrice) FROM expensecategory")
     fun getTotalAllotedCategoryPrice(): Double
@@ -29,8 +29,14 @@ interface ExpenseCategoryDao {
     fun getUtilizedPriceForCategory(categoryId: String): Double
 
     @Query("UPDATE expensecategory SET totalUtilizedPrice =:total+totalUtilizedPrice WHERE expenseCategoryId =:categoryId")
-    fun updateUtilizedPriceForCategory(categoryId: String, total: Double)
+    fun updateUtilizedPriceForCategory(categoryId: Int, total: Double)
 
     @Query("UPDATE expensecategory SET isSelected =:isCategorySelected WHERE expenseCategoryId =:expenseCategoryId")
-    fun updateCategoryUpdationStatus(isCategorySelected: Boolean, expenseCategoryId: String)
+    fun updateCategoryUpdationStatus(isCategorySelected: Boolean, expenseCategoryId: Int)
+
+    @Query("SELECT * FROM expensecategory WHERE isSelected =:isSelected")
+    fun getSelectedCategorys(isSelected: Boolean = true): LiveData<List<ExpenseCategory>>
+
+    @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total WHERE expenseCategoryId =:categoryId")
+    fun updateTargetPriceForCategory(categoryId: Int, total: Double)
 }

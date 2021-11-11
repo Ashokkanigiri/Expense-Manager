@@ -41,7 +41,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
                 val totalPriceGivenForAllCategorys = roomRepository.getCategoryDao().getTotalAllotedCategoryPrice()
                 if((totalPriceGivenForAllCategorys+(expenseTargetPrice.get()?.toDouble()?:0.0))<= SharedPreferenceService.getUserSalary(context)){
                     val expenseCategory = ExpenseCategory(
-                        expenseCategoryId = UUID.randomUUID().toString(),
+                        expenseCategoryId = System.currentTimeMillis().toInt(),
                         expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
                         totalUtilizedPrice = 0.0,
                         expenseCategoryName = expenseCategoryName.get()?:"",

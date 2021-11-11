@@ -25,7 +25,7 @@ class CreateExpenseDialogViewModel @Inject constructor(
     val showCalenderEvent = SingleLiveEvent<Boolean>()
     val hideDialog = SingleLiveEvent<Boolean>()
     val showErrorMsg = SingleLiveEvent<String>()
-    var expenseId: String? = null
+    var expenseId: Int? = null
     var expenseName: String? = null
     var selectedDate: String? = null
     var expensePrice: String? = null
@@ -55,7 +55,7 @@ class CreateExpenseDialogViewModel @Inject constructor(
             if (((expensePrice?.toDouble())?.plus(utilizedExpense) ?: 0.0) <= totalCategoryPrice) {
                 Log.d("wkmwkm", "Utilized expense")
                 val expense = Expense(
-                    expenseCategoryId = expenseId ?: "",
+                    expenseCategoryId = expenseId?:0 ,
                     expenseId = UUID.randomUUID().toString(),
                     expenseName = expenseName ?: "",
                     createdDate = selectedDate ?: "",

@@ -69,7 +69,7 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
         arguments?.getString(AppConstants.CATEGORY_NAME_KEY)?.let {
         }
 
-        arguments?.getString(AppConstants.CATEGORY_ID_KEY)?.let {
+        arguments?.getInt(AppConstants.CATEGORY_ID_KEY)?.let {
             viewmodel.expenseId = it
         }
     }

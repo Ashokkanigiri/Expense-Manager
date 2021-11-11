@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_chooseCategoryFragment_to_expenseCategoryDialogFragment"
             app:destination="@id/expenseCategoryDialogFragment" />
+        <action
+            android:id="@+id/action_chooseCategoryFragment_to_editExpenseFragment"
+            app:destination="@id/editExpenseFragment" />
     </fragment>
     <dialog
         android:id="@+id/expenseCategoryDialogFragment"
@@ -41,4 +44,8 @@
             app:argType="boolean"
             android:defaultValue="true" />
     </dialog>
+    <fragment
+        android:id="@+id/editExpenseFragment"
+        android:name="com.ashok.kanigiri.expensemanager.feature.editexpenses.EditExpenseFragment"
+        android:label="EditExpenseFragment" />
 </navigation>

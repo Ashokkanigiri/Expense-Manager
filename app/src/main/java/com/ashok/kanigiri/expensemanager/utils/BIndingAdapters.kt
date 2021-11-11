@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
@@ -127,4 +128,9 @@ fun TextView.loginButtonEnabledStatus(bool: Boolean){
         this.setTextColor(resources.getColor(R.color.grey))
     }
     this.isEnabled = bool
+}
+
+@BindingAdapter("seekbarUtilizedProgress", "seekbarTotalProgress")
+fun SeekBar.ConvertDoubleToInt(utilizedProgress: Double, totalProgress: Double){
+    this.progress = ((utilizedProgress/totalProgress)*100).toInt()
 }
