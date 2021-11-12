@@ -55,7 +55,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
         list.forEach {
             val expenseCategory = ExpenseCategory(
                 expenseCategoryTargetPrice = null,
-                totalUtilizedPrice = null,
+                totalUtilizedPrice = 0.0,
                 expenseCategoryName = it,
                 createdDate = System.currentTimeMillis().toString(),
                 isSelected = false
@@ -90,7 +90,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     fun insertNewCategory(categoryName: String) {
         val expenseCategory = ExpenseCategory(
             expenseCategoryTargetPrice = null,
-            totalUtilizedPrice = null,
+            totalUtilizedPrice = 0.0,
             expenseCategoryName = categoryName,
             createdDate = System.currentTimeMillis().toString(),
             isSelected = true

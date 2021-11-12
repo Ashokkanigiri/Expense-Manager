@@ -75,6 +75,10 @@ dependencies {
     //Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
+    //lottie animations
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 }
 
 kapt {
