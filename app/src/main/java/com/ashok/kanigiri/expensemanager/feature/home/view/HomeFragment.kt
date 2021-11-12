@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
@@ -73,37 +74,35 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.transparentCircleRadius = 40f
         binding.expenditureChart.isRotationEnabled = false
 
+        //TODO :: Added lifecycle check to avoid observing data twice
+        //FIXME This is a sample workaround, Need to find the root cause
         val yValues = ArrayList<PieEntry>()
         viewmodel.getAllExpenseCategorys.observe(viewLifecycleOwner, Observer {list->
-            list?.forEach {
-                val percent: Float = ((it.totalUtilizedPrice?.toFloat())?:0f/SharedPreferenceService.getUserSalary(requireContext()))
-                yValues.add(PieEntry(percent, it.expenseCategoryName))
+            if(viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.RESUMED){
+                list?.forEach {
+                    if(it.totalUtilizedPrice > 0.0){
+                        binding.expenditureChart.clear()
+                        val percent: Float = ((it.totalUtilizedPrice?.toFloat())?:0f/SharedPreferenceService.getUserSalary(requireContext()))
+                        yValues.add(PieEntry(percent, it.expenseCategoryName))
+                    }
+                }
+                val pieDataSet = PieDataSet(yValues, "Demo")
+                pieDataSet.sliceSpace = 1.5f
+                pieDataSet.selectionShift = 5f
+                pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS+ColorTemplate.MATERIAL_COLORS+ColorTemplate.PASTEL_COLORS, 200)
+
+
+                val pieData = PieData(pieDataSet)
+                pieData.setValueTextSize(10f)
+                pieData.setValueTextColor(Color.BLACK)
+
+                binding.expenditureChart.data = pieData
+                binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
+                val desc = Description()
+                desc.isEnabled = false
+                binding.expenditureChart.description = desc
             }
-            val pieDataSet = PieDataSet(yValues, "Demo")
-            pieDataSet.sliceSpace = 1.5f
-            pieDataSet.selectionShift = 5f
-            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS+ColorTemplate.MATERIAL_COLORS+ColorTemplate.PASTEL_COLORS, 200)
-
-
-            val pieData = PieData(pieDataSet)
-            pieData.setValueTextSize(10f)
-            pieData.setValueTextColor(Color.BLACK)
-
-            binding.expenditureChart.data = pieData
-            binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
-            val desc = Description()
-            desc.isEnabled = false
-            binding.expenditureChart.description = desc
         })
-
-//        yValues.add(PieEntry(34f, "PartyA"))
-//        yValues.add(PieEntry(23f, "PartyB"))
-//        yValues.add(PieEntry(14f, "PartyC"))
-//        yValues.add(PieEntry(35f, "PartyD"))
-//        yValues.add(PieEntry(40f, "PartyE"))
-//        yValues.add(PieEntry(23f, "PartyF"))
-
-
     }
 
     private fun setupActionBar() {
