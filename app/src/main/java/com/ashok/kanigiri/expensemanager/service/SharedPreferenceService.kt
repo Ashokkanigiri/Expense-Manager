@@ -20,7 +20,7 @@ object SharedPreferenceService {
         INSTANCE(context).edit().putString(USER_LOGIN_MODEL, gson.toJson(userLoginModel)).apply()
     }
 
-    fun getUserLoginModel(context: Context): UserLoginModel{
+    fun getUserLoginModel(context: Context): UserLoginModel?{
         val gson = Gson()
         val json =  INSTANCE(context).getString(USER_LOGIN_MODEL, "")
         return gson.fromJson(json, UserLoginModel::class.java)

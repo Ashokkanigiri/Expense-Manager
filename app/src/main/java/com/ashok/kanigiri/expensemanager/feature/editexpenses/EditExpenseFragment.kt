@@ -62,6 +62,7 @@ class EditExpenseFragment: Fragment() {
             when(event){
                 is EditExpensesViewModelEvent.NavigateToMainActivity->{
                     startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    requireActivity().finish()
                 }
             }
         })
