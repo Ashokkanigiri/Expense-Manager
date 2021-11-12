@@ -1,5 +1,6 @@
 package com.ashok.kanigiri.expensemanager.feature.editexpenses
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.ashok.kanigiri.expensemanager.MainActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentEditExpensesBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +57,13 @@ class EditExpenseFragment: Fragment() {
     private fun observeViewmodel() {
         viewmodel.getExpenseList().observe(viewLifecycleOwner, Observer {
             viewmodel.setAdapter().submitList(it)
+        })
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event->
+            when(event){
+                is EditExpensesViewModelEvent.NavigateToMainActivity->{
+                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                }
+            }
         })
     }
 }

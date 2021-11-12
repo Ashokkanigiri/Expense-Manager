@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadSalaryDetailsFromSharedPrefs() {
-       binding.salary =  SharedPreferenceService.getUserSalary(requireContext())
+        binding.salary =  SharedPreferenceService.getUserLoginModel(requireContext()).salary.toInt()
         binding.invalidateAll()
     }
 

@@ -93,63 +93,13 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_update_monthly_income_section"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:visibility="@{salary != 0 ? View.GONE: View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="@+id/margin_end"
-                app:layout_constraintStart_toStartOf="@+id/margin_start"
-                app:layout_constraintTop_toBottomOf="@+id/cl_monthly_expensiture_section">
-
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Please update your Monthly Income here"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/editTextNumber"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_rounded_edittext"
-                    android:ems="10"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    android:text="@={viewmodel.etSalary}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button"
-                    app:layout_constraintStart_toStartOf="@+id/textView9"
-                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/light_grey"
-                    android:text="Update"
-                    android:onClick="@{()->viewmodel.updateSalary()}"
-                    android:textSize="16sp"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextNumber"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/editTextNumber"
-                    app:layout_constraintTop_toTopOf="@+id/editTextNumber" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_monthly_expenditure_graph_section"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/margin_end"
                 app:layout_constraintStart_toStartOf="@+id/margin_start"
-                app:layout_constraintTop_toBottomOf="@+id/cl_update_monthly_income_section" >
+                app:layout_constraintTop_toBottomOf="@+id/cl_monthly_expensiture_section" >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_chart_header"

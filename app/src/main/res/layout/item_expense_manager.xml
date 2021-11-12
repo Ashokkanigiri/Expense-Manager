@@ -45,7 +45,6 @@
                     android:layout_height="20dp"
                     android:layout_marginBottom="15dp"
                     android:max="100"
-                    android:progress="20"
                     set_total_expense_progress="@{``+expense.expenseCategoryTargetPrice}"
                     set_utilized_expense_progress="@{``+expense.totalUtilizedPrice}"
                     android:progressBackgroundTint="@color/light_grey"

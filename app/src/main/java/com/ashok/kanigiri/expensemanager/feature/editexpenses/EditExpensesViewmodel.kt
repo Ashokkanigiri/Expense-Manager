@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import android.widget.SeekBar
 import androidx.lifecycle.viewModelScope
+import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,6 +21,7 @@ class EditExpensesViewmodel @Inject constructor(private val roomRepository: Room
     val adapter = EditExpensesAdapter(this)
     var progressMap = mutableMapOf<String, Int>()
     var totalExpenses = ObservableField<Int>()
+    val event = SingleLiveEvent<EditExpensesViewModelEvent>()
     var salary = 46000
 
     fun setAdapter(): EditExpensesAdapter {
@@ -31,7 +33,7 @@ class EditExpensesViewmodel @Inject constructor(private val roomRepository: Room
     }
 
     fun createAccount() {
-        Log.d("kmfkf", "PROGRESS MAP : ${progressMap}")
+        event.postValue(EditExpensesViewModelEvent.NavigateToMainActivity)
     }
 
     fun calculateTotalExpenses(){
