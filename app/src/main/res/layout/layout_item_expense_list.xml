@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="viewmodel"
+            type="com.ashok.kanigiri.expensemanager.feature.expenseList.viewmodel.ExpenseListViewModel" />
+
+        <variable
             name="expense"
             type="com.ashok.kanigiri.expensemanager.service.room.entity.Expense" />
     </data>
@@ -91,6 +95,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_end="20dp" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:onClick="@{()-> viewmodel.deleteExpense(expense)}"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                app:layout_constraintTop_toTopOf="@+id/guide_top"
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

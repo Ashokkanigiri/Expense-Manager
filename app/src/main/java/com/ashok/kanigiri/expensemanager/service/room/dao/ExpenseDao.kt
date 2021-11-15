@@ -4,6 +4,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
@@ -28,4 +29,7 @@ interface ExpenseDao {
 
     @Query("SELECT SUM(expensePrice) from expense")
     fun getTotalExpenses(): LiveData<Double>
+
+    @Query("DELETE FROM expense WHERE expenseId =:expenseId")
+    fun deleteExpense(expenseId: String)
 }

@@ -9,5 +9,6 @@ class ExpenseListViewHolder(val binding: LayoutItemExpenseListBinding, val viewm
 
     fun bind(expense:Expense){
         binding.expense = expense
+        binding.viewmodel = viewmodel
     }
 }
