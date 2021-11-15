@@ -13,6 +13,7 @@ open class BaseActivity: AppCompatActivity() {
 
     private fun initActionBar(){
         this.actionBar.ivTrailingIcon.visibility = View.GONE
+        this.actionBar.ivBack.visibility = View.GONE
     }
 
     fun setUpActitionBar(actionBarBinding: CustumActionBarBinding){
@@ -31,5 +32,10 @@ open class BaseActivity: AppCompatActivity() {
 
     fun handleTrailingIconVisibility(listener: View.OnClickListener){
         this.actionBar.ivTrailingIcon.setOnClickListener(listener)
+    }
+
+    fun handleBackButtonClickListener(listener: View.OnClickListener){
+        this.actionBar.ivBack.visibility = View.VISIBLE
+        this.actionBar.ivBack.setOnClickListener(listener)
     }
 }
