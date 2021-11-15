@@ -90,7 +90,6 @@
             android:ems="10"
             android:hint="Please enter your password here"
             android:inputType="textPersonName"
-            android:onTextChanged="@{(text, start, before, count) -> viewmodel.onPasswordFieldTextChangedListener(text)}"
             android:padding="10dp"
             android:text="@={viewmodel.passwordTextField}"
             android:textSize="16sp"

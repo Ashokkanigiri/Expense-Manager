@@ -9,8 +9,7 @@ import java.io.Serializable
 
 
 data class UserLoginModel(
-    var username: String,
-    var password: String,
+    var name: String,
     var dateOfBirth: String,
     var salary: String
 )
