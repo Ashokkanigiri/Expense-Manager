@@ -34,4 +34,8 @@ object SharedPreferenceService {
     private fun INSTANCE(context: Context): SharedPreferences{
         return context.getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE)
     }
+
+    fun clearAllKeys(context: Context){
+        INSTANCE(context).edit().clear().apply()
+    }
 }

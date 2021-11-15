@@ -75,7 +75,7 @@ class CreateAccountFragment : Fragment() {
 
     private fun handleBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if(isAdded) findNavController().popBackStack()
+            if(isAdded) requireActivity().finish()
         }
     }
 }

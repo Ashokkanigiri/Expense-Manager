@@ -30,8 +30,13 @@ class HomeViewModel @Inject constructor( val roomRepository: RoomRepository, @Ap
         event.postValue(HomeViewModelEvent.IsSalaryUpdated)
     }
 
+    fun logout(){
+        event.postValue(HomeViewModelEvent.Logout)
+    }
+
 }
 
 sealed class HomeViewModelEvent{
     object IsSalaryUpdated: HomeViewModelEvent()
+    object Logout: HomeViewModelEvent()
 }

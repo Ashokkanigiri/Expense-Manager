@@ -1,5 +1,6 @@
 package com.ashok.kanigiri.expensemanager.feature.home.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -16,6 +17,7 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutHomeFragmentBinding
 import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModel
 import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModelEvent
+import com.ashok.kanigiri.expensemanager.feature.welcome.WelcomeActivity
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
@@ -55,8 +57,17 @@ class HomeFragment : Fragment() {
                 is HomeViewModelEvent.IsSalaryUpdated -> {
                     loadSalaryDetailsFromSharedPrefs()
                 }
+                is HomeViewModelEvent.Logout ->{
+                    logout()
+                }
             }
         })
+    }
+
+    private fun logout() {
+        SharedPreferenceService.clearAllKeys(requireContext())
+        startActivity(Intent(requireContext(), WelcomeActivity::class.java))
+        requireActivity().finish()
     }
 
     private fun loadSalaryDetailsFromSharedPrefs() {
