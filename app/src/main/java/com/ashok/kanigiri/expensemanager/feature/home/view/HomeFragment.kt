@@ -97,17 +97,19 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.setHoleColor(Color.WHITE)
         binding.expenditureChart.transparentCircleRadius = 40f
         binding.expenditureChart.isRotationEnabled = false
-
+        var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
         roomRepository.getCategoryDao().getSelectedCategorys().observe(viewLifecycleOwner, Observer { list ->
             list?.forEach {
                 if (it.totalUtilizedPrice > 0.0) {
                     binding.expenditureChart.clear()
-                    val percent: Float = ((it.totalUtilizedPrice?.toFloat())
-                        ?: 0f / SharedPreferenceService.getUserSalary(requireContext()))
-                    yValues.add(PieEntry(percent, it.expenseCategoryName))
+                    freeHandMoney = (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toDouble()?:0.0)-(list?.map { it-> it.totalUtilizedPrice }.sum())
+                    val percent: Float = ((it.totalUtilizedPrice?.toFloat()) / ((SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat())?:0f))
+                    yValues.add(PieEntry(percent))
                 }
             }
+            val freeHandPercent : Float= freeHandMoney.toFloat()/(SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()?:0f)
+            yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
             val pieDataSet = PieDataSet(yValues, "Demo")
             pieDataSet.sliceSpace = 1.5f
             pieDataSet.selectionShift = 5f
@@ -115,8 +117,6 @@ class HomeFragment : Fragment() {
                 ColorTemplate.JOYFUL_COLORS + ColorTemplate.MATERIAL_COLORS + ColorTemplate.PASTEL_COLORS,
                 200
             )
-
-
             val pieData = PieData(pieDataSet)
             pieData.setValueTextSize(10f)
             pieData.setValueTextColor(Color.BLACK)
