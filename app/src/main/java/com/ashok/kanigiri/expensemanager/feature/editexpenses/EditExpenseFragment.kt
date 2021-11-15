@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ashok.kanigiri.expensemanager.MainActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentEditExpensesBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,7 +65,14 @@ class EditExpenseFragment: Fragment() {
                     startActivity(Intent(requireActivity(), MainActivity::class.java))
                     requireActivity().finish()
                 }
+                is EditExpensesViewModelEvent.ShowSalaryLimitReachedSnackbar ->{
+                    showSnackBar()
+                }
             }
         })
+    }
+
+    private fun showSnackBar() {
+        Snackbar.make(requireView(), "Expenses limit reached: Please Manage your Expenses According to your salary", Snackbar.LENGTH_SHORT).show()
     }
 }

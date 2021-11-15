@@ -33,7 +33,11 @@ class EditExpensesViewmodel @Inject constructor(private val roomRepository: Room
     }
 
     fun createAccount() {
-        event.postValue(EditExpensesViewModelEvent.NavigateToMainActivity)
+        if(totalExpenses.get()?:0 >= salary){
+            event.postValue(EditExpensesViewModelEvent.ShowSalaryLimitReachedSnackbar)
+        }else{
+            event.postValue(EditExpensesViewModelEvent.NavigateToMainActivity)
+        }
     }
 
     fun calculateTotalExpenses(){
