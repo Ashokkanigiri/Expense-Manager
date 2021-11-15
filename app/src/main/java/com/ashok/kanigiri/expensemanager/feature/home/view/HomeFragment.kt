@@ -18,6 +18,7 @@ import com.ashok.kanigiri.expensemanager.databinding.LayoutHomeFragmentBinding
 import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModel
 import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModelEvent
 import com.ashok.kanigiri.expensemanager.feature.welcome.WelcomeActivity
+import com.ashok.kanigiri.expensemanager.service.ExpenseAppDB
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
@@ -25,10 +26,13 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
+    @Inject
+    lateinit var database: ExpenseAppDB
     lateinit var binding: LayoutHomeFragmentBinding
     private val viewmodel: HomeViewModel by viewModels()
 
@@ -67,7 +71,9 @@ class HomeFragment : Fragment() {
     private fun logout() {
         SharedPreferenceService.clearAllKeys(requireContext())
         startActivity(Intent(requireContext(), WelcomeActivity::class.java))
+        database.clearAllTables()
         requireActivity().finish()
+
     }
 
     private fun loadSalaryDetailsFromSharedPrefs() {
