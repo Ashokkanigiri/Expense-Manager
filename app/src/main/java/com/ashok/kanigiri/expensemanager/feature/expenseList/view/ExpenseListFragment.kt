@@ -51,13 +51,13 @@ class ExpenseListFragment: Fragment() {
     }
 
     private fun observeViewmodel() {
-        viewmodel.getAllExpenses(viewmodel.expenseCategoryId?:"").observe(viewLifecycleOwner, Observer {
+        viewmodel.getAllExpenses(viewmodel.expenseCategoryId?:0).observe(viewLifecycleOwner, Observer {
             viewmodel.submitList(it)
         })
     }
 
     private fun loadArguments() {
-        arguments?.getString(AppConstants.EXPENSE_CATEGORY_ID)?.let {
+        arguments?.getInt(AppConstants.EXPENSE_CATEGORY_ID)?.let {
             viewmodel.expenseCategoryId = it
         }
         arguments?.getString(AppConstants.CATEGORY_NAME_KEY)?.let {

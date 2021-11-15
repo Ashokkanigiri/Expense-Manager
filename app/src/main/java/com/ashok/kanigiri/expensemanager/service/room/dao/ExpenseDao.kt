@@ -21,7 +21,7 @@ interface ExpenseDao {
     fun getAllExpenses(): LiveData<List<Expense>>
 
     @Query("SELECT * FROM expense WHERE expenseCategoryId =:expenseCategoryId")
-    fun getAllExpensesForACategory(expenseCategoryId: String): LiveData<List<Expense>>
+    fun getAllExpensesForACategory(expenseCategoryId: Int): LiveData<List<Expense>>
 
     @Query("SELECT SUM(expensePrice) from expense WHERE expenseCategoryId =:expenseCategoryId")
     fun getUtilizedPriceForCategory(expenseCategoryId: Int): Double

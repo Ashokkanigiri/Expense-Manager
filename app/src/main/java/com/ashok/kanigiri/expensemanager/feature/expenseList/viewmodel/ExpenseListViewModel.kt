@@ -18,10 +18,10 @@ class ExpenseListViewModel @Inject constructor(private val roomRepository: RoomR
 
     val event : SingleLiveEvent<ExpenseListViewModelEvent> = SingleLiveEvent<ExpenseListViewModelEvent>()
     val adapter = ExpenseListAdapter(this)
-    var expenseCategoryId: String? = null
+    var expenseCategoryId: Int? = null
     var categoryName: String? = null
 
-    fun getAllExpenses(expenseCategoryId: String): LiveData<List<Expense>>{
+    fun getAllExpenses(expenseCategoryId: Int): LiveData<List<Expense>>{
         return roomRepository.getExpenseDao().getAllExpensesForACategory(expenseCategoryId)
     }
 
