@@ -105,12 +105,12 @@ class HomeFragment : Fragment() {
                     binding.expenditureChart.clear()
                     freeHandMoney = (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toDouble()?:0.0)-(list?.map { it-> it.totalUtilizedPrice }.sum())
                     val percent: Float = ((it.totalUtilizedPrice?.toFloat()) / ((SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat())?:0f))
-                    yValues.add(PieEntry(percent))
+                    yValues.add(PieEntry(percent, it.expenseCategoryName))
                 }
             }
             val freeHandPercent : Float= freeHandMoney.toFloat()/(SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()?:0f)
             yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
-            val pieDataSet = PieDataSet(yValues, "Demo")
+            val pieDataSet = PieDataSet(yValues, "")
             pieDataSet.sliceSpace = 1.5f
             pieDataSet.selectionShift = 5f
             pieDataSet.setColors(
