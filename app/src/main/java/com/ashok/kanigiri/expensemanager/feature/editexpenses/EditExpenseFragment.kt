@@ -1,5 +1,6 @@
 package com.ashok.kanigiri.expensemanager.feature.editexpenses
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ashok.kanigiri.expensemanager.MainActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentEditExpensesBinding
+import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @AndroidEntryPoint
 class EditExpenseFragment: Fragment() {
@@ -62,11 +65,15 @@ class EditExpenseFragment: Fragment() {
         viewmodel.event.observe(viewLifecycleOwner, Observer { event->
             when(event){
                 is EditExpensesViewModelEvent.NavigateToMainActivity->{
+                    SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_EDITED_CATEGORYS, true, requireContext())
                     startActivity(Intent(requireActivity(), MainActivity::class.java))
                     requireActivity().finish()
                 }
                 is EditExpensesViewModelEvent.ShowSalaryLimitReachedSnackbar ->{
                     showSnackBar()
+                }
+                is EditExpensesViewModelEvent.HandleCancelButtonClicked -> {
+                    requireActivity().finish()
                 }
             }
         })

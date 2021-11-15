@@ -10,6 +10,9 @@ object SharedPreferenceService {
     private val APP_SHARED_PREFS = "expense-app-shared-prefs"
     private val USER_SALARY_KEY = "user-salary-key"
     private val USER_LOGIN_MODEL = "user-login-model"
+    val IS_USER_FILLED_CREATE_ACCOUNT_DETAILS = "isUserFilledCreateAccountDetails"
+    val IS_USER_CHOOSED_CATEGORYS = "isUserChoosedCategorys"
+    val IS_USER_EDITED_CATEGORYS = "isUserEditedCategorys"
 
     fun putUserSalary(context: Context, salary: Int){
         INSTANCE(context).edit().putInt(USER_SALARY_KEY, salary).apply()
@@ -38,4 +41,13 @@ object SharedPreferenceService {
     fun clearAllKeys(context: Context){
         INSTANCE(context).edit().clear().apply()
     }
+
+    fun putBoolean(key: String, value: Boolean, context: Context){
+        INSTANCE(context).edit().putBoolean(key, value).apply()
+    }
+
+    fun getBoolean(key: String, context: Context): Boolean{
+        return INSTANCE(context).getBoolean(key, false)
+    }
+
 }

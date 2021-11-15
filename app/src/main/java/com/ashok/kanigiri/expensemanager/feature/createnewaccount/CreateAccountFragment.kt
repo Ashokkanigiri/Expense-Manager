@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateAccountBinding
+import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -61,6 +62,7 @@ class CreateAccountFragment : Fragment() {
                     findNavController().navigate(
                         CreateAccountFragmentDirections.actionCreateAccountFragmentToChooseCategoryFragment()
                     )
+                    SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_FILLED_CREATE_ACCOUNT_DETAILS, true, requireContext())
                 }
                 is CreateAccountViewmodelEvent.ShowErrorShackBar -> {
                     showErrorSnackBar()

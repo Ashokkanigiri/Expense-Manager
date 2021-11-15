@@ -1,5 +1,6 @@
 package com.ashok.kanigiri.expensemanager.feature.editexpenses
 
+import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
@@ -10,14 +11,17 @@ import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import android.widget.SeekBar
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryViewmodelEvent
+import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class EditExpensesViewmodel @Inject constructor(private val roomRepository: RoomRepository) :
+class EditExpensesViewmodel @Inject constructor(private val roomRepository: RoomRepository, @ApplicationContext context: Context) :
     ViewModel() {
     val adapter = EditExpensesAdapter(this)
     var progressMap = mutableMapOf<String, Int>()
@@ -25,6 +29,9 @@ class EditExpensesViewmodel @Inject constructor(private val roomRepository: Room
     val event = SingleLiveEvent<EditExpensesViewModelEvent>()
     var salary = 46000
 
+    init {
+        SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_EDITED_CATEGORYS, false, context)
+    }
     fun setAdapter(): EditExpensesAdapter {
         return adapter
     }

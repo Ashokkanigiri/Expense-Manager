@@ -1,16 +1,19 @@
 package com.ashok.kanigiri.expensemanager.feature.choosecategory
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ConcatAdapter
+import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -18,7 +21,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @HiltViewModel
-class ChooseCategoryViewModel @Inject constructor(private val roomRepository: RoomRepository) :
+class ChooseCategoryViewModel @Inject constructor(private val roomRepository: RoomRepository, @ApplicationContext val context: Context) :
     ViewModel() {
 
     val addAdapter = ChooseCategoryAddAdapter(this)
@@ -27,6 +30,10 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     val event = SingleLiveEvent<ChooseCategoryViewmodelEvent>()
     private val seletedExpenseCategorys = ArrayList<ExpenseCategory>()
 
+    init {
+        SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_CHOOSED_CATEGORYS, false, context)
+
+    }
     fun setAdapter(): ConcatAdapter {
         return concatAdapter
     }

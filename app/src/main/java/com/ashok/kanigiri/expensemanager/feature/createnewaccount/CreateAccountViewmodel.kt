@@ -17,6 +17,10 @@ class CreateAccountViewmodel @Inject constructor(@ApplicationContext val context
     val dateOfBirthObserver = ObservableField<String>()
     val event = SingleLiveEvent<CreateAccountViewmodelEvent>()
 
+    init {
+        SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_FILLED_CREATE_ACCOUNT_DETAILS, false, context)
+    }
+
     fun createAccount() {
         if (userLoginModel.dateOfBirth.trim() != ""  && userLoginModel.salary.trim() != "" && userLoginModel.name.trim() != "") {
             SharedPreferenceService.putUserLoginModel(context, userLoginModel)

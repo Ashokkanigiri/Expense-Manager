@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentChooseCategoryBinding
+import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,6 +72,8 @@ class ChooseCategoryFragment: Fragment() {
                     findNavController().navigate(
                         ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToEditExpenseFragment()
                     )
+                    SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_CHOOSED_CATEGORYS, true, requireContext())
+
                 }
                 is ChooseCategoryViewmodelEvent.HandleCancelButtonClicked->{
                     requireActivity().finish()
