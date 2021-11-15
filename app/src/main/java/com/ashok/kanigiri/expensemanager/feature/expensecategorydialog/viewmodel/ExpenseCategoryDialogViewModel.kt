@@ -70,9 +70,4 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
         expenseTargetPrice.set(char.toString())
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("ajafjaf", "ON CLEARED")
-
-    }
 }

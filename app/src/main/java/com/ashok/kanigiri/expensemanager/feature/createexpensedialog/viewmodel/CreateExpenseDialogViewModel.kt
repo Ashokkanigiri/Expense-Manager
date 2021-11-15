@@ -53,7 +53,6 @@ class CreateExpenseDialogViewModel @Inject constructor(
             val totalCategoryPrice =
                 roomRepository.getCategoryDao().getTotalExpensePriceForCategory(expenseId!!)
             if (((expensePrice?.toDouble())?.plus(utilizedExpense) ?: 0.0) <= totalCategoryPrice) {
-                Log.d("wkmwkm", "Utilized expense")
                 val expense = Expense(
                     expenseCategoryId = expenseId?:0 ,
                     expenseId = UUID.randomUUID().toString(),

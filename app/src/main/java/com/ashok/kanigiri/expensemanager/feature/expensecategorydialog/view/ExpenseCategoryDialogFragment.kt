@@ -77,19 +77,8 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("ajafjaf", "ON onDestroy")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("ajafjaf", "ON ONDESTROY VIEW()")
-    }
-
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        Log.d("ajafjaf", "ON onDismiss")
         _binding = null
     }
 }
