@@ -46,7 +46,7 @@ class ExpenseListFragment: Fragment() {
 
     private fun initFragment() {
         val adapter = viewmodel.setAdapter()
-        adapter.setHasStableIds(true)
+        if(! adapter.hasObservers())  adapter.setHasStableIds(true)
         binding.rvExpenseList.adapter = adapter
     }
 
