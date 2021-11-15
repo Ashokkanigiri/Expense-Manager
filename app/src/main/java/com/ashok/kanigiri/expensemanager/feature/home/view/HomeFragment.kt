@@ -3,6 +3,7 @@ package com.ashok.kanigiri.expensemanager.feature.home.view
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +21,12 @@ import com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModelEve
 import com.ashok.kanigiri.expensemanager.feature.welcome.WelcomeActivity
 import com.ashok.kanigiri.expensemanager.service.ExpenseAppDB
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
+import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
@@ -35,6 +38,9 @@ class HomeFragment : Fragment() {
     lateinit var database: ExpenseAppDB
     lateinit var binding: LayoutHomeFragmentBinding
     private val viewmodel: HomeViewModel by viewModels()
+
+    @Inject
+    lateinit var roomRepository: RoomRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,11 +63,11 @@ class HomeFragment : Fragment() {
 
     private fun observeViewModel() {
         viewmodel.event.observe(viewLifecycleOwner, Observer {
-            when(it){
+            when (it) {
                 is HomeViewModelEvent.IsSalaryUpdated -> {
                     loadSalaryDetailsFromSharedPrefs()
                 }
-                is HomeViewModelEvent.Logout ->{
+                is HomeViewModelEvent.Logout -> {
                     logout()
                 }
             }
@@ -77,7 +83,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadSalaryDetailsFromSharedPrefs() {
-        binding.salary =  SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toInt()
+        binding.salary =
+            SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toInt()
         binding.invalidateAll()
     }
 
@@ -91,34 +98,34 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.transparentCircleRadius = 40f
         binding.expenditureChart.isRotationEnabled = false
 
-        //TODO :: Added lifecycle check to avoid observing data twice
-        //FIXME This is a sample workaround, Need to find the root cause
         val yValues = ArrayList<PieEntry>()
-        viewmodel.getAllExpenseCategorys.observe(viewLifecycleOwner, Observer {list->
-            if(viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.RESUMED){
-                list?.forEach {
-                    if(it.totalUtilizedPrice > 0.0){
-                        binding.expenditureChart.clear()
-                        val percent: Float = ((it.totalUtilizedPrice?.toFloat())?:0f/SharedPreferenceService.getUserSalary(requireContext()))
-                        yValues.add(PieEntry(percent, it.expenseCategoryName))
-                    }
+        roomRepository.getCategoryDao().getSelectedCategorys().observe(viewLifecycleOwner, Observer { list ->
+            list?.forEach {
+                if (it.totalUtilizedPrice > 0.0) {
+                    binding.expenditureChart.clear()
+                    val percent: Float = ((it.totalUtilizedPrice?.toFloat())
+                        ?: 0f / SharedPreferenceService.getUserSalary(requireContext()))
+                    yValues.add(PieEntry(percent, it.expenseCategoryName))
                 }
-                val pieDataSet = PieDataSet(yValues, "Demo")
-                pieDataSet.sliceSpace = 1.5f
-                pieDataSet.selectionShift = 5f
-                pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS+ColorTemplate.MATERIAL_COLORS+ColorTemplate.PASTEL_COLORS, 200)
-
-
-                val pieData = PieData(pieDataSet)
-                pieData.setValueTextSize(10f)
-                pieData.setValueTextColor(Color.BLACK)
-
-                binding.expenditureChart.data = pieData
-                binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
-                val desc = Description()
-                desc.isEnabled = false
-                binding.expenditureChart.description = desc
             }
+            val pieDataSet = PieDataSet(yValues, "Demo")
+            pieDataSet.sliceSpace = 1.5f
+            pieDataSet.selectionShift = 5f
+            pieDataSet.setColors(
+                ColorTemplate.JOYFUL_COLORS + ColorTemplate.MATERIAL_COLORS + ColorTemplate.PASTEL_COLORS,
+                200
+            )
+
+
+            val pieData = PieData(pieDataSet)
+            pieData.setValueTextSize(10f)
+            pieData.setValueTextColor(Color.BLACK)
+
+            binding.expenditureChart.data = pieData
+            binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
+            val desc = Description()
+            desc.isEnabled = false
+            binding.expenditureChart.description = desc
         })
     }
 

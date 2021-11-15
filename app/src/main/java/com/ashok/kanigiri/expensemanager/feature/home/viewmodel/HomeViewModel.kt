@@ -19,8 +19,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor( val roomRepository: RoomRepository, @ApplicationContext private val context: Context): ViewModel() {
 
     val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses()
-    val getAllExpenseCategorys = roomRepository.getCategoryDao().getSelectedCategorys()
-
     //2 Way binding
     var etSalary = ObservableField<String>()
     var event = SingleLiveEvent<HomeViewModelEvent>()
