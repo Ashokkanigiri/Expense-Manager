@@ -100,4 +100,9 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
         }
     }
 
+    fun cancelButtonClicked(){
+        event.postValue(ChooseCategoryViewmodelEvent.HandleCancelButtonClicked)
+    }
+
+
 }

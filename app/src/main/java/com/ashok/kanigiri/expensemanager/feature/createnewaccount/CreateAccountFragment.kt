@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateAccountBinding
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.ticker
@@ -51,22 +52,36 @@ class CreateAccountFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewmodel.event.observe(viewLifecycleOwner, Observer {event->
-            when(event){
-                is CreateAccountViewmodelEvent.NavigateToLoginScreen ->{
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event ->
+            when (event) {
+                is CreateAccountViewmodelEvent.NavigateToLoginScreen -> {
                     findNavController().popBackStack()
                 }
-                is CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen->{
+                is CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen -> {
                     findNavController().navigate(
                         CreateAccountFragmentDirections.actionCreateAccountFragmentToChooseCategoryFragment()
                     )
+                }
+                is CreateAccountViewmodelEvent.ShowErrorShackBar -> {
+                    showErrorSnackBar()
+                }
+                is CreateAccountViewmodelEvent.HandleCancelButtonClicked ->{
+                    requireActivity().finish()
                 }
 
             }
         })
     }
 
-    fun openDatePickerDialog(){
+    private fun showErrorSnackBar() {
+        Snackbar.make(
+            requireView(),
+            "Please fill all fields to proceed further",
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+    fun openDatePickerDialog() {
         AppUtils.getSelectedDateFromDatePicker(requireContext())
             .observe(viewLifecycleOwner, Observer {
                 viewmodel.saveDateOfBirthFromPicker(it)
@@ -75,7 +90,7 @@ class CreateAccountFragment : Fragment() {
 
     private fun handleBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if(isAdded) requireActivity().finish()
+            if (isAdded) requireActivity().finish()
         }
     }
 }

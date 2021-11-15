@@ -21,11 +21,17 @@ class CreateAccountViewmodel @Inject constructor(@ApplicationContext val context
         if (userLoginModel.dateOfBirth.trim() != ""  && userLoginModel.salary.trim() != "" && userLoginModel.name.trim() != "") {
             SharedPreferenceService.putUserLoginModel(context, userLoginModel)
             event.postValue(CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen)
+        }else{
+            event.postValue(CreateAccountViewmodelEvent.ShowErrorShackBar)
         }
     }
 
     fun saveDateOfBirthFromPicker(dob: String) {
         userLoginModel.dateOfBirth = dob
         dateOfBirthObserver.set(dob)
+    }
+
+    fun onCancelButtonClicked(){
+        event.postValue(CreateAccountViewmodelEvent.HandleCancelButtonClicked)
     }
 }

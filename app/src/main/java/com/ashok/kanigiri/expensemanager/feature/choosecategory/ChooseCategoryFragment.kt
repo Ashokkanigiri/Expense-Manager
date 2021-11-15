@@ -72,6 +72,9 @@ class ChooseCategoryFragment: Fragment() {
                         ChooseCategoryFragmentDirections.actionChooseCategoryFragmentToEditExpenseFragment()
                     )
                 }
+                is ChooseCategoryViewmodelEvent.HandleCancelButtonClicked->{
+                    requireActivity().finish()
+                }
             }
         })
         viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {

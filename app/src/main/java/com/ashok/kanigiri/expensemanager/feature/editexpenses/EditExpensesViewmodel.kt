@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import android.widget.SeekBar
 import androidx.lifecycle.viewModelScope
+import com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryViewmodelEvent
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +53,10 @@ class EditExpensesViewmodel @Inject constructor(private val roomRepository: Room
 
     fun getTargetPriceForCategory(categoryId: Int): Double{
         return roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId)
+    }
+
+    fun cancelButtonClicked(){
+        event.postValue(EditExpensesViewModelEvent.HandleCancelButtonClicked)
     }
 
 }
