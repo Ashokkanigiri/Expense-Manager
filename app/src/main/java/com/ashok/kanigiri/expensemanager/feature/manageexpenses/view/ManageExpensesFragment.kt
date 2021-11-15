@@ -50,8 +50,17 @@ class ManageExpensesFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
+        initFragment()
         observeViewModel()
         setupActionBar()
+    }
+
+    private fun initFragment() {
+        val adapter = viewmodel.setAdapter()
+        if(!adapter.hasObservers()){
+            adapter.setHasStableIds(true)
+        }
+        binding.rvManageExpenses.adapter = adapter
     }
 
     private fun observeViewModel() {

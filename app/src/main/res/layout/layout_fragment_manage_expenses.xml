@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:adapter="@{viewmodel.setAdapter()}"
             tools:listitem="@layout/item_expense_manager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

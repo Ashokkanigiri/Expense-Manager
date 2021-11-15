@@ -39,13 +39,19 @@ class ExpenseListFragment: Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
+        initFragment()
         loadArguments()
         observeViewmodel()
     }
 
+    private fun initFragment() {
+        val adapter = viewmodel.setAdapter()
+        adapter.setHasStableIds(true)
+        binding.rvExpenseList.adapter = adapter
+    }
+
     private fun observeViewmodel() {
         viewmodel.getAllExpenses(viewmodel.expenseCategoryId?:"").observe(viewLifecycleOwner, Observer {
-            Log.d("aaaa", "III:: ${Gson().toJson(it)}")
             viewmodel.submitList(it)
         })
     }
