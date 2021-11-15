@@ -26,8 +26,7 @@ class MainActivity : BaseActivity() {
     private fun setUpBottomNav() {
         val navGraphIds = listOf<Int>(
             R.navigation.nav_graph_home,
-            R.navigation.nav_graph_add_expense,
-            R.navigation.nav_graph_profile
+            R.navigation.nav_graph_add_expense
         )
         binding.bottomNavigationView.setupWithNavController(
             navGraphIds = navGraphIds,
