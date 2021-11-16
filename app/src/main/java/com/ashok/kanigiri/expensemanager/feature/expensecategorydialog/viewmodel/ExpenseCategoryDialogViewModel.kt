@@ -30,7 +30,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
     val sendCreatedExpenseNameEvent = SingleLiveEvent<String>()
     var shouldShowExpensePrice = false
 
-    fun reserveCash() = SharedPreferenceService.getUserSalary(context) - (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())
+    fun reserveCash() = ((SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()?:0.0 ) -  (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice()))
 
     fun insertExpenseCategory() {
         if(!shouldShowExpensePrice){
@@ -39,7 +39,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
         }else{
             if (expenseTargetPrice.get()?.trim() != "" && expenseTargetPrice.get()?.trim() != null) {
                 val totalPriceGivenForAllCategorys = roomRepository.getCategoryDao().getTotalAllotedCategoryPrice()
-                if((totalPriceGivenForAllCategorys+(expenseTargetPrice.get()?.toDouble()?:0.0))<= SharedPreferenceService.getUserSalary(context)){
+                if((totalPriceGivenForAllCategorys+(expenseTargetPrice.get()?.toDouble()?:0.0))<= SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()?:0.0){
                     val expenseCategory = ExpenseCategory(
                         expenseCategoryId = System.currentTimeMillis().toInt(),
                         expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
@@ -54,7 +54,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
                     }
                     event.postValue(Event(true))
                 }else{
-                    val diff =  SharedPreferenceService.getUserSalary(context) - (totalPriceGivenForAllCategorys)
+                    val diff =  SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()?:0.0 - (totalPriceGivenForAllCategorys)
                     if(diff == 0.0){
                         Toast.makeText(context, "MONTHLY SALARY EXHAUSTED, ", Toast.LENGTH_SHORT).show()
                     }else{

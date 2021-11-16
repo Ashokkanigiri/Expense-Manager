@@ -29,11 +29,6 @@ object SharedPreferenceService {
         return gson.fromJson(json, UserLoginModel::class.java)
     }
 
-
-    fun getUserSalary(context: Context): Int{
-        return INSTANCE(context).getInt(USER_SALARY_KEY, 0)
-    }
-
     private fun INSTANCE(context: Context): SharedPreferences{
         return context.getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE)
     }
