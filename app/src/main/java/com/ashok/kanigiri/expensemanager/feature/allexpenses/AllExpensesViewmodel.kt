@@ -15,8 +15,8 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
     val adapter = AllExpensesListAdapter(this)
 
     val event = SingleLiveEvent<AllExpensesViewmodelEvent>()
-    var fromDate:String? = "1-${Calendar.MONTH}-${Calendar.YEAR})}"
-    var toDate: String? = "${Calendar.getInstance().getActualMaximum(Calendar.MONTH)}-${Calendar.MONTH}-${Calendar.YEAR})"
+    var fromDate:String? = roomRepository.getExpenseDao().getminimumCreatedDateExpense().createdDate
+    var toDate: String? = roomRepository.getExpenseDao().getMaximumCreatedDateExpense().createdDate
 
     fun getAllExpenses(): LiveData<List<Expense>>{
         return roomRepository.getExpenseDao().getAllExpenses()
@@ -33,17 +33,25 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
 
     }
     fun sortExpensesHightoLow(){
-
+        event.postValue(AllExpensesViewmodelEvent.LoadExpenses(roomRepository.getExpenseDao().getTotalExpensesInDescendingOrder(fromDate, toDate)))
     }
     fun sortExpensesLowToHigh(){
-
+        event.postValue(AllExpensesViewmodelEvent.LoadExpenses(roomRepository.getExpenseDao().getTotalExpensesInAscendingOrder(fromDate, toDate)))
     }
     fun sortRecentExpenses(){
+        event.postValue(AllExpensesViewmodelEvent.LoadExpenses(roomRepository.getExpenseDao().getTotalRecentExpenses(fromDate, toDate)))
+    }
 
+     fun setDefaultDates(){
+         fromDate= roomRepository.getExpenseDao().getminimumCreatedDateExpense().createdDate
+         toDate= roomRepository.getExpenseDao().getMaximumCreatedDateExpense().createdDate
     }
 }
 
 sealed class AllExpensesViewmodelEvent(){
     object ShowCalenderDialog: AllExpensesViewmodelEvent()
-    data class LoadExpenses(val data: List<Expense>): AllExpensesViewmodelEvent()
+    data class LoadExpenses(val data: List<Expense>?): AllExpensesViewmodelEvent()
+    data class SortExpensesHighToLow(val data: List<Expense>): AllExpensesViewmodelEvent()
+    data class SortExpensesLowToHigh(val data: List<Expense>): AllExpensesViewmodelEvent()
+    data class SortRecentExpenses(val data: List<Expense>): AllExpensesViewmodelEvent()
 }

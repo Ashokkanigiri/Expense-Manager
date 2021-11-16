@@ -34,5 +34,20 @@ interface ExpenseDao {
     fun deleteExpense(expenseId: String)
 
     @Query("SELECT * FROM expense WHERE createdDate BETWEEN :fromDate AND :toDate")
-    fun getTotalExpensesForGivenDate(fromDate: String, toDate: String): List<Expense>
+    fun getTotalExpensesForGivenDate(fromDate: String?, toDate: String?): List<Expense>
+
+    @Query("SELECT * FROM expense WHERE createdDate BETWEEN :fromDate AND :toDate ORDER BY expensePrice ASC")
+    fun getTotalExpensesInAscendingOrder(fromDate: String?, toDate: String?): List<Expense>
+
+    @Query("SELECT * FROM expense WHERE createdDate BETWEEN :fromDate AND :toDate ORDER BY expensePrice DESC")
+    fun getTotalExpensesInDescendingOrder(fromDate: String?, toDate: String?): List<Expense>
+
+    @Query("SELECT * FROM expense WHERE createdDate BETWEEN :fromDate AND :toDate ORDER BY createdDate")
+    fun getTotalRecentExpenses(fromDate: String?, toDate: String?): List<Expense>
+?
+    @Query("SELECT * FROM expense ORDER BY createdDate ASC LIMIT 1")
+    fun getminimumCreatedDateExpense(): Expense
+
+    @Query("SELECT * FROM expense ORDER BY createdDate DESC LIMIT 1")
+    fun getMaximumCreatedDateExpense(): Expense
 }

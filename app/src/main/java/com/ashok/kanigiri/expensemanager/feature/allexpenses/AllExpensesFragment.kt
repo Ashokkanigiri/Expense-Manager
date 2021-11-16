@@ -92,6 +92,7 @@ class AllExpensesFragment : Fragment() {
         })
         (activity as BaseActivity).handleTrailingIcon3ClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
+                viewmodel.setDefaultDates()
                 observeViewmodel()
             }
         })
@@ -118,6 +119,9 @@ class AllExpensesFragment : Fragment() {
         }
         binding.ivBack.setOnClickListener {
             dialog.dismiss()
+        }
+        dialog.setOnDismissListener {
+
         }
         dialog.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         dialog.setContentView(binding.getRoot())

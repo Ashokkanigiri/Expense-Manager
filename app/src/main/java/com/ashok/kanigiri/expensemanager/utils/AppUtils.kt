@@ -39,7 +39,7 @@ object AppUtils {
 //        datePickerDialog.datePicker.minDate =fromCal.timeInMillis
 //        datePickerDialog.datePicker.maxDate =toCal.timeInMillis
         datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
-            date.postValue("$dayOfMonth/$month/$year")
+            date.postValue("$dayOfMonth/${month+1}/$year")
         }
         datePickerDialog.show()
         return date
