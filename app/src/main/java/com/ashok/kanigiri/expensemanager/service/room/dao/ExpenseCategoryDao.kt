@@ -39,4 +39,7 @@ interface ExpenseCategoryDao {
 
     @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total WHERE expenseCategoryId =:categoryId")
     fun updateTargetPriceForCategory(categoryId: Int, total: Double)
+
+    @Query("SELECT * FROM expensecategory WHERE isSelected =:isSelected AND createdDate BETWEEN :fromDate AND :toDate")
+    fun getSelectedCategorysBetweenDates(fromDate: String, toDate: String, isSelected: Boolean = true): LiveData<List<ExpenseCategory>>
 }

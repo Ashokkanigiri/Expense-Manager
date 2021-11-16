@@ -30,6 +30,10 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
+import android.app.Dialog
+import android.content.Context
+import com.ashok.kanigiri.expensemanager.databinding.DatePickerLayoutBinding
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -70,8 +74,32 @@ class HomeFragment : Fragment() {
                 is HomeViewModelEvent.Logout -> {
                     logout()
                 }
+                is HomeViewModelEvent.HandleFilterButton ->{
+                    showDialog()
+                }
             }
         })
+    }
+
+    fun showDialog() {
+        val dialog = Dialog(requireContext())
+        val binding: DatePickerLayoutBinding = DatePickerLayoutBinding.inflate(LayoutInflater.from(context))
+
+        binding.dpFrom.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
+            binding.fromDate = "${ dayOfMonth }-${ monthOfYear }-${ year }"
+        }
+        binding.dpTo.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
+            binding.toDate = "${ dayOfMonth }-${ monthOfYear }-${ year }"
+        }
+        binding.btnFilter.setOnClickListener {
+            viewmodel.fromDate =binding.fromDate
+            viewmodel.toDate = binding.toDate
+            this.binding.invalidateAll()
+//            Log.d("llfmfq", "FROMDATE : ${binding.fromDate}:: TODATE :: ${binding.toDate} :: DATA:: - ${Gson().toJson(viewmodel.getTotalExpensesForGivenDate(binding.fromDate?:"", binding.toDate?:""))}")
+            dialog.dismiss()
+        }
+        dialog.setContentView(binding.getRoot())
+        dialog.show()
     }
 
     private fun logout() {
