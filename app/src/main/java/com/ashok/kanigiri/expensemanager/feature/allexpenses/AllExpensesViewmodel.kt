@@ -13,7 +13,7 @@ import javax.inject.Inject
 class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomRepository): ViewModel() {
 
     val adapter = AllExpensesListAdapter(this)
-
+    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses()
     val event = SingleLiveEvent<AllExpensesViewmodelEvent>()
     var fromDate:String? = roomRepository.getExpenseDao().getminimumCreatedDateExpense()?.createdDate
     var toDate: String? = roomRepository.getExpenseDao().getMaximumCreatedDateExpense()?.createdDate
