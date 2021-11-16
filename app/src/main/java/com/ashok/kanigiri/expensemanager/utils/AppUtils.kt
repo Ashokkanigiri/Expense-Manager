@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
+import java.text.SimpleDateFormat
+import java.util.*
 
 object AppUtils {
 
@@ -25,10 +27,33 @@ object AppUtils {
     fun getSelectedDateFromDatePicker(context: Context): MutableLiveData<String>{
         val date = MutableLiveData<String>()
         val datePickerDialog = DatePickerDialog(context)
+//        val fromCal = Calendar.getInstance()
+//        fromCal.set(Calendar.DAY_OF_MONTH, 1)
+//        fromCal.set(Calendar.MONTH, SimpleDateFormat("MM").format(Date())?.toInt()?:0)
+//        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+//        val toCal = Calendar.getInstance()
+//        toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf(SimpleDateFormat("MM").format(Date()).toInt(), SimpleDateFormat("YYYY").format(Date()).toInt()))
+//        toCal.set(Calendar.MONTH, SimpleDateFormat("MM").format(Date())?.toInt()?:0)
+//        toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+//
+//        datePickerDialog.datePicker.minDate =fromCal.timeInMillis
+//        datePickerDialog.datePicker.maxDate =toCal.timeInMillis
         datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
             date.postValue("$dayOfMonth/$month/$year")
         }
         datePickerDialog.show()
         return date
+    }
+
+    fun getLastDayOf(month: Int, year: Int): Int {
+        return when (month) {
+            Calendar.APRIL, Calendar.JUNE, Calendar.SEPTEMBER, Calendar.NOVEMBER -> 30
+            Calendar.FEBRUARY -> {
+                if (year % 4 == 0) {
+                    29
+                } else 28
+            }
+            else -> 31
+        }
     }
 }
