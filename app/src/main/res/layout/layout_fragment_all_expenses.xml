@@ -27,6 +27,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_rounded_edittext"
             android:padding="10dp"
+            android:visibility="gone"
             android:layout_margin="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -28,4 +28,9 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
+    <style name="calender_dialog" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
 </resources>

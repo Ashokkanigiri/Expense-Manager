@@ -4,4 +4,6 @@
     <string name="add_expense_title">Add Expenses</string>
     <string name="profile_title">Profile</string>
     <string name="all_expenses_title">All Expenses</string>
+    <string name="filter">Filter</string>
+    <string name="sort">sort</string>
 </resources>

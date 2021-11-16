@@ -1,7 +1,6 @@
 package com.ashok.kanigiri.expensemanager.feature.manageexpenses.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentManageExpensesBinding
-import com.ashok.kanigiri.expensemanager.feature.createexpensedialog.view.CreateExpenseDialogFragment
-import com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.view.ExpenseCategoryDialogFragment
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel.ManageExpensesViewModel
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
-import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -86,7 +82,7 @@ class ManageExpensesFragment : Fragment(){
         (activity as BaseActivity).setUpActitionBar(binding.custumActionBar)
         (activity as BaseActivity).setActionBarTitle("My Expense List", Gravity.START)
         (activity as BaseActivity).enableTrailingIconVisibility()
-        (activity as BaseActivity).handleTrailingIconVisibility(object : View.OnClickListener {
+        (activity as BaseActivity).handleTrailingIconClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 findNavController().navigate(
                     ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseCategoryDialogFragment2(true)

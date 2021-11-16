@@ -32,4 +32,7 @@ interface ExpenseDao {
 
     @Query("DELETE FROM expense WHERE expenseId =:expenseId")
     fun deleteExpense(expenseId: String)
+
+    @Query("SELECT * FROM expense WHERE createdDate BETWEEN :fromDate AND :toDate")
+    fun getTotalExpensesForGivenDate(fromDate: String, toDate: String): List<Expense>
 }
