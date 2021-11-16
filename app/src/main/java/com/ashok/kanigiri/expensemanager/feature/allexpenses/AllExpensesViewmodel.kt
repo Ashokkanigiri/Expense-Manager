@@ -15,8 +15,8 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
     val adapter = AllExpensesListAdapter(this)
 
     val event = SingleLiveEvent<AllExpensesViewmodelEvent>()
-    var fromDate:String? = roomRepository.getExpenseDao().getminimumCreatedDateExpense().createdDate
-    var toDate: String? = roomRepository.getExpenseDao().getMaximumCreatedDateExpense().createdDate
+    var fromDate:String? = roomRepository.getExpenseDao().getminimumCreatedDateExpense()?.createdDate
+    var toDate: String? = roomRepository.getExpenseDao().getMaximumCreatedDateExpense()?.createdDate
 
     fun getAllExpenses(): LiveData<List<Expense>>{
         return roomRepository.getExpenseDao().getAllExpenses()
@@ -43,8 +43,8 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
     }
 
      fun setDefaultDates(){
-         fromDate= roomRepository.getExpenseDao().getminimumCreatedDateExpense().createdDate
-         toDate= roomRepository.getExpenseDao().getMaximumCreatedDateExpense().createdDate
+         fromDate= roomRepository.getExpenseDao().getminimumCreatedDateExpense()?.createdDate
+         toDate= roomRepository.getExpenseDao().getMaximumCreatedDateExpense()?.createdDate
     }
 }
 

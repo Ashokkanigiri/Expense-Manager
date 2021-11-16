@@ -46,8 +46,8 @@ interface ExpenseDao {
     fun getTotalRecentExpenses(fromDate: String?, toDate: String?): List<Expense>
 ?
     @Query("SELECT * FROM expense ORDER BY createdDate ASC LIMIT 1")
-    fun getminimumCreatedDateExpense(): Expense
+    fun getminimumCreatedDateExpense(): Expense?
 
     @Query("SELECT * FROM expense ORDER BY createdDate DESC LIMIT 1")
-    fun getMaximumCreatedDateExpense(): Expense
+    fun getMaximumCreatedDateExpense(): Expense?
 }
