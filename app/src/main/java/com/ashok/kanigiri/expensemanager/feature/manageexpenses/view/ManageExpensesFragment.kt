@@ -88,11 +88,9 @@ class ManageExpensesFragment : Fragment(){
         (activity as BaseActivity).enableTrailingIconVisibility()
         (activity as BaseActivity).handleTrailingIconVisibility(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                activity?.supportFragmentManager?.let {
-                    ExpenseCategoryDialogFragment.INSTANCE.apply {
-                        show(it, tag)
-                    }
-                }
+                findNavController().navigate(
+                    ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseCategoryDialogFragment2(true)
+                )
             }
         })
     }
