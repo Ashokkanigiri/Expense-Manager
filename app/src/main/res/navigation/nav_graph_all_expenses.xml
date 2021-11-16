@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_all_expenses"
+    app:startDestination="@id/allExpensesFragment">
+
+    <fragment
+        android:id="@+id/allExpensesFragment"
+        android:name="com.ashok.kanigiri.expensemanager.feature.allexpenses.AllExpensesFragment"
+        android:label="AllExpensesFragment" />
+</navigation>

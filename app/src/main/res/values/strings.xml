@@ -3,4 +3,5 @@
     <string name="home_title">Home</string>
     <string name="add_expense_title">Add Expenses</string>
     <string name="profile_title">Profile</string>
+    <string name="all_expenses_title">All Expenses</string>
 </resources>
