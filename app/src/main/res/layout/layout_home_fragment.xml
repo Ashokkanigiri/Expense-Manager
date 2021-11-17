@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.ashok.kanigiri.expensemanager.utils.AppUtils"/>
         <variable
             name="salary"
             type="Integer" />
@@ -62,7 +63,7 @@
                         android:id="@+id/materialTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Your Monthly Expenditure:"
+                        android:text="@{`Your Monthly Expenditure: `+AppUtils.INSTANCE.getCurrentMonth()}"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
