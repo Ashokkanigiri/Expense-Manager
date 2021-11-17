@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.sql.Timestamp
 import java.util.*
 import javax.inject.Inject
 
@@ -57,8 +58,9 @@ class CreateExpenseDialogViewModel @Inject constructor(
                     expenseCategoryId = expenseId?:0 ,
                     expenseId = UUID.randomUUID().toString(),
                     expenseName = expenseName ?: "",
-                    createdDate = selectedDate ?: "",
-                    expensePrice = expensePrice?.toDouble() ?: 0.0
+                    createdDate = "${Timestamp(System.currentTimeMillis())}",
+                    expensePrice = expensePrice?.toDouble() ?: 0.0,
+                    expenseDate = selectedDate ?: ""
                 )
                 viewModelScope.launch(Dispatchers.IO) {
                     roomRepository.getExpenseDao().insertExpenses(expense)
