@@ -56,10 +56,10 @@ object AppUtils {
 
     fun getFirstDayOnMonthInDateFormat(): String{
         val fromCal = Calendar.getInstance()
-        fromCal.set(Calendar.DAY_OF_MONTH, 1)
+        fromCal.set(Calendar.DAY_OF_MONTH, "01".toInt())
         fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
         fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
-        return Timestamp(fromCal.timeInMillis).toString()
+        return "${fromCal.get(Calendar.YEAR)}-${fromCal.get(Calendar.MONTH)}-${fromCal.get(Calendar.DAY_OF_MONTH)}"
     }
 
     fun getCurrentMonthInInt() = (SimpleDateFormat("MM").format(Date())?.toInt()?:0)
@@ -69,7 +69,7 @@ object AppUtils {
         toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
         toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
         toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
-        return Timestamp(toCal.timeInMillis).toString()
+        return "${toCal.get(Calendar.YEAR)}-${toCal.get(Calendar.MONTH)}-${toCal.get(Calendar.DAY_OF_MONTH)}"
     }
 
     fun getLastDayOf(month: Int, year: Int): Int {
@@ -91,7 +91,7 @@ object AppUtils {
 
     fun getDateInReadableFormat(currentDate: String): String{
         val day = 1
-        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-d")
         val date = LocalDate.parse(currentDate, formatter1)
         val currentMonth: Int = date.month?.value?:0+1
         val currentYear :Int= date.year
@@ -101,7 +101,7 @@ object AppUtils {
 
     fun getUpcommingExpenseMonthUpdationDate(currentDate: String): String{
         val day = 1
-        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-d")
         val date = LocalDate.parse(currentDate, formatter1)
         var currentMonth: Int = date.month?.value?:0+1
         var currentYear :Int= date.year
