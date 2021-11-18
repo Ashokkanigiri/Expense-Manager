@@ -6,6 +6,7 @@ import com.ashok.kanigiri.expensemanager.ExpenseManagerApplication
 import com.ashok.kanigiri.expensemanager.service.ExpenseAppDB
 import com.ashok.kanigiri.expensemanager.service.room.dao.ExpenseCategoryDao
 import com.ashok.kanigiri.expensemanager.service.room.dao.ExpenseDao
+import com.ashok.kanigiri.expensemanager.service.room.dao.ExpenseMonthDao
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.Module
 import dagger.Provides
@@ -38,7 +39,13 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun providesRoomRepository(expenseCategoryDao: ExpenseCategoryDao, expenseDao: ExpenseDao): RoomRepository{
-        return RoomRepository(expenseCategoryDao, expenseDao)
+    fun providesExpenseMonthDao(expenseAppDB: ExpenseAppDB): ExpenseMonthDao{
+        return expenseAppDB.expenseMonthDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providesRoomRepository(expenseCategoryDao: ExpenseCategoryDao, expenseDao: ExpenseDao, expenseMonthDao: ExpenseMonthDao): RoomRepository{
+        return RoomRepository(expenseCategoryDao, expenseDao, expenseMonthDao)
     }
 }

@@ -8,7 +8,10 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.absoluteValue
 
 object AppUtils {
 
@@ -51,6 +54,24 @@ object AppUtils {
         return date
     }
 
+    fun getFirstDayOnMonthInDateFormat(): String{
+        val fromCal = Calendar.getInstance()
+        fromCal.set(Calendar.DAY_OF_MONTH, 1)
+        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
+        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+        return Timestamp(fromCal.timeInMillis).toString()
+    }
+
+    fun getCurrentMonthInInt() = (SimpleDateFormat("MM").format(Date())?.toInt()?:0)
+
+    fun getLastDayOfMonthInDateFormat(): String{
+        val toCal = Calendar.getInstance()
+        toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
+        toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
+        toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+        return Timestamp(toCal.timeInMillis).toString()
+    }
+
     fun getLastDayOf(month: Int, year: Int): Int {
         return when (month) {
             Calendar.APRIL, Calendar.JUNE, Calendar.SEPTEMBER, Calendar.NOVEMBER -> 30
@@ -66,5 +87,40 @@ object AppUtils {
     fun getCurrentMonth(): String{
         val monthNames = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
         return monthNames.get((SimpleDateFormat("MM").format(Date()).toInt()?:0)-1)
+    }
+
+    fun getDateInReadableFormat(currentDate: String): String{
+        val day = 1
+        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val date = LocalDate.parse(currentDate, formatter1)
+        val currentMonth: Int = date.month?.value?:0+1
+        val currentYear :Int= date.year
+        return "${currentYear}-${currentMonth}-${day}"
+    }
+
+
+    fun getUpcommingExpenseMonthUpdationDate(currentDate: String): String{
+        val day = 1
+        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val date = LocalDate.parse(currentDate, formatter1)
+        var currentMonth: Int = date.month?.value?:0+1
+        var currentYear :Int= date.year
+        if(currentMonth == 12){
+            currentYear = currentYear+1
+            currentMonth = 1
+        }else{
+            currentMonth = currentMonth+1
+        }
+       return "${currentYear}-${currentMonth}-${day}"
+    }
+
+    fun shouldUpdateToNextMonth(savedDate: String): Boolean{
+        //if savedDate > getUpcommingMonthStarttingDate -> then return true else false
+        Log.d("ndwdwkd", "UPCOMMING MONTH ${getUpcommingExpenseMonthUpdationDate(savedDate)}, CURRENT DATE : ${getDateInReadableFormat(savedDate)} ::: ${getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)}")
+        if(getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)){
+            return true
+        }else{
+            return false
+        }
     }
 }
