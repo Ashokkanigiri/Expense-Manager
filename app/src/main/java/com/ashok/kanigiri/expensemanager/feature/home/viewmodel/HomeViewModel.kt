@@ -33,16 +33,18 @@ class HomeViewModel @Inject constructor( val roomRepository: RoomRepository, @Ap
     }
 
     private fun insertExpenseMonth() {
-        if(AppUtils.shouldUpdateToNextMonth(roomRepository.getExpenseMonthDao().getLatestExpenseMonth().fromDate)){
-            val expenseMonth = ExpenseMonth(
-                createdDate = (Timestamp(System.currentTimeMillis().toLong())).toString(),
-                expenseMonth = AppUtils.getCurrentMonthInInt(),
-                salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0,
-                fromDate = AppUtils.getFirstDayOnMonthInDateFormat(),
-                toDate = AppUtils.getLastDayOfMonthInDateFormat(),
-                totalUtilizedPrice = 0.0
-            )
-            roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+        roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.fromDate?.let {
+            if(AppUtils.shouldUpdateToNextMonth(it)){
+                val expenseMonth = ExpenseMonth(
+                    createdDate = (Timestamp(System.currentTimeMillis())).toString(),
+                    expenseMonth = AppUtils.getCurrentMonthInInt(),
+                    salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0,
+                    fromDate = AppUtils.getFirstDayOnMonthInDateFormat(),
+                    toDate = AppUtils.getLastDayOfMonthInDateFormat(),
+                    totalUtilizedPrice = 0.0
+                )
+                roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+            }
         }
     }
 

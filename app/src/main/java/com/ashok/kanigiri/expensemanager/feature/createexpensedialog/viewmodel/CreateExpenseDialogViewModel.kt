@@ -61,7 +61,7 @@ class CreateExpenseDialogViewModel @Inject constructor(
                     createdDate = "${Timestamp(System.currentTimeMillis())}",
                     expensePrice = expensePrice?.toDouble() ?: 0.0,
                     expenseDate = selectedDate ?: "",
-                    expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth().expenseMonthId
+                    expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId?:0
                 )
                 viewModelScope.launch(Dispatchers.IO) {
                     roomRepository.getExpenseDao().insertExpenses(expense)

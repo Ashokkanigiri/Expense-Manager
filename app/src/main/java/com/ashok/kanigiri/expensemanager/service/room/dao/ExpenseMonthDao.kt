@@ -14,5 +14,5 @@ interface ExpenseMonthDao {
     fun insertExpenseMonth(expenseMonth: ExpenseMonth)
 
     @Query("SELECT * FROM expensemonth ORDER BY expenseMonthId != null DESC LIMIT 1")
-    fun getLatestExpenseMonth(): ExpenseMonth
+    fun getLatestExpenseMonth(): ExpenseMonth?
 }
