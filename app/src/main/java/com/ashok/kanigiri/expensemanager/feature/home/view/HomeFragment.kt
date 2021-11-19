@@ -22,6 +22,8 @@ import com.ashok.kanigiri.expensemanager.feature.welcome.WelcomeActivity
 import com.ashok.kanigiri.expensemanager.service.ExpenseAppDB
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
+import com.ashok.kanigiri.expensemanager.utils.AppConstants
+import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.*
@@ -116,12 +118,12 @@ class HomeFragment : Fragment() {
             pieDataSet.sliceSpace = 1.5f
             pieDataSet.selectionShift = 5f
             pieDataSet.setColors(
-                ColorTemplate.JOYFUL_COLORS + ColorTemplate.MATERIAL_COLORS + ColorTemplate.PASTEL_COLORS,
+                AppConstants.graphColours.toIntArray(),
                 200
             )
             val pieData = PieData(pieDataSet)
             pieData.setValueTextSize(10f)
-            pieData.setValueTextColor(Color.BLACK)
+            pieData.setValueTextColor(Color.WHITE)
 
             binding.expenditureChart.data = pieData
             binding.expenditureChart.animateY(1500, Easing.EaseInOutCubic)
