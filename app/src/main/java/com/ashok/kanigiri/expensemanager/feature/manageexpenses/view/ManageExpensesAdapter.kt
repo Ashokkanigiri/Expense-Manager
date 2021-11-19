@@ -21,4 +21,8 @@ class ManageExpensesAdapter (private val viewModel: ManageExpensesViewModel) : L
     override fun onBindViewHolder(holder: ManageExpensesViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).expenseCategoryId.toLong()
+    }
 }

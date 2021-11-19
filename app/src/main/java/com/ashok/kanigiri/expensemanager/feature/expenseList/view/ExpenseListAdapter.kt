@@ -28,4 +28,8 @@ class ExpenseListAdapter constructor(private val viewmodel: ExpenseListViewModel
     override fun onBindViewHolder(holder: ExpenseListViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).expenseId.toLong()
+    }
 }

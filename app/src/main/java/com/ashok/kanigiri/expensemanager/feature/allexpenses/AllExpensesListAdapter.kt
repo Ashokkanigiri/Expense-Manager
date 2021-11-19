@@ -29,4 +29,8 @@ class AllExpensesListAdapter constructor(private val viewmodel: AllExpensesViewm
     override fun onBindViewHolder(holder: AllExpensesListViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).expenseId.toLong()
+    }
 }

@@ -50,4 +50,5 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expense ORDER BY createdDate DESC LIMIT 1")
     fun getMaximumCreatedDateExpense(): Expense?
+
 }
