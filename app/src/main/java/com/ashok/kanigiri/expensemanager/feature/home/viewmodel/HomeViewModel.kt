@@ -3,11 +3,13 @@ package com.ashok.kanigiri.expensemanager.feature.home.viewmodel
 import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseGraphModel
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
@@ -57,6 +59,19 @@ class HomeViewModel @Inject constructor( val roomRepository: RoomRepository, @Ap
         event.postValue(HomeViewModelEvent.Logout)
     }
 
+    fun getListOfSelectedCategorysForExpenseMonth(): LiveData<List<ExpenseGraphModel>>{
+        val expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
+        val data = roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId?:0)
+        return data
+    }
+
+    fun getcategoryNameForId(categoryId: Int): String{
+        return roomRepository.getCategoryDao().getCategoryName(categoryId)
+    }
+
+    fun getCurrentMonthSalary(): Double{
+        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.salary?:0.0
+    }
 }
 
 sealed class HomeViewModelEvent{

@@ -1,5 +1,6 @@
 package com.ashok.kanigiri.expensemanager.service.room.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,3 +15,5 @@ data class Expense(
     val createdDate: String,
     val expensePrice: Double
 )
+
+data class ExpenseGraphModel(@ColumnInfo(name = "SUM(expensePrice)") val expensePrice: Double,@ColumnInfo(name = "expenseCategoryId") val expenseCategoryId: Int)

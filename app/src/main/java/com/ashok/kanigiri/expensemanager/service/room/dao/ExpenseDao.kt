@@ -8,6 +8,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseGraphModel
 
 @Dao
 interface ExpenseDao {
@@ -50,5 +51,8 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expense ORDER BY createdDate DESC LIMIT 1")
     fun getMaximumCreatedDateExpense(): Expense?
+
+    @Query("SELECT expenseCategoryId, SUM(expensePrice) FROM expense WHERE expenseMonthId =:expenseMonthId GROUP BY expenseCategoryId")
+    fun getExpensesByCategory(expenseMonthId: Int): LiveData<List<ExpenseGraphModel>>
 
 }

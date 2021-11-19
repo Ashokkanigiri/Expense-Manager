@@ -39,4 +39,7 @@ interface ExpenseCategoryDao {
 
     @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total WHERE expenseCategoryId =:categoryId")
     fun updateTargetPriceForCategory(categoryId: Int, total: Double)
+
+    @Query("SELECT expenseCategoryName FROM expensecategory WHERE expenseCategoryId =:categoryId")
+    fun getCategoryName(categoryId: Int): String
 }

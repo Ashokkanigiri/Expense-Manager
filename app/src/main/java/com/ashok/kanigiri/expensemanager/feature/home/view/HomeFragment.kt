@@ -99,15 +99,17 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.isRotationEnabled = false
         var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
-        roomRepository.getCategoryDao().getSelectedCategorys().observe(viewLifecycleOwner, Observer { list ->
+        viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, Observer { list->
+
             list?.forEach {
-                if (it.totalUtilizedPrice > 0.0) {
+                if (it.expensePrice > 0.0) {
                     binding.expenditureChart.clear()
-                    freeHandMoney = (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toDouble()?:0.0)-(list?.map { it-> it.totalUtilizedPrice }.sum())
-                    val percent: Float = ((it.totalUtilizedPrice?.toFloat()) / ((SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat())?:0f))
-                    yValues.add(PieEntry(percent, it.expenseCategoryName))
+                    freeHandMoney = (viewmodel.getCurrentMonthSalary())-(list.map { it-> it.expensePrice }.sum())
+                    val percent: Float = ((it.expensePrice.toFloat()) / ((SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat())?:0f))
+                    yValues.add(PieEntry(percent, viewmodel.getcategoryNameForId(it.expenseCategoryId)))
                 }
             }
+
             val freeHandPercent : Float= freeHandMoney.toFloat()/(SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()?:0f)
             yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
             val pieDataSet = PieDataSet(yValues, "")
