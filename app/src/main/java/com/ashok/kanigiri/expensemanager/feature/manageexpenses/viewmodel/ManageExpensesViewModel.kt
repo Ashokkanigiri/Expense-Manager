@@ -22,6 +22,7 @@ class ManageExpensesViewModel @Inject constructor( val roomRepository: RoomRepos
 
     fun loadAdapter(list: List<ExpenseCategory>){
         adapter.submitList(list)
+        adapter.notifyDataSetChanged()
     }
 
     fun openCreateExpenseBottomSheet(expenseCategory: ExpenseCategory, adapterPosition: Int){

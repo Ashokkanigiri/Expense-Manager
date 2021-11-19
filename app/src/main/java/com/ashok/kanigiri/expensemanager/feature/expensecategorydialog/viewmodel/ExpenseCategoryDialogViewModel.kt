@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
@@ -41,7 +42,6 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
                 val totalPriceGivenForAllCategorys = roomRepository.getCategoryDao().getTotalAllotedCategoryPrice()
                 if((totalPriceGivenForAllCategorys+(expenseTargetPrice.get()?.toDouble()?:0.0))<= SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()?:0.0){
                     val expenseCategory = ExpenseCategory(
-                        expenseCategoryId = System.currentTimeMillis().toInt(),
                         expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble()?:0.0,
                         totalUtilizedPrice = 0.0,
                         expenseCategoryName = expenseCategoryName.get()?:"",
@@ -49,7 +49,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(private val roomReposit
                         isSelected = true
                     )
 
-                    GlobalScope.launch(Dispatchers.IO) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         roomRepository.getCategoryDao().insert(expenseCategory)
                     }
                     event.postValue(Event(true))
