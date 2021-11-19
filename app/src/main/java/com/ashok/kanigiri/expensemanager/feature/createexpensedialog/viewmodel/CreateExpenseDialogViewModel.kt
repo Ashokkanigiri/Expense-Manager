@@ -56,7 +56,6 @@ class CreateExpenseDialogViewModel @Inject constructor(
             if (((expensePrice?.toDouble())?.plus(utilizedExpense) ?: 0.0) <= totalCategoryPrice) {
                 val expense = Expense(
                     expenseCategoryId = expenseId?:0 ,
-                    expenseId = UUID.randomUUID().toString(),
                     expenseName = expenseName ?: "",
                     createdDate = "${Timestamp(System.currentTimeMillis())}",
                     expensePrice = expensePrice?.toDouble() ?: 0.0,
