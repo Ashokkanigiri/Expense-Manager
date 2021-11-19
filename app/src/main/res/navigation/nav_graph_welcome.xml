@@ -22,7 +22,11 @@
         android:label="CreateAccountFragment" >
         <action
             android:id="@+id/action_createAccountFragment_to_chooseCategoryFragment"
-            app:destination="@id/chooseCategoryFragment" />
+            app:destination="@id/chooseCategoryFragment"
+            app:enterAnim="@anim/enter_anim_right"
+            app:exitAnim="@anim/exit_anim_left"
+            app:popEnterAnim="@anim/enter_anim_left"
+            app:popExitAnim="@anim/exit_anim_right"/>
     </fragment>
     <fragment
         android:id="@+id/chooseCategoryFragment"
@@ -33,7 +37,11 @@
             app:destination="@id/expenseCategoryDialogFragment" />
         <action
             android:id="@+id/action_chooseCategoryFragment_to_editExpenseFragment"
-            app:destination="@id/editExpenseFragment" />
+            app:destination="@id/editExpenseFragment"
+            app:enterAnim="@anim/enter_anim_right"
+            app:exitAnim="@anim/exit_anim_left"
+            app:popEnterAnim="@anim/enter_anim_left"
+            app:popExitAnim="@anim/exit_anim_right"/>
     </fragment>
     <dialog
         android:id="@+id/expenseCategoryDialogFragment"
