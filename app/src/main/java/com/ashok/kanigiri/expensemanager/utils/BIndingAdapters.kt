@@ -49,6 +49,24 @@ fun View.setUpExpenseTileBackground(expenseCategory: String) {
     )
 }
 
+@BindingAdapter("setRandomBackground")
+fun ConstraintLayout.setRandomBackground(expenseCategory: String) {
+    val list = listOf<ColorStateList>(
+        ColorStateList.valueOf(Color.parseColor("#f1eded")),
+        ColorStateList.valueOf(Color.parseColor("#d9e7db")),
+        ColorStateList.valueOf(Color.parseColor("#bbdee7")),
+        ColorStateList.valueOf(Color.parseColor("#d6d0de")),
+        ColorStateList.valueOf(Color.parseColor("#c2c2ce")),
+        ColorStateList.valueOf(Color.parseColor("#edefee")),
+        ColorStateList.valueOf(Color.parseColor("#fff7db")),
+        ColorStateList.valueOf(Color.parseColor("#f0fecf")),
+        ColorStateList.valueOf(Color.parseColor("#c5d2ec")),
+        ColorStateList.valueOf(Color.parseColor("#fff3ff")),
+    )
+
+    this.setBackgroundTintList(list.random());
+}
+
 @BindingAdapter("set_expense_category_image")
 fun ImageView.setImageResource(expenseCategory: String) {
     this.setImageResource(
@@ -108,20 +126,6 @@ fun ProgressBar.seteUpProgress(totalExpense: Double, utilizedExpense: Double) {
     }
 }
 
-@BindingAdapter("setRandomBackground")
-fun ConstraintLayout.setRandomBackground(expenseCategory: String) {
-    val list = listOf<ColorStateList>(
-        ColorStateList.valueOf(Color.parseColor("#C0BDFF")),
-        ColorStateList.valueOf(Color.parseColor("#CAF1DE")),
-        ColorStateList.valueOf(Color.parseColor("#E1F8DC")),
-        ColorStateList.valueOf(Color.parseColor("#FEF8DD")),
-        ColorStateList.valueOf(Color.parseColor("#FFE7C7")),
-        ColorStateList.valueOf(Color.parseColor("#B7E5EB")),
-        ColorStateList.valueOf(Color.parseColor("#FFE4E1")),
-    )
-
-    this.setBackgroundTintList(list.random());
-}
 
 @BindingAdapter("loginButtonEnabledStatus")
 fun TextView.loginButtonEnabledStatus(bool: Boolean){

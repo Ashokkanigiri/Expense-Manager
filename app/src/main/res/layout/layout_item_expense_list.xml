@@ -59,7 +59,7 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{`Created on: `+expense.createdDate}"
+                android:text="@{`Created on: `+expense.expenseDate}"
                 tools:text="Created Date"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView7"

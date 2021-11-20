@@ -22,6 +22,10 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
         return roomRepository.getExpenseDao().getAllExpenses()
     }
 
+    fun deleteExpense(expenseId: Int){
+        roomRepository.getExpenseDao().deleteExpense(expenseId)
+    }
+
     fun getAllExpensesForFilteredDate(from: String, to: String){
         event.postValue(AllExpensesViewmodelEvent.LoadExpenses( roomRepository.getExpenseDao().getTotalExpensesForGivenDate(from, to)))
     }
