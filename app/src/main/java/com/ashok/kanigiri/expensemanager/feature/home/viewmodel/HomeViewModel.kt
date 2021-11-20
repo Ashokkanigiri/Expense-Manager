@@ -50,11 +50,6 @@ class HomeViewModel @Inject constructor( val roomRepository: RoomRepository, @Ap
         }
     }
 
-    fun updateSalary(){
-        SharedPreferenceService.putUserSalary(context, etSalary.get()?.toInt()?:0)
-        event.postValue(HomeViewModelEvent.IsSalaryUpdated)
-    }
-
     fun logout(){
         event.postValue(HomeViewModelEvent.Logout)
     }
@@ -72,9 +67,12 @@ class HomeViewModel @Inject constructor( val roomRepository: RoomRepository, @Ap
     fun getCurrentMonthSalary(): Double{
         return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.salary?:0.0
     }
+
+    fun loadSalaryFromCurrentMonth(): Double{
+        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.salary?:0.0
+    }
 }
 
 sealed class HomeViewModelEvent{
-    object IsSalaryUpdated: HomeViewModelEvent()
     object Logout: HomeViewModelEvent()
 }

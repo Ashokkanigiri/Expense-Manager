@@ -66,9 +66,6 @@ class HomeFragment : Fragment() {
     private fun observeViewModel() {
         viewmodel.event.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is HomeViewModelEvent.IsSalaryUpdated -> {
-                    loadSalaryDetailsFromSharedPrefs()
-                }
                 is HomeViewModelEvent.Logout -> {
                     logout()
                 }
@@ -86,8 +83,7 @@ class HomeFragment : Fragment() {
 
     private fun loadSalaryDetailsFromSharedPrefs() {
         binding.salary =
-            SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toInt()
-        binding.invalidateAll()
+            viewmodel.loadSalaryFromCurrentMonth().toInt()
     }
 
     private fun setUpExpenditureGraph() {
