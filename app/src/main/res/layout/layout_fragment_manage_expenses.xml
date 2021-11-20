@@ -25,6 +25,7 @@
             android:id="@+id/rv_manage_expenses"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layoutAnimation="@anim/rv_animation"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_expense_manager"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -102,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:nestedScrollingEnabled="true"
+                    android:layoutAnimation="@anim/rv_animation"
                     android:adapter="@{viewmodel.setAdapter()}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
