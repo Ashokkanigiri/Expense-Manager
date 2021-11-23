@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:onClick="@{()-> viewmodel.deleteExpense(expense.expenseId)}"
+                    android:onClick="@{()-> viewmodel.deleteExpense(expense)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_delete_24" />

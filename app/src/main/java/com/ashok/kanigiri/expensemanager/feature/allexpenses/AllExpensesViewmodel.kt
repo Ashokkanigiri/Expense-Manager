@@ -18,9 +18,10 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
     val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses()
 
 
-    fun deleteExpense(expenseId: Int){
-        roomRepository.getExpenseDao().deleteExpense(expenseId)
-        expandableAdapter.notifyDataSetInvalidated()
+    fun deleteExpense(expense: Expense){
+        roomRepository.getExpenseDao().deleteExpense(expense.expenseId)
+        roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expense.expenseCategoryId, -(expense.expensePrice))
+        loadExpandableData()
     }
 
     fun loadExpandableData(){
