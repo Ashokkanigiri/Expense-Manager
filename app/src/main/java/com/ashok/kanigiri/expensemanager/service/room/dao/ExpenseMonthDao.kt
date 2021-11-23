@@ -15,4 +15,7 @@ interface ExpenseMonthDao {
 
     @Query("SELECT * FROM expensemonth ORDER BY expenseMonthId != null DESC LIMIT 1")
     fun getLatestExpenseMonth(): ExpenseMonth?
+
+    @Query("SELECT * FROM expensemonth")
+    fun getAllExpenseMonthsData(): List<ExpenseMonth>
 }

@@ -55,4 +55,7 @@ interface ExpenseDao {
     @Query("SELECT expenseCategoryId, SUM(expensePrice) FROM expense WHERE expenseMonthId =:expenseMonthId GROUP BY expenseCategoryId")
     fun getExpensesByCategory(expenseMonthId: Int): LiveData<List<ExpenseGraphModel>>
 
+    @Query("SELECT * FROM expense WHERE expenseMonthId =:expenseMonthId")
+    fun getAllExpensesByExpenseMonthId(expenseMonthId: Int): List<Expense>
+
 }
