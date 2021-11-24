@@ -17,5 +17,8 @@ interface ExpenseMonthDao {
     fun getLatestExpenseMonth(): ExpenseMonth?
 
     @Query("SELECT * FROM expensemonth")
-    fun getAllExpenseMonthsData(): List<ExpenseMonth>
+    suspend fun getAllExpenseMonthsData(): List<ExpenseMonth>
+
+    @Query("UPDATE expensemonth SET totalUtilizedPrice =:createdExpense+totalUtilizedPrice WHERE expenseMonthId =:expenseMonthId")
+    suspend fun updateUtilizedPriceForExpenseMonth(createdExpense: Double, expenseMonthId: Int)
 }

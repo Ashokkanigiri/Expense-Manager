@@ -99,6 +99,9 @@ class CreateExpenseDialogViewModel @Inject constructor(
                 expense.expenseCategoryId,
                 expense.expensePrice
             )
+            roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.let {
+                roomRepository.getExpenseMonthDao().updateUtilizedPriceForExpenseMonth(expense.expensePrice, it.expenseMonthId)
+            }
             hideDialog.postValue(true)
             isExpenseCreated = true
         } else {
