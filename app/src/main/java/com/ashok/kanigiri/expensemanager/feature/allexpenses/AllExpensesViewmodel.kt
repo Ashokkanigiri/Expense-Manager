@@ -2,6 +2,7 @@ package com.ashok.kanigiri.expensemanager.feature.allexpenses
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
@@ -15,7 +16,7 @@ import kotlin.collections.ArrayList
 class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomRepository): ViewModel() {
 
     val expandableAdapter = AllExpensesExpandableAdapter(this)
-    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses()
+    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses().asLiveData()
 
 
     fun deleteExpense(expense: Expense){

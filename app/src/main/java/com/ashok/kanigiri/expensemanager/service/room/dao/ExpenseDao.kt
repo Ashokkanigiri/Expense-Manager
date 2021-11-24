@@ -1,14 +1,12 @@
 package com.ashok.kanigiri.expensemanager.service.room.dao
 
-import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseGraphModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseDao {
@@ -19,17 +17,14 @@ interface ExpenseDao {
     @Insert
     fun insertExpenses(expense: List<Expense>)
 
-    @Query("SELECT * FROM expense")
-    fun getAllExpenses(): LiveData<List<Expense>>
-
     @Query("SELECT * FROM expense WHERE expenseCategoryId =:expenseCategoryId")
-    fun getAllExpensesForACategory(expenseCategoryId: Int): LiveData<List<Expense>>
+    fun getAllExpensesForACategory(expenseCategoryId: Int): Flow<List<Expense>>
 
     @Query("SELECT SUM(expensePrice) from expense WHERE expenseCategoryId =:expenseCategoryId")
     fun getUtilizedPriceForCategory(expenseCategoryId: Int): Double
 
     @Query("SELECT SUM(expensePrice) from expense")
-    fun getTotalExpenses(): LiveData<Double>
+    fun getTotalExpenses(): Flow<Double>
 
     @Query("DELETE FROM expense WHERE expenseId =:expenseId")
     fun deleteExpense(expenseId: Int)
@@ -53,7 +48,7 @@ interface ExpenseDao {
     fun getMaximumCreatedDateExpense(): Expense?
 
     @Query("SELECT expenseCategoryId, SUM(expensePrice) FROM expense WHERE expenseMonthId =:expenseMonthId GROUP BY expenseCategoryId")
-    fun getExpensesByCategory(expenseMonthId: Int): LiveData<List<ExpenseGraphModel>>
+    fun getExpensesByCategory(expenseMonthId: Int): Flow<List<ExpenseGraphModel>>
 
     @Query("SELECT * FROM expense WHERE expenseMonthId =:expenseMonthId")
     fun getAllExpensesByExpenseMonthId(expenseMonthId: Int): List<Expense>

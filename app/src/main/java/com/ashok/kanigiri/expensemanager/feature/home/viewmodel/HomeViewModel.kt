@@ -3,10 +3,7 @@ package com.ashok.kanigiri.expensemanager.feature.home.viewmodel
 import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseGraphModel
@@ -30,7 +27,7 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses()
+    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses().asLiveData()
 
     //2 Way binding
     var etSalary = ObservableField<String>()
@@ -65,7 +62,7 @@ class HomeViewModel @Inject constructor(
 
     fun getListOfSelectedCategorysForExpenseMonth(): LiveData<List<ExpenseGraphModel>> {
         val expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
-        val data = roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0)
+        val data = roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0).asLiveData()
         return data
     }
 

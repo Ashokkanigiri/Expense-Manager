@@ -1,12 +1,11 @@
 package com.ashok.kanigiri.expensemanager.service.room.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ashok.kanigiri.expensemanager.service.room.BaseDao
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseCategoryDao {
@@ -17,7 +16,7 @@ interface ExpenseCategoryDao {
     suspend fun insert(item: List<ExpenseCategory>)
 
     @Query("SELECT * FROM expensecategory")
-    fun getAllExpenses(): LiveData<List<ExpenseCategory>>
+    fun getAllExpenses(): Flow<List<ExpenseCategory>>
 
     @Query("SELECT expenseCategoryTargetPrice FROM ExpenseCategory WHERE expenseCategoryId =:categoryId")
     fun getTotalExpensePriceForCategory(categoryId: Int): Double
@@ -35,7 +34,7 @@ interface ExpenseCategoryDao {
     fun updateCategoryUpdationStatus(isCategorySelected: Boolean, expenseCategoryId: Int)
 
     @Query("SELECT * FROM expensecategory WHERE isSelected =:isSelected")
-    fun getSelectedCategorys(isSelected: Boolean = true): LiveData<List<ExpenseCategory>>
+    fun getSelectedCategorys(isSelected: Boolean = true): Flow<List<ExpenseCategory>>
 
     @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total WHERE expenseCategoryId =:categoryId")
     fun updateTargetPriceForCategory(categoryId: Int, total: Double)

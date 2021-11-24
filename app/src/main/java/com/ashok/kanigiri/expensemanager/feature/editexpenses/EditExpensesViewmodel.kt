@@ -3,16 +3,13 @@ package com.ashok.kanigiri.expensemanager.feature.editexpenses
 import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import android.widget.SeekBar
 import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryViewmodelEvent
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
@@ -49,7 +46,7 @@ class EditExpensesViewmodel @Inject constructor(
     }
 
     fun getExpenseList(): LiveData<List<ExpenseCategory>> {
-        return roomRepository.getCategoryDao().getSelectedCategorys()
+        return roomRepository.getCategoryDao().getSelectedCategorys().asLiveData(Dispatchers.Main)
     }
 
     fun createAccount() {

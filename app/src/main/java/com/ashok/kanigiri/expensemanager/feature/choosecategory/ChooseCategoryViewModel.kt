@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
@@ -84,7 +85,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     }
 
     fun getAllCategorys(): LiveData<List<ExpenseCategory>> {
-        return roomRepository.getCategoryDao().getAllExpenses()
+        return roomRepository.getCategoryDao().getAllExpenses().asLiveData(Dispatchers.Main)
     }
 
     fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategoryId: Int) {
