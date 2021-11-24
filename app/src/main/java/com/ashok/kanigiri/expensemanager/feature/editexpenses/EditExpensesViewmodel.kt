@@ -17,7 +17,9 @@ import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.sql.Timestamp
 import java.util.*
 
@@ -83,11 +85,10 @@ class EditExpensesViewmodel @Inject constructor(
     }
 
     fun getTargetPriceForCategory(categoryId: Int): Double {
-        return roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId)
+        return  roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId)
     }
 
     fun cancelButtonClicked() {
         event.postValue(EditExpensesViewModelEvent.HandleCancelButtonClicked)
     }
-
 }

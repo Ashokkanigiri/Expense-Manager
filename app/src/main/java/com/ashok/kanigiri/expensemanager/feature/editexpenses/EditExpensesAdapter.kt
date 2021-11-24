@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.ItemEditExpensesBinding
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class EditExpensesAdapter constructor(val viewmodel: EditExpensesViewmodel): ListAdapter<ExpenseCategory, EditExpensesViewHolder>(EditExpensesDiffUtil()){
 
@@ -38,7 +41,6 @@ class EditExpensesViewHolder(
         binding.expense = expenseCategory
         binding.seekbarMax = viewmodel.salary
         binding.seebarProgress = viewmodel.getTargetPriceForCategory(expenseCategory.expenseCategoryId).toInt()
-//        binding.tvPercentage.text =""+ (viewmodel.getTargetPriceForCategory(expenseCategory.expenseCategoryId)/ viewmodel.salary *100).toInt()+" %"
         binding.sbExpense.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 binding.textView15.text="Rs. "+progress

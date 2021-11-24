@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutHomeFragmentBinding
@@ -30,6 +31,7 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -97,18 +99,31 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.isRotationEnabled = false
         var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
-        viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, Observer { list->
+        viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, { list ->
 
             list?.forEach {
                 if (it.expensePrice > 0.0) {
                     binding.expenditureChart.clear()
-                    freeHandMoney = (viewmodel.getCurrentMonthSalary())-(list.map { it-> it.expensePrice }.sum())
-                    val percent: Float = ((it.expensePrice.toFloat()) / ((SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat())?:0f))
-                    yValues.add(PieEntry(percent, viewmodel.getcategoryNameForId(it.expenseCategoryId)))
+                    freeHandMoney =
+                        (viewmodel.getCurrentMonthSalary()) - (list.map { it -> it.expensePrice }
+                            .sum())
+                    val percent: Float =
+                        ((it.expensePrice.toFloat()) / ((SharedPreferenceService.getUserLoginModel(
+                            requireContext()
+                        )?.salary?.toFloat()) ?: 0f))
+                    yValues.add(
+                        PieEntry(
+                            percent,
+                            viewmodel.getcategoryNameForId(it.expenseCategoryId)
+                        )
+                    )
+
                 }
             }
 
-            val freeHandPercent : Float= freeHandMoney.toFloat()/(SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()?:0f)
+            val freeHandPercent: Float =
+                freeHandMoney.toFloat() / (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()
+                    ?: 0f)
             yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
             val pieDataSet = PieDataSet(yValues, "")
             pieDataSet.sliceSpace = 1.5f
