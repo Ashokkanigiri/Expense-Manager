@@ -12,10 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface ExpenseDao {
 
     @Insert
-    fun insertExpenses(expense: Expense)
-
-    @Insert
-    fun insertExpenses(expense: List<Expense>)
+    suspend fun insertExpenses(expense: Expense)
 
     @Query("SELECT * FROM expense WHERE expenseCategoryId =:expenseCategoryId")
     fun getAllExpensesForACategory(expenseCategoryId: Int): Flow<List<Expense>>
