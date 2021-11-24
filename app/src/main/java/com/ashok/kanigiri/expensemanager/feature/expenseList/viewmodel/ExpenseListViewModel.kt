@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.feature.expenseList.ExpenseListViewModelEvent
 import com.ashok.kanigiri.expensemanager.feature.expenseList.view.ExpenseListAdapter
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,7 @@ class ExpenseListViewModel @Inject constructor(private val roomRepository: RoomR
     var categoryName: String? = null
 
     fun getAllExpenses(expenseCategoryId: Int): LiveData<List<Expense>>{
-        return roomRepository.getExpenseDao().getAllExpensesForACategory(expenseCategoryId).asLiveData(Dispatchers.Main)
+        return roomRepository.getExpenseDao().getAllExpensesForACategoryForExpenseMonth(expenseCategoryId, getCurrentExpenseMonth()?.expenseMonthId?:1).asLiveData(Dispatchers.Main)
     }
 
     fun setAdapter(): ExpenseListAdapter{
@@ -40,5 +41,9 @@ class ExpenseListViewModel @Inject constructor(private val roomRepository: RoomR
             roomRepository.getExpenseDao().deleteExpense(expense.expenseId)
             roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expenseCategoryId?:0, -(expense.expensePrice))
         }
+    }
+
+    fun getCurrentExpenseMonth(): ExpenseMonth?{
+        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
     }
 }
