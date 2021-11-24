@@ -11,8 +11,14 @@ import org.jetbrains.annotations.NotNull
 interface ExpenseMonthDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExpenseMonth(expenseMonth: ExpenseMonth)
+    suspend fun insertExpenseMonth(expenseMonth: ExpenseMonth)
 
-    @Query("SELECT * FROM expensemonth ORDER BY expenseMonthId != null DESC LIMIT 1")
+    @Query("SELECT * FROM expensemonth ORDER BY createdDate  DESC LIMIT 1")
     fun getLatestExpenseMonth(): ExpenseMonth?
+
+    @Query("SELECT * FROM expensemonth")
+    suspend fun getAllExpenseMonthsData(): List<ExpenseMonth>
+
+    @Query("UPDATE expensemonth SET totalUtilizedPrice =:createdExpense+totalUtilizedPrice WHERE expenseMonthId =:expenseMonthId")
+    suspend fun updateUtilizedPriceForExpenseMonth(createdExpense: Double, expenseMonthId: Int)
 }

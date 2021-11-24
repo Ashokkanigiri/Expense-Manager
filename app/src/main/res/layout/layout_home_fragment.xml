@@ -34,7 +34,7 @@
                 layout="@layout/layout_empty_data"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:visibility="@{viewmodel.getTotalExpenses ==  null ? View.VISIBLE: View.GONE}"
+                android:visibility="@{(viewmodel.getTotalExpenses ==  null || viewmodel.getTotalExpenses ==  0.0) ? View.VISIBLE: View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/margin_end"
                 app:layout_constraintStart_toStartOf="@id/margin_start"
@@ -43,7 +43,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewmodel.getTotalExpenses ==  null ? View.GONE: View.VISIBLE}"
+                android:visibility="@{(viewmodel.getTotalExpenses ==  null || viewmodel.getTotalExpenses ==  0.0) ? View.GONE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/margin_end"
                 app:layout_constraintStart_toStartOf="@+id/margin_start"

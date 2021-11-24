@@ -12,7 +12,9 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Timestamp
 import java.util.*
 import javax.inject.Inject
@@ -26,63 +28,93 @@ class CreateExpenseDialogViewModel @Inject constructor(
     val showCalenderEvent = SingleLiveEvent<Boolean>()
     val hideDialog = SingleLiveEvent<Boolean>()
     val showErrorMsg = SingleLiveEvent<String>()
+    val event = SingleLiveEvent<CreateExpenseDialogViewmodelEvent>()
     var expenseId: Int? = null
     var expenseName: String? = null
     var selectedDate: String? = null
     var expensePrice: String? = null
     var isExpenseCreated = false
-//    val reserveCash = roomRepository.getCategoryDao()
-//        .getTotalExpensePriceForCategory(expenseId!!) - (roomRepository.getExpenseDao()
-//        .getUtilizedPriceForCategory(expenseId!!))
-
-    fun getReserveCash() = roomRepository.getCategoryDao()
-        .getTotalExpensePriceForCategory(expenseId!!) - (roomRepository.getExpenseDao()
-        .getUtilizedPriceForCategory(expenseId!!))
 
     init {
         hideDialog.postValue(false)
     }
+
+    fun triggerReserveCashEvent(){
+        viewModelScope.launch {
+            expenseId?.let {
+                event.postValue(CreateExpenseDialogViewmodelEvent.GetReserveCash(getReserveCash(it)))
+            }
+        }
+    }
+
+    private suspend fun getReserveCash(expenseId: Int): Double{
+        return roomRepository.getCategoryDao()
+            .getTotalExpensePriceForCategory(expenseId) - (roomRepository.getExpenseDao()
+            .getUtilizedPriceForCategory(expenseId)?:0.0)
+    }
+
 
     fun showCalenderPicker() {
         showCalenderEvent.postValue(true)
     }
 
     fun createExpense() {
-        if (expensePrice?.trim() != null && expensePrice?.trim() != "" && selectedDate?.trim() != "" && selectedDate?.trim() != null) {
-            val utilizedExpense =
-                roomRepository.getExpenseDao().getUtilizedPriceForCategory(expenseId!!)
-            val totalCategoryPrice =
-                roomRepository.getCategoryDao().getTotalExpensePriceForCategory(expenseId!!)
-            if (((expensePrice?.toDouble())?.plus(utilizedExpense) ?: 0.0) <= totalCategoryPrice) {
-                val expense = Expense(
-                    expenseCategoryId = expenseId?:0 ,
-                    expenseName = expenseName ?: "",
-                    createdDate = "${Timestamp(System.currentTimeMillis())}",
-                    expensePrice = expensePrice?.toDouble() ?: 0.0,
-                    expenseDate = selectedDate ?: "",
-                    expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId?:0
+        viewModelScope.launch(Dispatchers.IO) {
+            if (expensePrice?.trim() != null && expensePrice?.trim() != "" && selectedDate?.trim() != "" && selectedDate?.trim() != null) {
+                val utilizedExpense = withContext(Dispatchers.IO) {
+                    roomRepository.getExpenseDao().getUtilizedPriceForCategory(expenseId!!)
+                }
+                val totalCategoryPrice = withContext(Dispatchers.IO) {
+                    roomRepository.getCategoryDao().getTotalExpensePriceForCategory(expenseId!!)
+                }
+                verifyExpensePriceIsNotExceedingTotalPriceAndInsert(
+                    utilizedExpense?:0.0,
+                    totalCategoryPrice
                 )
-                viewModelScope.launch(Dispatchers.IO) {
-                    roomRepository.getExpenseDao().insertExpenses(expense)
-                    roomRepository.getCategoryDao().updateUtilizedPriceForCategory(
-                        expense.expenseCategoryId,
-                        expense.expensePrice
-                    )
-
-                    hideDialog.postValue(true)
-                    isExpenseCreated = true
-                }
             } else {
-                val value = totalCategoryPrice - (utilizedExpense)
-                if (value == 0.0) {
-                    showErrorMsg.postValue("MAXIMUM LIMIT REACHED: You reached maximum limit for this category")
-                } else {
-                    showErrorMsg.postValue("MAXIMUM LIMIT REACHED: You Can Add only upto $value for this category")
-                }
+                Toast.makeText(applicationContext, "Please Enter Valid Details", Toast.LENGTH_SHORT)
+                    .show()
             }
-        } else {
-            Toast.makeText(applicationContext, "Please Enter Valid Details", Toast.LENGTH_SHORT)
-                .show()
         }
     }
+
+    private suspend fun verifyExpensePriceIsNotExceedingTotalPriceAndInsert(
+        utilizedExpense: Double,
+        totalCategoryPrice: Double
+    ) {
+        if (((expensePrice?.toDouble())?.plus(utilizedExpense)
+                ?: 0.0) <= totalCategoryPrice
+        ) {
+            val expense = Expense(
+                expenseCategoryId = expenseId ?: 0,
+                expenseName = expenseName ?: "",
+                createdDate = "${Timestamp(System.currentTimeMillis())}",
+                expensePrice = expensePrice?.toDouble() ?: 0.0,
+                expenseDate = selectedDate ?: "",
+                expenseMonthId = roomRepository.getExpenseMonthDao()
+                    .getLatestExpenseMonth()?.expenseMonthId ?: 0
+            )
+            roomRepository.getExpenseDao().insertExpenses(expense)
+            roomRepository.getCategoryDao().updateUtilizedPriceForCategory(
+                expense.expenseCategoryId,
+                expense.expensePrice
+            )
+            roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.let {
+                roomRepository.getExpenseMonthDao().updateUtilizedPriceForExpenseMonth(expense.expensePrice, it.expenseMonthId)
+            }
+            hideDialog.postValue(true)
+            isExpenseCreated = true
+        } else {
+            val value = totalCategoryPrice - (utilizedExpense)
+            if (value == 0.0) {
+                showErrorMsg.postValue("MAXIMUM LIMIT REACHED: You reached maximum limit for this category")
+            } else {
+                showErrorMsg.postValue("MAXIMUM LIMIT REACHED: You Can Add only upto $value for this category")
+            }
+        }
+    }
+}
+
+sealed class CreateExpenseDialogViewmodelEvent{
+    data class GetReserveCash(val reserveCash: Double): CreateExpenseDialogViewmodelEvent()
 }

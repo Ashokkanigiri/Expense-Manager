@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateExpenseBinding
 import com.ashok.kanigiri.expensemanager.feature.createexpensedialog.viewmodel.CreateExpenseDialogViewModel
+import com.ashok.kanigiri.expensemanager.feature.createexpensedialog.viewmodel.CreateExpenseDialogViewmodelEvent
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.view.ManageExpensesFragment
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel.ManageExpensesViewModel
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
@@ -75,6 +76,14 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun observeViewmodel() {
+
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event->
+            when(event){
+                is CreateExpenseDialogViewmodelEvent.GetReserveCash ->{
+                    binding.reserveCash = event.reserveCash
+                }
+            }
+        })
         viewmodel.showCalenderEvent.observe(viewLifecycleOwner, Observer {
             if (it) {
                 AppUtils.getSelectedDateFromDatePicker(requireContext())
@@ -94,8 +103,6 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
                 binding.etExpenseValueField.setError(it)
             }
         })
-        viewmodel.getReserveCash()?.let {
-            binding.reserveCash = it
-        }
+        viewmodel.triggerReserveCashEvent()
     }
 }

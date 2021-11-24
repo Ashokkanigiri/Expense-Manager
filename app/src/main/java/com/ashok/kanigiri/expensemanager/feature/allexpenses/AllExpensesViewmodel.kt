@@ -2,60 +2,47 @@ package com.ashok.kanigiri.expensemanager.feature.allexpenses
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomRepository): ViewModel() {
 
-    val adapter = AllExpensesListAdapter(this)
-    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses()
-    val event = SingleLiveEvent<AllExpensesViewmodelEvent>()
-    var fromDate:String? = roomRepository.getExpenseDao().getminimumCreatedDateExpense()?.createdDate
-    var toDate: String? = roomRepository.getExpenseDao().getMaximumCreatedDateExpense()?.createdDate
+    val expandableAdapter = AllExpensesExpandableAdapter(this)
+    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses().asLiveData(Dispatchers.IO)
 
-    fun getAllExpenses(): LiveData<List<Expense>>{
-        return roomRepository.getExpenseDao().getAllExpenses()
-    }
 
-    fun deleteExpense(expenseId: Int){
-        roomRepository.getExpenseDao().deleteExpense(expenseId)
+    fun deleteExpense(expense: Expense){
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.getExpenseDao().deleteExpense(expense.expenseId)
+            roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expense.expenseCategoryId, -(expense.expensePrice))
+        }
+        loadExpandableData()
     }
 
-    fun getAllExpensesForFilteredDate(from: String, to: String){
-        event.postValue(AllExpensesViewmodelEvent.LoadExpenses( roomRepository.getExpenseDao().getTotalExpensesForGivenDate(from, to)))
+    fun loadExpandableData(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val data  = ArrayList<Map<Int, List<Expense>>>()
+            val keys = ArrayList<ExpenseMonth>()
+            val expenseMonthsList = roomRepository.getExpenseMonthDao().getAllExpenseMonthsData()
+            expenseMonthsList.forEach {
+                val expense = roomRepository.getExpenseDao().getAllExpensesByExpenseMonthId(it.expenseMonthId)
+                data.add(mapOf(Pair(it.expenseMonthId, expense)))
+                keys.add(it)
+            }
+            withContext(Dispatchers.Main){expandableAdapter.setUpAdapter(data, keys) }
+        }
     }
 
-    fun filterExpensesByDate(){
-        event.postValue(AllExpensesViewmodelEvent.ShowCalenderDialog)
-    }
-    fun filterExpensesByCategorys(){
-
-    }
-    fun sortExpensesHightoLow(){
-        event.postValue(AllExpensesViewmodelEvent.LoadExpenses(roomRepository.getExpenseDao().getTotalExpensesInDescendingOrder(fromDate, toDate)))
-    }
-    fun sortExpensesLowToHigh(){
-        event.postValue(AllExpensesViewmodelEvent.LoadExpenses(roomRepository.getExpenseDao().getTotalExpensesInAscendingOrder(fromDate, toDate)))
-    }
-    fun sortRecentExpenses(){
-        event.postValue(AllExpensesViewmodelEvent.LoadExpenses(roomRepository.getExpenseDao().getTotalRecentExpenses(fromDate, toDate)))
-    }
-
-     fun setDefaultDates(){
-         fromDate= roomRepository.getExpenseDao().getminimumCreatedDateExpense()?.createdDate
-         toDate= roomRepository.getExpenseDao().getMaximumCreatedDateExpense()?.createdDate
-    }
-}
-
-sealed class AllExpensesViewmodelEvent(){
-    object ShowCalenderDialog: AllExpensesViewmodelEvent()
-    data class LoadExpenses(val data: List<Expense>?): AllExpensesViewmodelEvent()
-    data class SortExpensesHighToLow(val data: List<Expense>): AllExpensesViewmodelEvent()
-    data class SortExpensesLowToHigh(val data: List<Expense>): AllExpensesViewmodelEvent()
-    data class SortRecentExpenses(val data: List<Expense>): AllExpensesViewmodelEvent()
 }

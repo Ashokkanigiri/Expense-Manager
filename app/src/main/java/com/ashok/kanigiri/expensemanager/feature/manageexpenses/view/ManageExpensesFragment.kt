@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
@@ -16,10 +17,11 @@ import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentManageExpense
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel.ManageExpensesViewModel
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ManageExpensesFragment : Fragment(){
+class ManageExpensesFragment : Fragment() {
 
     lateinit var binding: LayoutFragmentManageExpensesBinding
 
@@ -53,16 +55,17 @@ class ManageExpensesFragment : Fragment(){
 
     private fun initFragment() {
         val adapter = viewmodel.setAdapter()
-        if(!adapter.hasObservers()){
+        if (!adapter.hasObservers()) {
             adapter.setHasStableIds(true)
         }
         binding.rvManageExpenses.adapter = adapter
     }
 
     private fun observeViewModel() {
-        roomRepository.getCategoryDao().getSelectedCategorys().observe(viewLifecycleOwner, Observer {
-            viewmodel.loadAdapter(it)
-        })
+        roomRepository.getCategoryDao().getSelectedCategorys().asLiveData(Dispatchers.Main)
+            .observe(viewLifecycleOwner, Observer {
+                viewmodel.loadAdapter(it)
+            })
         viewmodel.createNewExpense.observe(viewLifecycleOwner, Observer {
             this.findNavController().navigate(
                 ManageExpensesFragmentDirections.actionAddExpenseFragmentToCreateExpenseDialogFragment(
@@ -73,7 +76,10 @@ class ManageExpensesFragment : Fragment(){
         })
         viewmodel.navigateToExpenseList.observe(viewLifecycleOwner, Observer {
             this.findNavController().navigate(
-                ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseListFragment(it.expenseCategoryId, it.expenseCategoryName)
+                ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseListFragment(
+                    it.expenseCategoryId,
+                    it.expenseCategoryName
+                )
             )
         })
     }
@@ -85,7 +91,9 @@ class ManageExpensesFragment : Fragment(){
         (activity as BaseActivity).handleTrailingIconClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 findNavController().navigate(
-                    ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseCategoryDialogFragment2(true)
+                    ManageExpensesFragmentDirections.actionAddExpenseFragmentToExpenseCategoryDialogFragment2(
+                        true
+                    )
                 )
             }
         })

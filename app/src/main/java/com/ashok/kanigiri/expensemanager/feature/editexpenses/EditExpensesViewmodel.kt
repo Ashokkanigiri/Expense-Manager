@@ -3,16 +3,13 @@ package com.ashok.kanigiri.expensemanager.feature.editexpenses
 import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import android.widget.SeekBar
 import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryViewmodelEvent
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
@@ -20,7 +17,9 @@ import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.sql.Timestamp
 import java.util.*
 
@@ -49,7 +48,7 @@ class EditExpensesViewmodel @Inject constructor(
     }
 
     fun getExpenseList(): LiveData<List<ExpenseCategory>> {
-        return roomRepository.getCategoryDao().getSelectedCategorys()
+        return roomRepository.getCategoryDao().getSelectedCategorys().asLiveData(Dispatchers.Main)
     }
 
     fun createAccount() {
@@ -70,7 +69,9 @@ class EditExpensesViewmodel @Inject constructor(
             toDate = AppUtils.getLastDayOfMonthInDateFormat(),
             totalUtilizedPrice = 0.0
         )
-        roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+        viewModelScope.launch (Dispatchers.IO){
+            roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+        }
     }
 
     fun calculateTotalExpenses() {
@@ -84,11 +85,10 @@ class EditExpensesViewmodel @Inject constructor(
     }
 
     fun getTargetPriceForCategory(categoryId: Int): Double {
-        return roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId)
+        return  roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId)
     }
 
     fun cancelButtonClicked() {
         event.postValue(EditExpensesViewModelEvent.HandleCancelButtonClicked)
     }
-
 }
