@@ -22,7 +22,7 @@ object RoomModule {
     @Provides
     @Singleton
     fun providesRoomDatabase(@ApplicationContext application: Context): ExpenseAppDB{
-        return Room.databaseBuilder(application, ExpenseAppDB::class.java, "expense-app-db").allowMainThreadQueries().build()
+        return Room.databaseBuilder(application, ExpenseAppDB::class.java, "expense-app-db").build()
     }
 
     @Provides

@@ -70,7 +70,9 @@ class EditExpensesViewmodel @Inject constructor(
             toDate = AppUtils.getLastDayOfMonthInDateFormat(),
             totalUtilizedPrice = 0.0
         )
-        roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+        viewModelScope.launch (Dispatchers.IO){
+            roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+        }
     }
 
     fun calculateTotalExpenses() {
