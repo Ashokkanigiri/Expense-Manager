@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.Timestamp
@@ -27,19 +28,31 @@ class CreateExpenseDialogViewModel @Inject constructor(
     val showCalenderEvent = SingleLiveEvent<Boolean>()
     val hideDialog = SingleLiveEvent<Boolean>()
     val showErrorMsg = SingleLiveEvent<String>()
+    val event = SingleLiveEvent<CreateExpenseDialogViewmodelEvent>()
     var expenseId: Int? = null
     var expenseName: String? = null
     var selectedDate: String? = null
     var expensePrice: String? = null
     var isExpenseCreated = false
 
-    fun getReserveCash() = roomRepository.getCategoryDao()
-        .getTotalExpensePriceForCategory(expenseId!!) - (roomRepository.getExpenseDao()
-        .getUtilizedPriceForCategory(expenseId!!))
-
     init {
         hideDialog.postValue(false)
     }
+
+    fun triggerReserveCashEvent(){
+        viewModelScope.launch {
+            expenseId?.let {
+                event.postValue(CreateExpenseDialogViewmodelEvent.GetReserveCash(getReserveCash(it)))
+            }
+        }
+    }
+
+    private suspend fun getReserveCash(expenseId: Int): Double{
+        return roomRepository.getCategoryDao()
+            .getTotalExpensePriceForCategory(expenseId) - (roomRepository.getExpenseDao()
+            .getUtilizedPriceForCategory(expenseId)?:0.0)
+    }
+
 
     fun showCalenderPicker() {
         showCalenderEvent.postValue(true)
@@ -55,7 +68,7 @@ class CreateExpenseDialogViewModel @Inject constructor(
                     roomRepository.getCategoryDao().getTotalExpensePriceForCategory(expenseId!!)
                 }
                 verifyExpensePriceIsNotExceedingTotalPriceAndInsert(
-                    utilizedExpense,
+                    utilizedExpense?:0.0,
                     totalCategoryPrice
                 )
             } else {
@@ -97,4 +110,8 @@ class CreateExpenseDialogViewModel @Inject constructor(
             }
         }
     }
+}
+
+sealed class CreateExpenseDialogViewmodelEvent{
+    data class GetReserveCash(val reserveCash: Double): CreateExpenseDialogViewmodelEvent()
 }

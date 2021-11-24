@@ -36,7 +36,9 @@ class ExpenseListViewModel @Inject constructor(private val roomRepository: RoomR
     }
 
     fun deleteExpense(expense: Expense){
-        roomRepository.getExpenseDao().deleteExpense(expense.expenseId)
-        roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expenseCategoryId?:0, -(expense.expensePrice))
+        viewModelScope.launch (Dispatchers.IO){
+            roomRepository.getExpenseDao().deleteExpense(expense.expenseId)
+            roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expenseCategoryId?:0, -(expense.expensePrice))
+        }
     }
 }
