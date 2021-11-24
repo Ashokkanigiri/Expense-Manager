@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    val getTotalExpenses = roomRepository.getExpenseDao().getTotalExpenses().asLiveData(Dispatchers.IO)
+    val getTotalExpenses = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.totalUtilizedPrice
 
     //2 Way binding
     var etSalary = ObservableField<String>()
