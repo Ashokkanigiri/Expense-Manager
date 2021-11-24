@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -26,13 +27,19 @@ class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewMode
 }
 
 class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val viewmodel: ChooseCategoryViewModel): RecyclerView.ViewHolder(binding.root){
+    val showShowSelectedMask = ObservableField<Boolean>()
     fun bind(expenseLitral: ExpenseCategory){
         binding.expense = expenseLitral
+        binding.viewmodel = viewmodel
+        binding.viewholder = this
+
         binding.clMainLayout.setOnClickListener {
-            viewmodel.updateCategorySelectionStatus(true, expenseLitral.expenseCategoryId)
+            showShowSelectedMask.set(true)
+            viewmodel.updateCategorySelectionStatus(true, expenseLitral)
         }
         binding.clCheckedLayout.setOnClickListener {
-            viewmodel.updateCategorySelectionStatus(false, expenseLitral.expenseCategoryId)
+            showShowSelectedMask.set(false)
+            viewmodel.updateCategorySelectionStatus(false, expenseLitral)
         }
     }
 }

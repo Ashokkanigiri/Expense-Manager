@@ -40,4 +40,10 @@ interface ExpenseCategoryDao {
     @Query("SELECT expenseCategoryName FROM expensecategory WHERE expenseCategoryId =:categoryId")
     fun getCategoryName(categoryId: Int): String
 
+    @Query("DELETE FROM expensecategory WHERE expenseCategoryId =:expenseCategoryId")
+    suspend fun deleteCategory(expenseCategoryId: Int)
+
+    @Query("DELETE FROM expensecategory WHERE expenseCategoryName =:expenseCategoryName")
+    suspend fun deleteCategoryByName(expenseCategoryName: String)
+
 }

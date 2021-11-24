@@ -38,17 +38,9 @@ class ChooseCategoryFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
         setUpRecyclerView()
-        injectDefaultCategoryList()
+        viewmodel.injectDefaultCategorysList()
         observeViewmodel()
         handleNewExpenseCategoryCreated()
-    }
-
-    private fun injectDefaultCategoryList() {
-        viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {
-            if(it?.size == 0){
-                viewmodel.injectDefaultCategorysList()
-            }
-        })
     }
 
     private fun handleNewExpenseCategoryCreated() {
@@ -79,9 +71,6 @@ class ChooseCategoryFragment: Fragment() {
                     requireActivity().finish()
                 }
             }
-        })
-        viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {
-            viewmodel.submitItemAdapterData(it)
         })
     }
 

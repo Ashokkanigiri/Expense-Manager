@@ -70,9 +70,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
             )
             categoryList.add(expenseCategory)
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            roomRepository.getCategoryDao().insert(categoryList)
-        }
+        submitItemAdapterData(categoryList)
     }
 
     fun openCreateExpenseDialog() {
@@ -88,12 +86,24 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
         return roomRepository.getCategoryDao().getAllExpenses().asLiveData(Dispatchers.Main)
     }
 
-    fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategoryId: Int) {
+    fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategory: ExpenseCategory) {
         viewModelScope.launch(Dispatchers.IO) {
-            roomRepository.getCategoryDao()
-                .updateCategoryUpdationStatus(isCategorySelected, expenseCategoryId)
+           if(isCategorySelected){
+               createNewCategory(expenseCategory)
+           }else{
+               deleteCategory(expenseCategory)
+           }
         }
     }
+
+    suspend fun createNewCategory(expenseCategory: ExpenseCategory){
+        roomRepository.getCategoryDao().insert(expenseCategory)
+    }
+
+    suspend fun deleteCategory(expenseCategory: ExpenseCategory){
+        roomRepository.getCategoryDao().deleteCategoryByName(expenseCategory.expenseCategoryName)
+    }
+
 
     fun insertNewCategory(categoryName: String) {
         val expenseCategory = ExpenseCategory(
