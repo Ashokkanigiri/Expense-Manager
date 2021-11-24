@@ -65,8 +65,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
                 expenseCategoryTargetPrice = null,
                 totalUtilizedPrice = 0.0,
                 expenseCategoryName = it,
-                createdDate = System.currentTimeMillis().toString(),
-                isSelected = false
+                createdDate = System.currentTimeMillis().toString()
             )
             categoryList.add(expenseCategory)
         }
@@ -80,10 +79,6 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
 
     fun createAccount() {
         event.postValue(ChooseCategoryViewmodelEvent.NavigateToEditExpenses)
-    }
-
-    fun getAllCategorys(): LiveData<List<ExpenseCategory>> {
-        return roomRepository.getCategoryDao().getAllExpenses().asLiveData(Dispatchers.Main)
     }
 
     fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategory: ExpenseCategory) {
@@ -110,8 +105,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
             expenseCategoryTargetPrice = null,
             totalUtilizedPrice = 0.0,
             expenseCategoryName = categoryName,
-            createdDate = System.currentTimeMillis().toString(),
-            isSelected = true
+            createdDate = System.currentTimeMillis().toString()
         )
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getCategoryDao().insert(expenseCategory)

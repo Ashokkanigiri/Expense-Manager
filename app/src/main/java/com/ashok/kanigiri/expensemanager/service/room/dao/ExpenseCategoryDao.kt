@@ -11,10 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ExpenseCategoryDao {
 
     @Query("SELECT * FROM expensecategory")
-    fun getAllExpenses(): Flow<List<ExpenseCategory>>
-
-    @Query("SELECT * FROM expensecategory WHERE isSelected =:isSelected")
-    fun getSelectedCategorys(isSelected: Boolean = true): Flow<List<ExpenseCategory>>
+    fun getAllExpenseCategorys(): Flow<List<ExpenseCategory>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ExpenseCategory)
@@ -30,9 +27,6 @@ interface ExpenseCategoryDao {
 
     @Query("UPDATE expensecategory SET totalUtilizedPrice =:total+totalUtilizedPrice WHERE expenseCategoryId =:categoryId")
     suspend fun updateUtilizedPriceForCategory(categoryId: Int, total: Double)
-
-    @Query("UPDATE expensecategory SET isSelected =:isCategorySelected WHERE expenseCategoryId =:expenseCategoryId")
-    suspend fun updateCategoryUpdationStatus(isCategorySelected: Boolean, expenseCategoryId: Int)
 
     @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total WHERE expenseCategoryId =:categoryId")
     suspend fun updateTargetPriceForCategory(categoryId: Int, total: Double)

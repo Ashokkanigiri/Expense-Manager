@@ -59,8 +59,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
                         expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble() ?: 0.0,
                         totalUtilizedPrice = 0.0,
                         expenseCategoryName = expenseCategoryName.get() ?: "",
-                        createdDate = System.currentTimeMillis().toString(),
-                        isSelected = true
+                        createdDate = System.currentTimeMillis().toString()
                     )
 
                     viewModelScope.launch(Dispatchers.IO) {

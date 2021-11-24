@@ -48,7 +48,7 @@ class EditExpensesViewmodel @Inject constructor(
     }
 
     fun getExpenseList(): LiveData<List<ExpenseCategory>> {
-        return roomRepository.getCategoryDao().getSelectedCategorys().asLiveData(Dispatchers.Main)
+        return roomRepository.getCategoryDao().getAllExpenseCategorys().asLiveData(Dispatchers.Main)
     }
 
     fun createAccount() {
