@@ -65,7 +65,8 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
                 expenseCategoryTargetPrice = null,
                 totalUtilizedPrice = 0.0,
                 expenseCategoryName = it,
-                createdDate = System.currentTimeMillis().toString()
+                createdDate = System.currentTimeMillis().toString(),
+                expenseMonthId = 1
             )
             categoryList.add(expenseCategory)
         }
@@ -75,7 +76,6 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     fun openCreateExpenseDialog() {
         event.postValue(ChooseCategoryViewmodelEvent.OpenCreateExpenseDialog)
     }
-
 
     fun createAccount() {
         event.postValue(ChooseCategoryViewmodelEvent.NavigateToEditExpenses)
@@ -105,7 +105,8 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
             expenseCategoryTargetPrice = null,
             totalUtilizedPrice = 0.0,
             expenseCategoryName = categoryName,
-            createdDate = System.currentTimeMillis().toString()
+            createdDate = System.currentTimeMillis().toString(),
+            expenseMonthId = 1
         )
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getCategoryDao().insert(expenseCategory)
