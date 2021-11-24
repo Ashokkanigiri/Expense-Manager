@@ -13,6 +13,9 @@ interface ExpenseCategoryDao {
     @Query("SELECT * FROM expensecategory")
     fun getAllExpenseCategorys(): Flow<List<ExpenseCategory>>
 
+    @Query("SELECT * FROM expensecategory WHERE expenseMonthId =:expenseMonthId")
+    fun getAllCategorysByExpenseMonth(expenseMonthId: Int): Flow<List<ExpenseCategory>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ExpenseCategory)
 
