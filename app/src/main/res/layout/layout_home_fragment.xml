@@ -6,8 +6,8 @@
     <data>
         <import type="com.ashok.kanigiri.expensemanager.utils.AppUtils"/>
         <variable
-            name="salary"
-            type="Integer" />
+            name="expenseMonth"
+            type="com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth" />
         <variable
             name="viewmodel"
             type="com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModel" />
@@ -34,7 +34,7 @@
                 layout="@layout/layout_empty_data"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:visibility="@{(viewmodel.getTotalExpenses ==  null || viewmodel.getTotalExpenses ==  0.0) ? View.VISIBLE: View.GONE}"
+                android:visibility="@{(expenseMonth.totalUtilizedPrice == 0.0)? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/margin_end"
                 app:layout_constraintStart_toStartOf="@id/margin_start"
@@ -43,7 +43,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="@{(viewmodel.getTotalExpenses ==  null || viewmodel.getTotalExpenses ==  0.0) ? View.GONE: View.VISIBLE}"
+                android:visibility="@{(expenseMonth.totalUtilizedPrice == 0.0)? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/margin_end"
                 app:layout_constraintStart_toStartOf="@+id/margin_start"
@@ -54,7 +54,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:visibility="@{salary != 0 ? View.VISIBLE: View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -72,8 +71,8 @@
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        set_total_expense_progress="@{salary}"
-                        set_utilized_expense_progress="@{viewmodel.getTotalExpenses}"
+                        set_total_expense_progress="@{expenseMonth.salary}"
+                        set_utilized_expense_progress="@{expenseMonth.totalUtilizedPrice}"
                         setup_progressbar_tint="@{50}"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
@@ -90,7 +89,7 @@
                         android:layout_height="0dp"
                         android:layout_marginEnd="10dp"
                         android:gravity="center_vertical"
-                        android:text="@{``+viewmodel.getTotalExpenses}"
+                        android:text="@{``+expenseMonth.totalUtilizedPrice}"
                         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                         app:layout_constraintEnd_toStartOf="@+id/progressBar"
                         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +102,7 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
                         android:gravity="center_vertical"
-                        android:text="@{``+salary}"
+                        android:text="@{``+expenseMonth.salary}"
                         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/progressBar"

@@ -28,9 +28,6 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val getTotalExpenses = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.totalUtilizedPrice
-
-    //2 Way binding
-    var etSalary = ObservableField<String>()
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
     init {

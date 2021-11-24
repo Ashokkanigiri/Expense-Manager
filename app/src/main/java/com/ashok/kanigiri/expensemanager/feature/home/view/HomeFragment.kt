@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
@@ -31,6 +32,8 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 import javax.inject.Inject
@@ -62,10 +65,13 @@ class HomeFragment : Fragment() {
         observeViewModel()
         setupActionBar()
         setUpExpenditureGraph()
-        loadSalaryDetailsFromSharedPrefs()
     }
 
     private fun observeViewModel() {
+        viewmodel.roomRepository.getExpenseMonthDao().getLatestExpenseMonthFlow().asLiveData(Dispatchers.Main).observe(viewLifecycleOwner, Observer {
+            binding.expenseMonth = it
+        })
+
         viewmodel.event.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is HomeViewModelEvent.Logout -> {
@@ -81,11 +87,6 @@ class HomeFragment : Fragment() {
         database.clearAllTables()
         requireActivity().finish()
 
-    }
-
-    private fun loadSalaryDetailsFromSharedPrefs() {
-        binding.salary =
-            viewmodel.loadSalaryFromCurrentMonth().toInt()
     }
 
     private fun setUpExpenditureGraph() {
