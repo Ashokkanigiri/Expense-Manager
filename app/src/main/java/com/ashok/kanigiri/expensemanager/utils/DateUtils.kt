@@ -15,6 +15,6 @@ object DateUtils {
     //val dd  = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))
 
     fun convertDateToDateFormat(date: Long): String {
-        return  SimpleDateFormat("MMM dd yyyy").format(date)
+        return  SimpleDateFormat(DATE_FORMAT_2).format(date)
     }
 }
