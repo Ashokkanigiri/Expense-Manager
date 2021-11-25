@@ -13,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateAccountViewmodel @Inject constructor(@ApplicationContext val context: Context) :
     ViewModel() {
-    var userLoginModel = UserLoginModel("", "", "")
-    val dateOfBirthObserver = ObservableField<String>()
+    var userLoginModel = UserLoginModel("", 0, "")
     val event = SingleLiveEvent<CreateAccountViewmodelEvent>()
 
     init {
@@ -22,7 +21,7 @@ class CreateAccountViewmodel @Inject constructor(@ApplicationContext val context
     }
 
     fun createAccount() {
-        if (userLoginModel.dateOfBirth.trim() != ""  && userLoginModel.salary.trim() != "" && userLoginModel.name.trim() != "") {
+        if (userLoginModel.dateOfBirth != null  && userLoginModel.salary.trim() != "" && userLoginModel.name.trim() != "") {
             SharedPreferenceService.putUserLoginModel(context, userLoginModel)
             event.postValue(CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen)
         }else{
@@ -30,9 +29,8 @@ class CreateAccountViewmodel @Inject constructor(@ApplicationContext val context
         }
     }
 
-    fun saveDateOfBirthFromPicker(dob: String) {
+    fun saveDateOfBirthFromPicker(dob: Long) {
         userLoginModel.dateOfBirth = dob
-        dateOfBirthObserver.set(dob)
     }
 
     fun onCancelButtonClicked(){

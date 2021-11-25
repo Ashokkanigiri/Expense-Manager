@@ -10,6 +10,6 @@ import java.io.Serializable
 
 data class UserLoginModel(
     var name: String,
-    var dateOfBirth: String,
+    var dateOfBirth: Long,
     var salary: String
 )

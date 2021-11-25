@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 import java.sql.Timestamp
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -29,8 +30,8 @@ object AppUtils {
         else -> ExpenseTypes.MISCELLANEOUS
     }
 
-    fun getSelectedDateFromDatePicker(context: Context): MutableLiveData<String>{
-        val date = MutableLiveData<String>()
+    fun getSelectedDateFromDatePicker(context: Context): MutableLiveData<Long>{
+        val date = MutableLiveData<Long>()
         val datePickerDialog = DatePickerDialog(context)
 
         val fromCal = Calendar.getInstance()
@@ -48,7 +49,15 @@ object AppUtils {
         datePickerDialog.datePicker.minDate =fromCal.timeInMillis
         datePickerDialog.datePicker.maxDate =toCal.timeInMillis
         datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
-            date.postValue("$dayOfMonth/${month+1}/$year")
+
+            val ddd = "$dayOfMonth/${month+1}/$year"
+
+            val selectedDatePicker = Calendar.getInstance()
+            selectedDatePicker.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            selectedDatePicker.set(Calendar.MONTH, month)
+            selectedDatePicker.set(Calendar.YEAR, year)
+            date.postValue(Timestamp(selectedDatePicker.timeInMillis).time)
+
         }
         datePickerDialog.show()
         return date

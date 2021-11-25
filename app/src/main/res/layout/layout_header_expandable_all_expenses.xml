@@ -7,6 +7,7 @@
         <variable
             name="expenseMonth"
             type="com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth" />
+        <import type="com.ashok.kanigiri.expensemanager.utils.DateUtils"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     tools:text="May 2019"
-                    android:text="@{expenseMonth.createdDate}"
+                    android:text="@{DateUtils.INSTANCE.convertDateToDateFormat(expenseMonth.createdDate)}"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

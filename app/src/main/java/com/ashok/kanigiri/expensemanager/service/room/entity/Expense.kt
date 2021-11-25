@@ -10,9 +10,9 @@ data class Expense(
     val expenseId: Int = 0,
     val expenseMonthId: Int,
     val expenseName: String,
-    val expenseDate: String,
+    val expenseDate: Long,
     val expenseCategoryId: Int,
-    val createdDate: String,
+    val createdDate: Long,
     val expensePrice: Double
 )
 

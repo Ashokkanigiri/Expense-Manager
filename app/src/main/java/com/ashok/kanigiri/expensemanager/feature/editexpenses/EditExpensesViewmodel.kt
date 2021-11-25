@@ -62,7 +62,7 @@ class EditExpensesViewmodel @Inject constructor(
 
     private fun createExpenseMonth() {
         val expenseMonth = ExpenseMonth(
-            createdDate = (Timestamp(System.currentTimeMillis().toLong())).toString(),
+            createdDate = System.currentTimeMillis(),
             expenseMonth = AppUtils.getCurrentMonthInInt(),
             salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0,
             fromDate = AppUtils.getFirstDayOnMonthInDateFormat(),

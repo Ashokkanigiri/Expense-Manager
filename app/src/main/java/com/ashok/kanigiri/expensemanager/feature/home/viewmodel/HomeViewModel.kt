@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
             roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.fromDate?.let {
                 if (AppUtils.shouldUpdateToNextMonth(it)) {
                     val expenseMonth = ExpenseMonth(
-                        createdDate = (Timestamp(System.currentTimeMillis())).toString(),
+                        createdDate = System.currentTimeMillis(),
                         expenseMonth = AppUtils.getCurrentMonthInInt(),
                         salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()
                             ?: 0.0,

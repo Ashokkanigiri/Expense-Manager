@@ -16,6 +16,7 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateAccountBinding
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
+import com.ashok.kanigiri.expensemanager.utils.DateUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,8 +43,6 @@ class CreateAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         binding.lifecycleOwner = viewLifecycleOwner
         binding.data = viewmodel.userLoginModel
         binding.viewmodel = viewmodel
@@ -86,6 +85,7 @@ class CreateAccountFragment : Fragment() {
     fun openDatePickerDialog() {
         AppUtils.getSelectedDateFromDatePicker(requireContext())
             .observe(viewLifecycleOwner, Observer {
+                binding.selectedDate = DateUtils.convertDateToDateFormat(it)
                 viewmodel.saveDateOfBirthFromPicker(it)
             })
     }

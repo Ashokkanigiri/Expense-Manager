@@ -31,7 +31,7 @@ class CreateExpenseDialogViewModel @Inject constructor(
     val event = SingleLiveEvent<CreateExpenseDialogViewmodelEvent>()
     var expenseId: Int? = null
     var expenseName: String? = null
-    var selectedDate: String? = null
+    var selectedDate: Long? = null
     var expensePrice: String? = null
     var isExpenseCreated = false
 
@@ -60,7 +60,7 @@ class CreateExpenseDialogViewModel @Inject constructor(
 
     fun createExpense() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (expensePrice?.trim() != null && expensePrice?.trim() != "" && selectedDate?.trim() != "" && selectedDate?.trim() != null) {
+            if (expensePrice?.trim() != null && expensePrice?.trim() != "" && selectedDate != null) {
                 val utilizedExpense = withContext(Dispatchers.IO) {
                     roomRepository.getExpenseDao().getUtilizedPriceForCategory(expenseId!!)
                 }
@@ -88,9 +88,9 @@ class CreateExpenseDialogViewModel @Inject constructor(
             val expense = Expense(
                 expenseCategoryId = expenseId ?: 0,
                 expenseName = expenseName ?: "",
-                createdDate = "${Timestamp(System.currentTimeMillis())}",
+                createdDate = System.currentTimeMillis(),
                 expensePrice = expensePrice?.toDouble() ?: 0.0,
-                expenseDate = selectedDate ?: "",
+                expenseDate = selectedDate?:0,
                 expenseMonthId = roomRepository.getExpenseMonthDao()
                     .getLatestExpenseMonth()?.expenseMonthId ?: 0
             )
