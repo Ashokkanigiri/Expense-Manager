@@ -16,6 +16,7 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentChooseCategoryBinding
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -71,8 +72,19 @@ class ChooseCategoryFragment: Fragment() {
                 is ChooseCategoryViewmodelEvent.HandleCancelButtonClicked->{
                     requireActivity().finish()
                 }
+                is ChooseCategoryViewmodelEvent.ShowSnackBar->{
+                    showErrorSnackBar()
+                }
             }
         })
+    }
+
+    private fun showErrorSnackBar() {
+        Snackbar.make(
+            requireView(),
+            "Please select atlease three categorys to proceed furthur",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun setUpRecyclerView() {

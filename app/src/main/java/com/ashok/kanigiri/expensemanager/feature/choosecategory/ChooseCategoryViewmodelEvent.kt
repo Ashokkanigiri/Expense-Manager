@@ -4,4 +4,5 @@ sealed class ChooseCategoryViewmodelEvent {
     object OpenCreateExpenseDialog: ChooseCategoryViewmodelEvent()
     object NavigateToEditExpenses: ChooseCategoryViewmodelEvent()
     object HandleCancelButtonClicked: ChooseCategoryViewmodelEvent()
+    object ShowSnackBar: ChooseCategoryViewmodelEvent()
 }

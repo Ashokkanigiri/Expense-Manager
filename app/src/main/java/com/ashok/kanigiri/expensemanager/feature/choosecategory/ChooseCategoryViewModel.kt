@@ -29,7 +29,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     val itemAdapter = ChooseCategoryItemdapter(this)
     val concatAdapter = ConcatAdapter(addAdapter, itemAdapter)
     val event = SingleLiveEvent<ChooseCategoryViewmodelEvent>()
-    private val seletedExpenseCategorys = ArrayList<ExpenseCategory>()
+    val seletedExpenseCategorys = ArrayList<ExpenseCategory>()
 
     init {
         SharedPreferenceService.putBoolean(SharedPreferenceService.IS_USER_CHOOSED_CATEGORYS, false, context)
@@ -78,7 +78,11 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
     }
 
     fun createAccount() {
-        event.postValue(ChooseCategoryViewmodelEvent.NavigateToEditExpenses)
+        if(seletedExpenseCategorys.size >= 3 ){
+            event.postValue(ChooseCategoryViewmodelEvent.NavigateToEditExpenses)
+        }else{
+            event.postValue(ChooseCategoryViewmodelEvent.ShowSnackBar)
+        }
     }
 
     fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategory: ExpenseCategory) {

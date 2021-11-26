@@ -35,10 +35,12 @@ class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val v
 
         binding.clMainLayout.setOnClickListener {
             showShowSelectedMask.set(true)
+            viewmodel.seletedExpenseCategorys.add(expenseLitral)
             viewmodel.updateCategorySelectionStatus(true, expenseLitral)
         }
         binding.clCheckedLayout.setOnClickListener {
             showShowSelectedMask.set(false)
+            viewmodel.seletedExpenseCategorys.remove(expenseLitral)
             viewmodel.updateCategorySelectionStatus(false, expenseLitral)
         }
     }
