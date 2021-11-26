@@ -30,36 +30,40 @@ object AppUtils {
         else -> ExpenseTypes.MISCELLANEOUS
     }
 
-    fun getSelectedDateFromDatePicker(context: Context): MutableLiveData<Long>{
+    fun getSelectedDateFromDatePicker(context: Context?): MutableLiveData<Long>{
         val date = MutableLiveData<Long>()
-        val datePickerDialog = DatePickerDialog(context)
+        context?.let {
 
-        val fromCal = Calendar.getInstance()
-        fromCal.set(Calendar.DAY_OF_MONTH, 1)
-        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
-        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
+            val datePickerDialog = DatePickerDialog(context)
 
-        val toCal = Calendar.getInstance()
-        toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
-        toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
-        toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
+            val fromCal = Calendar.getInstance()
+            fromCal.set(Calendar.DAY_OF_MONTH, 1)
+            fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
+            fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
 
-        Log.d("lmflwm", "FROM CAL : ${Timestamp(fromCal.timeInMillis)}, TOCAL : ${Timestamp(toCal.timeInMillis)}")
+            val toCal = Calendar.getInstance()
+            toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
+            toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
+            toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
 
-        datePickerDialog.datePicker.minDate =fromCal.timeInMillis
-        datePickerDialog.datePicker.maxDate =toCal.timeInMillis
-        datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
+            Log.d("lmflwm", "FROM CAL : ${Timestamp(fromCal.timeInMillis)}, TOCAL : ${Timestamp(toCal.timeInMillis)}")
 
-            val ddd = "$dayOfMonth/${month+1}/$year"
+            datePickerDialog.datePicker.minDate =fromCal.timeInMillis
+            datePickerDialog.datePicker.maxDate =toCal.timeInMillis
+            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
 
-            val selectedDatePicker = Calendar.getInstance()
-            selectedDatePicker.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            selectedDatePicker.set(Calendar.MONTH, month)
-            selectedDatePicker.set(Calendar.YEAR, year)
-            date.postValue(Timestamp(selectedDatePicker.timeInMillis).time)
+                val ddd = "$dayOfMonth/${month+1}/$year"
 
+                val selectedDatePicker = Calendar.getInstance()
+                selectedDatePicker.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                selectedDatePicker.set(Calendar.MONTH, month)
+                selectedDatePicker.set(Calendar.YEAR, year)
+                date.postValue(Timestamp(selectedDatePicker.timeInMillis).time)
+
+            }
+            datePickerDialog.show()
         }
-        datePickerDialog.show()
+
         return date
     }
 

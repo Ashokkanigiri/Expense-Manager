@@ -2,6 +2,7 @@ package com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.view
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Trace
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
@@ -16,6 +17,7 @@ import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateNewExpe
 import com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.viewmodel.ExpenseCategoryDialogViewModel
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
+import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,10 +29,6 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
     val binding: LayoutFragmentCreateNewExpenseCategoryBinding get() = _binding!!
 
     private val dialogViewModel: ExpenseCategoryDialogViewModel by viewModels()
-
-    companion object{
-         val INSTANCE = ExpenseCategoryDialogFragment()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +73,13 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.SEND_CREATED_EXPENSE_KEY, it)
             dialog?.dismiss()
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogViewModel.sendCreatedExpenseNameEvent.removeObservers(viewLifecycleOwner)
+        dialogViewModel.event.removeObservers(viewLifecycleOwner)
+        findNavController().previousBackStackEntry?.savedStateHandle?.remove<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)
     }
 
     override fun onDismiss(dialog: DialogInterface) {

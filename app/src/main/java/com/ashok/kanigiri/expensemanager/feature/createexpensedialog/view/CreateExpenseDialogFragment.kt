@@ -35,10 +35,6 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
 
     private val viewmodel: CreateExpenseDialogViewModel by viewModels()
 
-    companion object {
-        val INSTANCE = CreateExpenseDialogFragment()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.DialogStyle)
@@ -105,5 +101,10 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
             }
         })
         viewmodel.triggerReserveCashEvent()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        AppUtils.getSelectedDateFromDatePicker(null).removeObservers(viewLifecycleOwner)
     }
 }

@@ -50,6 +50,7 @@ class ChooseCategoryFragment: Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
             findNavController().popBackStack()
         }
+        findNavController().currentBackStackEntry?.savedStateHandle?.remove<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)
     }
 
     private fun observeViewmodel() {
