@@ -64,7 +64,7 @@ fun ConstraintLayout.setRandomBackground(expenseCategory: String) {
         ColorStateList.valueOf(Color.parseColor("#fff3ff")),
     )
 
-    this.setBackgroundTintList(list.random());
+    this.backgroundTintList = list.random()
 }
 
 @BindingAdapter("set_expense_category_image")

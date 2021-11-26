@@ -101,7 +101,7 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
         })
         viewmodel.showErrorMsg.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.etExpenseValueField.setError(it)
+                binding.etExpenseValueField.error = it
             }
         })
         viewmodel.triggerReserveCashEvent()

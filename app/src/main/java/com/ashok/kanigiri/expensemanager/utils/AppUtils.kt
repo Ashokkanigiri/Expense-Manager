@@ -36,13 +36,13 @@ object AppUtils {
 
         val fromCal = Calendar.getInstance()
         fromCal.set(Calendar.DAY_OF_MONTH, 1)
-        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
-        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
+        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
 
         val toCal = Calendar.getInstance()
         toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
-        toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
-        toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+        toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
+        toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
 
         Log.d("lmflwm", "FROM CAL : ${Timestamp(fromCal.timeInMillis)}, TOCAL : ${Timestamp(toCal.timeInMillis)}")
 
@@ -67,7 +67,8 @@ object AppUtils {
         return "${SimpleDateFormat("YYYY", Locale.getDefault()).format(Date())}-${(SimpleDateFormat("MM", Locale.getDefault()).format(Date()))}-${"01"}"
     }
 
-    fun getCurrentMonthInInt() = (SimpleDateFormat("MM", Locale.getDefault()).format(Date())?.toInt()?:0)
+    fun getCurrentMonthInInt() = (SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt()
+        ?:0)
 
     fun getLastDayOfMonthInDateFormat(): String{
         return "${(SimpleDateFormat("YYYY", Locale.getDefault()).format(Date()))}-${(SimpleDateFormat("MM", Locale.getDefault()).format(Date()))}-${getLastDayOf((SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt()))}"
@@ -87,7 +88,7 @@ object AppUtils {
 
     fun getCurrentMonth(): String{
         val monthNames = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-        return monthNames.get((SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt()?:0)-1)
+        return monthNames.get(SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt() -1)
     }
 
     fun getDateInReadableFormat(currentDate: String?): String{
@@ -117,10 +118,6 @@ object AppUtils {
 
     fun shouldUpdateToNextMonth(savedDate: String?): Boolean{
         //if savedDate > getUpcommingMonthStarttingDate -> then return true else false
-        if(getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)){
-            return true
-        }else{
-            return false
-        }
+        return getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)
     }
 }

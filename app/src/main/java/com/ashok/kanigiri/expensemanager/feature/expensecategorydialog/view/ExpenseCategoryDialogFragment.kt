@@ -68,7 +68,7 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
                 dialog?.dismiss()
             }
         })
-        dialogViewModel.reserveCash()?.let {
+        dialogViewModel.reserveCash().let {
             binding.reserveCash = it
         }
         dialogViewModel.sendCreatedExpenseNameEvent.observe(viewLifecycleOwner, Observer {
