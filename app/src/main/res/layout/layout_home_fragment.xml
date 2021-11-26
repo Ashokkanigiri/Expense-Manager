@@ -128,6 +128,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_chart_header_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="* This Chart shows your monthly expenditure"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_chart_header" />
+
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/expenditure_chart"
@@ -136,7 +147,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_chart_header" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_chart_header_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -159,6 +170,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_annuall_chart_header_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="* This Chart shows overview of all your expenses till date"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_annuall_chart_header"/>
+
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/anually_expenditure_chart"
@@ -167,7 +189,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_annuall_chart_header" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_annuall_chart_header_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
