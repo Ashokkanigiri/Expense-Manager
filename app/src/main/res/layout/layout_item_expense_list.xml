@@ -17,7 +17,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/light_grey"
+        android:background="@drawable/bg_rounded_edittext"
         android:elevation="15dp"
         app:cardCornerRadius="5dp"
         android:layout_margin="5dp">
@@ -26,8 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_edittext"
-            setRandomBackground="@{expense.expenseName}"
-            android:layout_margin="5dp">
+            setRandomBackground="@{expense.expenseName}">
 
             <TextView
                 android:id="@+id/textView6"
