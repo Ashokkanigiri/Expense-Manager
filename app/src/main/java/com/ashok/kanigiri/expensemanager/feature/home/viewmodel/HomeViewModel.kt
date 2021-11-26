@@ -34,6 +34,17 @@ class HomeViewModel @Inject constructor(
         insertExpenseMonth()
     }
 
+    fun updateSalary(){
+        event.postValue(HomeViewModelEvent.ShouldUpdateSalary)
+    }
+
+    fun updateSalaryInCurrentMonth(salary: Double){
+        viewModelScope.launch {
+            val expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
+            roomRepository.getExpenseMonthDao().updateSalaryForExpenseMonth(salary, expenseMonthId?:1)
+        }
+    }
+
     private fun insertExpenseMonth() {
         viewModelScope.launch (Dispatchers.IO){
             roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.fromDate?.let {
@@ -82,4 +93,5 @@ class HomeViewModel @Inject constructor(
 
 sealed class HomeViewModelEvent {
     object Logout : HomeViewModelEvent()
+    object ShouldUpdateSalary: HomeViewModelEvent()
 }

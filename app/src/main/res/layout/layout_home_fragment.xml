@@ -70,6 +70,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/salary_tv_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="* You can edit your salary by clicking"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/materialTextView" />
+
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="@android:style/Widget.ProgressBar.Horizontal"
@@ -83,7 +93,7 @@
                         android:progressBackgroundTint="@color/light_grey"
                         app:layout_constraintEnd_toStartOf="@+id/tv_salary_max"
                         app:layout_constraintStart_toEndOf="@+id/tv_salary_min"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+                        app:layout_constraintTop_toBottomOf="@+id/salary_tv_desc" />
 
                     <TextView
                         android:id="@+id/tv_salary_min"
@@ -109,6 +119,19 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/progressBar"
                         app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+                    <TextView
+                        android:id="@+id/tv_edit_salary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="here"
+                        android:onClick="@{()-> viewmodel.updateSalary()}"
+                        android:textColor="@color/button_bg"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/salary_tv_desc"
+                        app:layout_constraintStart_toEndOf="@+id/salary_tv_desc"
+                        app:layout_constraintTop_toTopOf="@+id/salary_tv_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

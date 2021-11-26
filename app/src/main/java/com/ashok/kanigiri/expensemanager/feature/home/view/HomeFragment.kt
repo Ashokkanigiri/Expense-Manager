@@ -37,6 +37,18 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 import javax.inject.Inject
+import android.widget.Toast
+
+import android.graphics.drawable.ColorDrawable
+
+import android.view.Window
+
+import android.app.Dialog
+
+import android.app.Activity
+import android.content.Context
+import com.ashok.kanigiri.expensemanager.databinding.LayoutDialogUpdateSalaryBinding
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -78,8 +90,16 @@ class HomeFragment : Fragment() {
                 is HomeViewModelEvent.Logout -> {
                     logout()
                 }
+                is HomeViewModelEvent.ShouldUpdateSalary ->{
+                    showUpdateSalaryDialog()
+                }
             }
         })
+    }
+
+
+    fun showUpdateSalaryDialog() {
+
     }
 
     private fun logout() {

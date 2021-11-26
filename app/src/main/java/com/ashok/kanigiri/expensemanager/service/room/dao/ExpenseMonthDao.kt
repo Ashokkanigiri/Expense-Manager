@@ -25,4 +25,7 @@ interface ExpenseMonthDao {
 
     @Query("UPDATE expensemonth SET totalUtilizedPrice =:createdExpense+totalUtilizedPrice WHERE expenseMonthId =:expenseMonthId")
     suspend fun updateUtilizedPriceForExpenseMonth(createdExpense: Double, expenseMonthId: Int)
+
+    @Query("UPDATE expensemonth SET salary =:salary WHERE expenseMonthId =:expenseMonthId")
+    suspend fun updateSalaryForExpenseMonth(salary: Double, expenseMonthId: Int)
 }
