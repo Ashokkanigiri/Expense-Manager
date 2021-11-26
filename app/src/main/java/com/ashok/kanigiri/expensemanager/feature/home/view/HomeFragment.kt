@@ -65,6 +65,7 @@ class HomeFragment : Fragment() {
         observeViewModel()
         setupActionBar()
         setUpExpenditureGraph()
+        setUpAnuallyExpenditureGraph()
     }
 
     private fun observeViewModel() {
@@ -142,6 +143,53 @@ class HomeFragment : Fragment() {
             val desc = Description()
             desc.isEnabled = false
             binding.expenditureChart.description = desc
+        })
+    }
+
+    private fun setUpAnuallyExpenditureGraph() {
+        binding.anuallyExpenditureChart.setUsePercentValues(true)
+        binding.anuallyExpenditureChart.description.isEnabled = true
+        binding.anuallyExpenditureChart.isDragDecelerationEnabled = false
+        binding.anuallyExpenditureChart.dragDecelerationFrictionCoef = 0.95f
+        binding.anuallyExpenditureChart.isDrawHoleEnabled = false
+        binding.anuallyExpenditureChart.setHoleColor(Color.WHITE)
+        binding.anuallyExpenditureChart.transparentCircleRadius = 40f
+        binding.anuallyExpenditureChart.isRotationEnabled = false
+        val yValues = ArrayList<PieEntry>()
+        viewmodel.getListOfAllCategorysOrderBy().observe(viewLifecycleOwner, { list ->
+
+            list?.forEach {
+                if (it.totalUtilizedPrice > 0.0) {
+                    binding.anuallyExpenditureChart.clear()
+
+                    val percent: Float =
+                        ((it.totalUtilizedPrice.toFloat()))
+                    yValues.add(
+                        PieEntry(
+                            percent,
+                            viewmodel.getcategoryNameForId(it.expenseCategoryId)
+                        )
+                    )
+
+                }
+            }
+
+            val pieDataSet = PieDataSet(yValues, "")
+            pieDataSet.sliceSpace = 1.5f
+            pieDataSet.selectionShift = 5f
+            pieDataSet.setColors(
+                AppConstants.graphColours.toIntArray(),
+                200
+            )
+            val pieData = PieData(pieDataSet)
+            pieData.setValueTextSize(10f)
+            pieData.setValueTextColor(Color.WHITE)
+
+            binding.anuallyExpenditureChart.data = pieData
+            binding.anuallyExpenditureChart.animateY(1500, Easing.EaseInOutCubic)
+            val desc = Description()
+            desc.isEnabled = false
+            binding.anuallyExpenditureChart.description = desc
         })
     }
 

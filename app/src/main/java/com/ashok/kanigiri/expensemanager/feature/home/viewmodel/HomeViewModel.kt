@@ -63,6 +63,10 @@ class HomeViewModel @Inject constructor(
         return data
     }
 
+    fun getListOfAllCategorysOrderBy(): LiveData<List<ExpenseCategory>>{
+        return roomRepository.getCategoryDao().getAllCategorysOrderByCategoryName().asLiveData(Dispatchers.Main)
+    }
+
     fun getcategoryNameForId(categoryId: Int): String {
         return roomRepository.getCategoryDao().getCategoryName(categoryId)
     }
