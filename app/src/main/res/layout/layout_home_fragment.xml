@@ -54,6 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_edittext"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -114,6 +116,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_edittext"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cl_monthly_expensiture_section">
@@ -144,6 +148,7 @@
                         android:id="@+id/expenditure_chart"
                         android:layout_width="0dp"
                         android:layout_height="300dp"
+                        android:foregroundGravity="center"
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -156,6 +161,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_edittext"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cl_monthly_expenditure_graph_section">
