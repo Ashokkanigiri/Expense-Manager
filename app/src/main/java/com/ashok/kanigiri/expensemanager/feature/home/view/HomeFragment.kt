@@ -47,6 +47,7 @@ import android.app.Dialog
 
 import android.app.Activity
 import android.content.Context
+import androidx.navigation.fragment.findNavController
 import com.ashok.kanigiri.expensemanager.databinding.LayoutDialogUpdateSalaryBinding
 
 
@@ -99,7 +100,9 @@ class HomeFragment : Fragment() {
 
 
     fun showUpdateSalaryDialog() {
-
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToUpdateSalaryDialog()
+        )
     }
 
     private fun logout() {

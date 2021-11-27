@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.ashok.kanigiri.expensemanager.feature.home.view.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_updateSalaryDialog"
+            app:destination="@id/updateSalaryDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/updateSalaryDialog"
+        android:name="com.ashok.kanigiri.expensemanager.feature.updateSalary.UpdateSalaryDialog"
+        android:label="UpdateSalaryDialog" />
 </navigation>
