@@ -38,6 +38,7 @@
         <entry key="app/src/main/res/layout/item_expandable_list_parent.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/item_expense_manager.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_child_expandable_all_expenses.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_dialog_update_salary.xml" value="0.30193905817174516" />
         <entry key="app/src/main/res/layout/layout_empty_data.xml" value="0.1609375" />
         <entry key="app/src/main/res/layout/layout_expandable_expenses_child_item.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/layout_expandable_expenses_group_item.xml" value="0.23072916666666668" />
@@ -45,7 +46,7 @@
         <entry key="app/src/main/res/layout/layout_fragment_all_expenses.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/layout_fragment_choose_category.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_fragment_create_account.xml" value="0.2858120251847125" />
-        <entry key="app/src/main/res/layout/layout_fragment_create_expense.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_fragment_create_expense.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_fragment_create_new_expense_category.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_fragment_edit_expenses.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_fragment_expense_list.xml" value="0.24635416666666668" />
@@ -53,7 +54,7 @@
         <entry key="app/src/main/res/layout/layout_fragment_manage_expenses.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/layout/layout_fragment_profile.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_header_expandable_all_expenses.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/layout_home_fragment.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/layout_home_fragment.xml" value="0.3508902077151335" />
         <entry key="app/src/main/res/layout/layout_item_all_expenses.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/layout_item_expense_list.xml" value="0.45" />
         <entry key="app/src/main/res/layout/layout_splash_fragment.xml" value="0.14447463768115942" />

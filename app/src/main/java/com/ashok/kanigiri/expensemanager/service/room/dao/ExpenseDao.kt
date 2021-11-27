@@ -14,6 +14,9 @@ interface ExpenseDao {
     @Query("SELECT * FROM expense WHERE expenseCategoryId =:expenseCategoryId")
     fun getAllExpensesForACategory(expenseCategoryId: Int): Flow<List<Expense>>
 
+    @Query("SELECT * FROM expense WHERE expenseCategoryId =:expenseCategoryId AND expenseMonthId =:expenseMonthId")
+    fun getAllExpensesForACategoryForExpenseMonth(expenseCategoryId: Int, expenseMonthId: Int): Flow<List<Expense>>
+
     @Query("SELECT SUM(expensePrice) from expense")
     fun getTotalExpenses(): Flow<Double>
 

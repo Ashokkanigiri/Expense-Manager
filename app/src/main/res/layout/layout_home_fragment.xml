@@ -6,8 +6,8 @@
     <data>
         <import type="com.ashok.kanigiri.expensemanager.utils.AppUtils"/>
         <variable
-            name="salary"
-            type="Integer" />
+            name="expenseMonth"
+            type="com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth" />
         <variable
             name="viewmodel"
             type="com.ashok.kanigiri.expensemanager.feature.home.viewmodel.HomeViewModel" />
@@ -34,7 +34,7 @@
                 layout="@layout/layout_empty_data"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:visibility="@{(viewmodel.getTotalExpenses ==  null || viewmodel.getTotalExpenses ==  0.0) ? View.VISIBLE: View.GONE}"
+                android:visibility="@{(expenseMonth.totalUtilizedPrice == 0.0)? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/margin_end"
                 app:layout_constraintStart_toStartOf="@id/margin_start"
@@ -43,7 +43,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="@{(viewmodel.getTotalExpenses ==  null || viewmodel.getTotalExpenses ==  0.0) ? View.GONE: View.VISIBLE}"
+                android:visibility="@{(expenseMonth.totalUtilizedPrice == 0.0)? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/margin_end"
                 app:layout_constraintStart_toStartOf="@+id/margin_start"
@@ -54,7 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:visibility="@{salary != 0 ? View.VISIBLE: View.GONE}"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_edittext"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -69,11 +70,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/salary_tv_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="* You can edit your salary by clicking"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/materialTextView" />
+
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        set_total_expense_progress="@{salary}"
-                        set_utilized_expense_progress="@{viewmodel.getTotalExpenses}"
+                        set_total_expense_progress="@{expenseMonth.salary}"
+                        set_utilized_expense_progress="@{expenseMonth.totalUtilizedPrice}"
                         setup_progressbar_tint="@{50}"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
@@ -82,7 +93,7 @@
                         android:progressBackgroundTint="@color/light_grey"
                         app:layout_constraintEnd_toStartOf="@+id/tv_salary_max"
                         app:layout_constraintStart_toEndOf="@+id/tv_salary_min"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+                        app:layout_constraintTop_toBottomOf="@+id/salary_tv_desc" />
 
                     <TextView
                         android:id="@+id/tv_salary_min"
@@ -90,7 +101,7 @@
                         android:layout_height="0dp"
                         android:layout_marginEnd="10dp"
                         android:gravity="center_vertical"
-                        android:text="@{``+viewmodel.getTotalExpenses}"
+                        android:text="@{``+expenseMonth.totalUtilizedPrice}"
                         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                         app:layout_constraintEnd_toStartOf="@+id/progressBar"
                         app:layout_constraintStart_toStartOf="parent"
@@ -103,11 +114,24 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
                         android:gravity="center_vertical"
-                        android:text="@{``+salary}"
+                        android:text="@{``+expenseMonth.salary}"
                         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/progressBar"
                         app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+                    <TextView
+                        android:id="@+id/tv_edit_salary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="here"
+                        android:onClick="@{()-> viewmodel.updateSalary()}"
+                        android:textColor="@color/button_bg"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/salary_tv_desc"
+                        app:layout_constraintStart_toEndOf="@+id/salary_tv_desc"
+                        app:layout_constraintTop_toTopOf="@+id/salary_tv_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,6 +139,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_edittext"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cl_monthly_expensiture_section">
@@ -129,16 +155,74 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_chart_header_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="* This Chart shows your monthly expenditure"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_chart_header" />
+
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/expenditure_chart"
                         android:layout_width="0dp"
                         android:layout_height="300dp"
+                        android:foregroundGravity="center"
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_chart_header" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_chart_header_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_monthly_annually_graph_section"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_edittext"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_monthly_expenditure_graph_section">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_annuall_chart_header"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Total Expenditure Analysys"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_annuall_chart_header_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="* This Chart shows overview of all your expenses till date"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_annuall_chart_header"/>
+
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/anually_expenditure_chart"
+                        android:layout_width="0dp"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_annuall_chart_header_desc" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

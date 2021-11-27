@@ -27,6 +27,7 @@ class AllExpensesViewmodel @Inject constructor(private val roomRepository: RoomR
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getExpenseDao().deleteExpense(expense.expenseId)
             roomRepository.getCategoryDao().updateUtilizedPriceForCategory(expense.expenseCategoryId, -(expense.expensePrice))
+            roomRepository.getExpenseMonthDao().updateUtilizedPriceForExpenseMonth(-(expense.expensePrice), expense.expenseMonthId)
         }
         loadExpandableData()
     }

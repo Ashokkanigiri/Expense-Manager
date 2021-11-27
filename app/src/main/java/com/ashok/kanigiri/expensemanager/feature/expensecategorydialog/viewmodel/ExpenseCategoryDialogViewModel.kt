@@ -55,12 +55,13 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
                 if ((totalPriceGivenForAllCategorys + (expenseTargetPrice.get()?.toDouble()
                         ?: 0.0)) <= SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0
                 ) {
+                    val getLatestMonth = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
                     val expenseCategory = ExpenseCategory(
                         expenseCategoryTargetPrice = expenseTargetPrice.get()?.toDouble() ?: 0.0,
                         totalUtilizedPrice = 0.0,
                         expenseCategoryName = expenseCategoryName.get() ?: "",
                         createdDate = System.currentTimeMillis().toString(),
-                        isSelected = true
+                        expenseMonthId = getLatestMonth?.expenseMonthId?:1
                     )
 
                     viewModelScope.launch(Dispatchers.IO) {

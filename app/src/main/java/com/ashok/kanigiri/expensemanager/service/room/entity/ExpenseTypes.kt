@@ -13,6 +13,4 @@ enum class ExpenseTypes(val expenseId: Int, val expenseLitral: String){
     MISCELLANEOUS(9, "Miscellaneous")
 }
 
- enum class BaseEnum{
-
-}
+ enum class BaseEnum

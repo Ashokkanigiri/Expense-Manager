@@ -62,7 +62,7 @@ class ManageExpensesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        roomRepository.getCategoryDao().getSelectedCategorys().asLiveData(Dispatchers.Main)
+        roomRepository.getCategoryDao().getAllCategorysByExpenseMonth(viewmodel.getCurrentExpenseMonth()?.expenseMonthId?:1).asLiveData(Dispatchers.Main)
             .observe(viewLifecycleOwner, Observer {
                 viewmodel.loadAdapter(it)
             })

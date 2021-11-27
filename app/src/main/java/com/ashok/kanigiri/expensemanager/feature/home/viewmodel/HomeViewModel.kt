@@ -28,13 +28,21 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val getTotalExpenses = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.totalUtilizedPrice
-
-    //2 Way binding
-    var etSalary = ObservableField<String>()
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
     init {
         insertExpenseMonth()
+    }
+
+    fun updateSalary(){
+        event.postValue(HomeViewModelEvent.ShouldUpdateSalary)
+    }
+
+    fun updateSalaryInCurrentMonth(salary: Double){
+        viewModelScope.launch {
+            val expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
+            roomRepository.getExpenseMonthDao().updateSalaryForExpenseMonth(salary, expenseMonthId?:1)
+        }
     }
 
     private fun insertExpenseMonth() {
@@ -42,7 +50,7 @@ class HomeViewModel @Inject constructor(
             roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.fromDate?.let {
                 if (AppUtils.shouldUpdateToNextMonth(it)) {
                     val expenseMonth = ExpenseMonth(
-                        createdDate = (Timestamp(System.currentTimeMillis())).toString(),
+                        createdDate = System.currentTimeMillis(),
                         expenseMonth = AppUtils.getCurrentMonthInInt(),
                         salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()
                             ?: 0.0,
@@ -66,6 +74,10 @@ class HomeViewModel @Inject constructor(
         return data
     }
 
+    fun getListOfAllCategorysOrderBy(): LiveData<List<ExpenseCategory>>{
+        return roomRepository.getCategoryDao().getAllCategorysOrderByCategoryName().asLiveData(Dispatchers.Main)
+    }
+
     fun getcategoryNameForId(categoryId: Int): String {
         return roomRepository.getCategoryDao().getCategoryName(categoryId)
     }
@@ -81,4 +93,5 @@ class HomeViewModel @Inject constructor(
 
 sealed class HomeViewModelEvent {
     object Logout : HomeViewModelEvent()
+    object ShouldUpdateSalary: HomeViewModelEvent()
 }

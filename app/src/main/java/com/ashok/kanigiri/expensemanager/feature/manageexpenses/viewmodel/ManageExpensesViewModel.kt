@@ -3,6 +3,7 @@ package com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel
 import androidx.lifecycle.ViewModel
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.view.ManageExpensesAdapter
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,5 +32,9 @@ class ManageExpensesViewModel @Inject constructor( val roomRepository: RoomRepos
 
     fun navigateToExpenseListFragment(expenseCategory: ExpenseCategory){
         navigateToExpenseList.postValue(expenseCategory)
+    }
+
+    fun getCurrentExpenseMonth(): ExpenseMonth?{
+        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
     }
 }

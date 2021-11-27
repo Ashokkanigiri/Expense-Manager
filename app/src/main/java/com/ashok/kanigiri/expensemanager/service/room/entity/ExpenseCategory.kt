@@ -12,5 +12,5 @@ data class ExpenseCategory(
     val totalUtilizedPrice: Double,
     val expenseCategoryName: String,
     val createdDate: String,
-    val isSelected: Boolean
+    val expenseMonthId: Int
 )

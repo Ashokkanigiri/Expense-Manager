@@ -24,6 +24,7 @@ import com.ashok.kanigiri.expensemanager.feature.manageexpenses.view.ManageExpen
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel.ManageExpensesViewModel
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
+import com.ashok.kanigiri.expensemanager.utils.DateUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,10 +34,6 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
     lateinit var binding: LayoutFragmentCreateExpenseBinding
 
     private val viewmodel: CreateExpenseDialogViewModel by viewModels()
-
-    companion object {
-        val INSTANCE = CreateExpenseDialogFragment()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +85,7 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
             if (it) {
                 AppUtils.getSelectedDateFromDatePicker(requireContext())
                     .observe(viewLifecycleOwner, Observer {
-                        binding.editTextDate.text = it
+                        binding.editTextDate.text = DateUtils.convertDateToDateFormat(it)
                         viewmodel.selectedDate = it
                     })
             }
@@ -100,9 +97,14 @@ class CreateExpenseDialogFragment : BottomSheetDialogFragment() {
         })
         viewmodel.showErrorMsg.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.etExpenseValueField.setError(it)
+                binding.etExpenseValueField.error = it
             }
         })
         viewmodel.triggerReserveCashEvent()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        AppUtils.getSelectedDateFromDatePicker(null).removeObservers(viewLifecycleOwner)
     }
 }

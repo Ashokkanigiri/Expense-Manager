@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
@@ -31,9 +32,24 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 import javax.inject.Inject
+import android.widget.Toast
+
+import android.graphics.drawable.ColorDrawable
+
+import android.view.Window
+
+import android.app.Dialog
+
+import android.app.Activity
+import android.content.Context
+import androidx.navigation.fragment.findNavController
+import com.ashok.kanigiri.expensemanager.databinding.LayoutDialogUpdateSalaryBinding
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -62,17 +78,31 @@ class HomeFragment : Fragment() {
         observeViewModel()
         setupActionBar()
         setUpExpenditureGraph()
-        loadSalaryDetailsFromSharedPrefs()
+        setUpAnuallyExpenditureGraph()
     }
 
     private fun observeViewModel() {
+        viewmodel.roomRepository.getExpenseMonthDao().getLatestExpenseMonthFlow().asLiveData(Dispatchers.Main).observe(viewLifecycleOwner, Observer {
+            binding.expenseMonth = it
+        })
+
         viewmodel.event.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is HomeViewModelEvent.Logout -> {
                     logout()
                 }
+                is HomeViewModelEvent.ShouldUpdateSalary ->{
+                    showUpdateSalaryDialog()
+                }
             }
         })
+    }
+
+
+    fun showUpdateSalaryDialog() {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToUpdateSalaryDialog()
+        )
     }
 
     private fun logout() {
@@ -81,11 +111,6 @@ class HomeFragment : Fragment() {
         database.clearAllTables()
         requireActivity().finish()
 
-    }
-
-    private fun loadSalaryDetailsFromSharedPrefs() {
-        binding.salary =
-            viewmodel.loadSalaryFromCurrentMonth().toInt()
     }
 
     private fun setUpExpenditureGraph() {
@@ -141,6 +166,53 @@ class HomeFragment : Fragment() {
             val desc = Description()
             desc.isEnabled = false
             binding.expenditureChart.description = desc
+        })
+    }
+
+    private fun setUpAnuallyExpenditureGraph() {
+        binding.anuallyExpenditureChart.setUsePercentValues(true)
+        binding.anuallyExpenditureChart.description.isEnabled = true
+        binding.anuallyExpenditureChart.isDragDecelerationEnabled = false
+        binding.anuallyExpenditureChart.dragDecelerationFrictionCoef = 0.95f
+        binding.anuallyExpenditureChart.isDrawHoleEnabled = false
+        binding.anuallyExpenditureChart.setHoleColor(Color.WHITE)
+        binding.anuallyExpenditureChart.transparentCircleRadius = 40f
+        binding.anuallyExpenditureChart.isRotationEnabled = false
+        val yValues = ArrayList<PieEntry>()
+        viewmodel.getListOfAllCategorysOrderBy().observe(viewLifecycleOwner, { list ->
+
+            list?.forEach {
+                if (it.totalUtilizedPrice > 0.0) {
+                    binding.anuallyExpenditureChart.clear()
+
+                    val percent: Float =
+                        ((it.totalUtilizedPrice.toFloat()))
+                    yValues.add(
+                        PieEntry(
+                            percent,
+                            viewmodel.getcategoryNameForId(it.expenseCategoryId)
+                        )
+                    )
+
+                }
+            }
+
+            val pieDataSet = PieDataSet(yValues, "")
+            pieDataSet.sliceSpace = 1.5f
+            pieDataSet.selectionShift = 5f
+            pieDataSet.setColors(
+                AppConstants.graphColours.toIntArray(),
+                200
+            )
+            val pieData = PieData(pieDataSet)
+            pieData.setValueTextSize(10f)
+            pieData.setValueTextColor(Color.WHITE)
+
+            binding.anuallyExpenditureChart.data = pieData
+            binding.anuallyExpenditureChart.animateY(1500, Easing.EaseInOutCubic)
+            val desc = Description()
+            desc.isEnabled = false
+            binding.anuallyExpenditureChart.description = desc
         })
     }
 

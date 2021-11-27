@@ -16,6 +16,7 @@ import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentChooseCategoryBinding
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,17 +39,9 @@ class ChooseCategoryFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
         setUpRecyclerView()
-        injectDefaultCategoryList()
+        viewmodel.injectDefaultCategorysList()
         observeViewmodel()
         handleNewExpenseCategoryCreated()
-    }
-
-    private fun injectDefaultCategoryList() {
-        viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {
-            if(it?.size == 0){
-                viewmodel.injectDefaultCategorysList()
-            }
-        })
     }
 
     private fun handleNewExpenseCategoryCreated() {
@@ -58,6 +51,7 @@ class ChooseCategoryFragment: Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
             findNavController().popBackStack()
         }
+        findNavController().currentBackStackEntry?.savedStateHandle?.remove<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)
     }
 
     private fun observeViewmodel() {
@@ -78,11 +72,19 @@ class ChooseCategoryFragment: Fragment() {
                 is ChooseCategoryViewmodelEvent.HandleCancelButtonClicked->{
                     requireActivity().finish()
                 }
+                is ChooseCategoryViewmodelEvent.ShowSnackBar->{
+                    showErrorSnackBar()
+                }
             }
         })
-        viewmodel.getAllCategorys().observe(viewLifecycleOwner, Observer {
-            viewmodel.submitItemAdapterData(it)
-        })
+    }
+
+    private fun showErrorSnackBar() {
+        Snackbar.make(
+            requireView(),
+            "Please select atlease three categorys to proceed furthur",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun setUpRecyclerView() {

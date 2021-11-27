@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 import java.sql.Timestamp
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -29,28 +30,40 @@ object AppUtils {
         else -> ExpenseTypes.MISCELLANEOUS
     }
 
-    fun getSelectedDateFromDatePicker(context: Context): MutableLiveData<String>{
-        val date = MutableLiveData<String>()
-        val datePickerDialog = DatePickerDialog(context)
+    fun getSelectedDateFromDatePicker(context: Context?): MutableLiveData<Long>{
+        val date = MutableLiveData<Long>()
+        context?.let {
 
-        val fromCal = Calendar.getInstance()
-        fromCal.set(Calendar.DAY_OF_MONTH, 1)
-        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
-        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+            val datePickerDialog = DatePickerDialog(context)
 
-        val toCal = Calendar.getInstance()
-        toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
-        toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date())?.toInt()?:0)-1)
-        toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date())?.toInt()?:0)
+            val fromCal = Calendar.getInstance()
+            fromCal.set(Calendar.DAY_OF_MONTH, 1)
+            fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
+            fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
 
-        Log.d("lmflwm", "FROM CAL : ${Timestamp(fromCal.timeInMillis)}, TOCAL : ${Timestamp(toCal.timeInMillis)}")
+            val toCal = Calendar.getInstance()
+            toCal.set(Calendar.DAY_OF_MONTH, getLastDayOf((SimpleDateFormat("MM").format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt())))
+            toCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0)-1)
+            toCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
 
-        datePickerDialog.datePicker.minDate =fromCal.timeInMillis
-        datePickerDialog.datePicker.maxDate =toCal.timeInMillis
-        datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
-            date.postValue("$dayOfMonth/${month+1}/$year")
+            Log.d("lmflwm", "FROM CAL : ${Timestamp(fromCal.timeInMillis)}, TOCAL : ${Timestamp(toCal.timeInMillis)}")
+
+            datePickerDialog.datePicker.minDate =fromCal.timeInMillis
+            datePickerDialog.datePicker.maxDate =toCal.timeInMillis
+            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
+
+                val ddd = "$dayOfMonth/${month+1}/$year"
+
+                val selectedDatePicker = Calendar.getInstance()
+                selectedDatePicker.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                selectedDatePicker.set(Calendar.MONTH, month)
+                selectedDatePicker.set(Calendar.YEAR, year)
+                date.postValue(Timestamp(selectedDatePicker.timeInMillis).time)
+
+            }
+            datePickerDialog.show()
         }
-        datePickerDialog.show()
+
         return date
     }
 
@@ -58,7 +71,8 @@ object AppUtils {
         return "${SimpleDateFormat("YYYY", Locale.getDefault()).format(Date())}-${(SimpleDateFormat("MM", Locale.getDefault()).format(Date()))}-${"01"}"
     }
 
-    fun getCurrentMonthInInt() = (SimpleDateFormat("MM", Locale.getDefault()).format(Date())?.toInt()?:0)
+    fun getCurrentMonthInInt() = (SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt()
+        ?:0)
 
     fun getLastDayOfMonthInDateFormat(): String{
         return "${(SimpleDateFormat("YYYY", Locale.getDefault()).format(Date()))}-${(SimpleDateFormat("MM", Locale.getDefault()).format(Date()))}-${getLastDayOf((SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt())-1, (SimpleDateFormat("YYYY").format(Date()).toInt()))}"
@@ -78,7 +92,7 @@ object AppUtils {
 
     fun getCurrentMonth(): String{
         val monthNames = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-        return monthNames.get((SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt()?:0)-1)
+        return monthNames.get(SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt() -1)
     }
 
     fun getDateInReadableFormat(currentDate: String?): String{
@@ -108,10 +122,6 @@ object AppUtils {
 
     fun shouldUpdateToNextMonth(savedDate: String?): Boolean{
         //if savedDate > getUpcommingMonthStarttingDate -> then return true else false
-        if(getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)){
-            return true
-        }else{
-            return false
-        }
+        return getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)
     }
 }

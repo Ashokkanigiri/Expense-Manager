@@ -8,6 +8,12 @@
         <import type="android.view.View"/>
 
         <variable
+            name="viewholder"
+            type="com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryItemViewHolder" />
+        <variable
+            name="viewmodel"
+            type="com.ashok.kanigiri.expensemanager.feature.choosecategory.ChooseCategoryViewModel" />
+        <variable
             name="expense"
             type="com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory" />
     </data>
@@ -73,7 +79,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_rounded_edittext"
             android:backgroundTint="@color/transparent_black"
-            android:visibility="@{expense.selected ? View.VISIBLE: View.GONE}"
+            android:visibility="@{viewholder.showShowSelectedMask  ? View.VISIBLE: View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_category_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
