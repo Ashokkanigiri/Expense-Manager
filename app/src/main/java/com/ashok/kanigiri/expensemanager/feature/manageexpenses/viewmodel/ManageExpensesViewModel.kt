@@ -16,6 +16,7 @@ class ManageExpensesViewModel @Inject constructor( val roomRepository: RoomRepos
     val createNewExpense = SingleLiveEvent<ExpenseCategory>()
     val navigateToExpenseList = SingleLiveEvent<ExpenseCategory>()
     var selectedAdapterPosition = 0
+    val event = SingleLiveEvent<ManageExpensesViewmodelEvent>()
 
     fun setAdapter(): ManageExpensesAdapter{
         return adapter
@@ -37,4 +38,12 @@ class ManageExpensesViewModel @Inject constructor( val roomRepository: RoomRepos
     fun getCurrentExpenseMonth(): ExpenseMonth?{
         return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
     }
+
+    fun editExpenseCategory(expenseCategoryId: Int){
+        event.postValue(ManageExpensesViewmodelEvent.OnEditExpenseCategoryClicked(expenseCategoryId))
+    }
+}
+
+sealed class ManageExpensesViewmodelEvent(){
+    data class OnEditExpenseCategoryClicked(val expenseCategoryId: Int): ManageExpensesViewmodelEvent()
 }

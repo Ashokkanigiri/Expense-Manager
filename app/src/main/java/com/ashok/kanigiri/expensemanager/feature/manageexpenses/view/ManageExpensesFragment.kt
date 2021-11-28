@@ -15,6 +15,7 @@ import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentManageExpensesBinding
 import com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel.ManageExpensesViewModel
+import com.ashok.kanigiri.expensemanager.feature.manageexpenses.viewmodel.ManageExpensesViewmodelEvent
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -81,6 +82,15 @@ class ManageExpensesFragment : Fragment() {
                     it.expenseCategoryName
                 )
             )
+        })
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event->
+            when(event){
+                is ManageExpensesViewmodelEvent.OnEditExpenseCategoryClicked ->{
+                    this.findNavController().navigate(
+                        ManageExpensesFragmentDirections.actionAddExpenseFragmentToEditCategoryBottomSheet(event.expenseCategoryId)
+                    )
+                }
+            }
         })
     }
 

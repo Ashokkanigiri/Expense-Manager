@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_addExpenseFragment_to_expenseCategoryDialogFragment2"
             app:destination="@id/expenseCategoryDialogFragment2" />
+        <action
+            android:id="@+id/action_addExpenseFragment_to_editCategoryBottomSheet"
+            app:destination="@id/editCategoryBottomSheet" />
     </fragment>
     <dialog
         android:id="@+id/createExpenseDialogFragment"
@@ -52,5 +55,14 @@
             android:name="shouldShowExpensePrice"
             app:argType="boolean"
             android:defaultValue="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/editCategoryBottomSheet"
+        android:name="com.ashok.kanigiri.expensemanager.feature.editcategory.EditCategoryBottomSheet"
+        android:label="EditCategoryBottomSheet" >
+        <argument
+            android:name="categoryId"
+            app:argType="integer"
+            android:defaultValue="1" />
     </dialog>
 </navigation>

@@ -37,6 +37,9 @@ interface ExpenseCategoryDao {
     @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total WHERE expenseCategoryId =:categoryId")
     suspend fun updateTargetPriceForCategory(categoryId: Int, total: Double)
 
+    @Query("UPDATE expensecategory SET expenseCategoryTargetPrice =:total, expenseCategoryName =:categoryName WHERE expenseCategoryId =:categoryId")
+    suspend fun editExpenseCategory(categoryId: Int, total: Double, categoryName: String)
+
     @Query("SELECT expenseCategoryName FROM expensecategory WHERE expenseCategoryId =:categoryId")
     fun getCategoryName(categoryId: Int): String
 
@@ -45,5 +48,8 @@ interface ExpenseCategoryDao {
 
     @Query("DELETE FROM expensecategory WHERE expenseCategoryName =:expenseCategoryName")
     suspend fun deleteCategoryByName(expenseCategoryName: String)
+
+    @Query("SELECT * FROM expensecategory WHERE expenseCategoryId =:categoryId")
+    fun getCategory(categoryId: Int): ExpenseCategory
 
 }
