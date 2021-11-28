@@ -67,6 +67,27 @@ object AppUtils {
         return date
     }
 
+    fun getSelectedDateByDatePickerNormal(context: Context?): MutableLiveData<Long>{
+        val date = MutableLiveData<Long>()
+        context?.let {
+
+            val datePickerDialog = DatePickerDialog(context)
+
+            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
+
+                val selectedDatePicker = Calendar.getInstance()
+                selectedDatePicker.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                selectedDatePicker.set(Calendar.MONTH, month)
+                selectedDatePicker.set(Calendar.YEAR, year)
+                date.postValue(Timestamp(selectedDatePicker.timeInMillis).time)
+
+            }
+            datePickerDialog.show()
+        }
+
+        return date
+    }
+
     fun getFirstDayOnMonthInDateFormat(): String{
         return "${SimpleDateFormat("YYYY", Locale.getDefault()).format(Date())}-${(SimpleDateFormat("MM", Locale.getDefault()).format(Date()))}-${"01"}"
     }

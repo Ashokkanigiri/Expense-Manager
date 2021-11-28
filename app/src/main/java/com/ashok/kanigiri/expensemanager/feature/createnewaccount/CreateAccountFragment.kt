@@ -83,7 +83,7 @@ class CreateAccountFragment : Fragment() {
     }
 
     fun openDatePickerDialog() {
-        AppUtils.getSelectedDateFromDatePicker(requireContext())
+        AppUtils.getSelectedDateByDatePickerNormal(requireContext())
             .observe(viewLifecycleOwner, Observer {
                 binding.selectedDate = DateUtils.convertDateToDateFormat(it)
                 viewmodel.saveDateOfBirthFromPicker(it)
