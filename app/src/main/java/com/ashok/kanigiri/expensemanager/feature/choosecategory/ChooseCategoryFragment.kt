@@ -10,11 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentChooseCategoryBinding
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +53,10 @@ class ChooseCategoryFragment: Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
             findNavController().popBackStack()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         findNavController().currentBackStackEntry?.savedStateHandle?.remove<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)
     }
 
@@ -76,6 +82,10 @@ class ChooseCategoryFragment: Fragment() {
                     showErrorSnackBar()
                 }
             }
+        })
+
+        viewmodel.roomRepository.getCategoryDao().getAllExpenseCategorys().asLiveData().observe(viewLifecycleOwner, Observer {
+            viewmodel.submitItemAdapterData(viewmodel.getDefaultCategoryList()+it)
         })
     }
 

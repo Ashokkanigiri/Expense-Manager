@@ -29,7 +29,7 @@ interface ExpenseCategoryDao {
     fun getTotalExpensePriceForCategory(categoryId: Int): Double
 
     @Query("SELECT SUM(expenseCategoryTargetPrice) FROM expensecategory")
-    suspend fun getTotalAllotedCategoryPrice(): Double
+    suspend fun getTotalAllotedCategoryPrice(): Double?
 
     @Query("UPDATE expensecategory SET totalUtilizedPrice =:total+totalUtilizedPrice WHERE expenseCategoryId =:categoryId")
     suspend fun updateUtilizedPriceForCategory(categoryId: Int, total: Double)

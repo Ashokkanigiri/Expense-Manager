@@ -35,7 +35,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
     val sendCreatedExpenseNameEvent = SingleLiveEvent<String>()
     var shouldShowExpensePrice = false
     val getTotalAllocatedPrice: Double = runBlocking(Dispatchers.IO) {
-        (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())
+        (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())?:0.0
     }
 
 

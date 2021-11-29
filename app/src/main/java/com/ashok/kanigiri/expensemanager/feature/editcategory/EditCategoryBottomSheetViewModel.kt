@@ -25,7 +25,7 @@ class EditCategoryBottomSheetViewModel @Inject constructor(val roomRepository: R
     val errorDialogVisibility = ObservableField<Boolean>()
     val totalExpensesInCategory = ObservableField<Double>()
     val getTotalAllocatedPrice: Double = runBlocking(Dispatchers.IO) {
-        (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())
+        (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())?:0.0
     }
 
     init {

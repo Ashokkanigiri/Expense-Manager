@@ -22,7 +22,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @HiltViewModel
-class ChooseCategoryViewModel @Inject constructor(private val roomRepository: RoomRepository, @ApplicationContext val context: Context) :
+class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepository, @ApplicationContext val context: Context) :
     ViewModel() {
 
     val addAdapter = ChooseCategoryAddAdapter(this)
@@ -47,7 +47,7 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
         itemAdapter.submitList(list)
     }
 
-    fun injectDefaultCategorysList() {
+    fun getDefaultCategoryList(): List<ExpenseCategory>{
         val list = ArrayList<String>()
         list.add(ExpenseTypes.FOOD.expenseLitral)
         list.add(ExpenseTypes.GYM.expenseLitral)
@@ -70,7 +70,11 @@ class ChooseCategoryViewModel @Inject constructor(private val roomRepository: Ro
             )
             categoryList.add(expenseCategory)
         }
-        submitItemAdapterData(categoryList)
+        return categoryList
+    }
+
+    fun injectDefaultCategorysList() {
+        submitItemAdapterData(getDefaultCategoryList())
     }
 
     fun openCreateExpenseDialog() {
