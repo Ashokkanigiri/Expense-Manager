@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutEditCategoryBottomsheetBinding
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateExpenseBinding
@@ -18,9 +19,10 @@ import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.ashok.kanigiri.expensemanager.utils.DateUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
-class EditCategoryBottomSheet: BottomSheetDialogFragment() {
+class EditCategoryBottomSheet : BottomSheetDialogFragment() {
 
 
     lateinit var binding: LayoutEditCategoryBottomsheetBinding
@@ -64,22 +66,33 @@ class EditCategoryBottomSheet: BottomSheetDialogFragment() {
     }
 
     private fun loadArguments() {
-        viewmodel.categoryId = arguments?.getInt("categoryId")?:0
+        viewmodel.categoryId = arguments?.getInt("categoryId") ?: 0
     }
 
     private fun observeViewmodel() {
-        viewmodel.event.observe(viewLifecycleOwner, Observer { event->
-            when(event){
-                is EditCategoryBottomSheetViewModelEvent.OnEditButtonClicked->{
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event ->
+            when (event) {
+                is EditCategoryBottomSheetViewModelEvent.OnEditButtonClicked -> {
                     viewmodel.updateCategoryDetails()
                 }
-                is EditCategoryBottomSheetViewModelEvent.DismissDialog ->{
+                is EditCategoryBottomSheetViewModelEvent.DismissDialog -> {
                     dialog?.dismiss()
                 }
-                is EditCategoryBottomSheetViewModelEvent.ShowErrorDialog -> {
+                is EditCategoryBottomSheetViewModelEvent.ShowTargetAmoutExceededError -> {
                     binding.editTextNumber.setError("Target amount should not exceed Rs. ${viewmodel.getMaximumTargetPriceForCategory()}")
                 }
+                is EditCategoryBottomSheetViewModelEvent.ShowMinimumAmountToBeSetDialog -> {
+                    binding.editTextNumber.setError("You already have expenses in this category, so you cannot modify the target below your expenses Rs. ${viewmodel.totalExpensesInCategory.get()}")
+                }
             }
+        })
+
+        viewmodel.roomRepository.getExpenseDao().getAllExpensesForACategoryForExpenseMonth(
+            viewmodel.categoryId,
+            viewmodel.getCurrentExpenseMonth()?.expenseMonthId ?: 1
+        ).asLiveData(Dispatchers.Main).observe(viewLifecycleOwner, Observer {
+            val dd : Double= it.map {it.expensePrice }.sum()
+            viewmodel.totalExpensesInCategory.set(dd)
         })
     }
 
