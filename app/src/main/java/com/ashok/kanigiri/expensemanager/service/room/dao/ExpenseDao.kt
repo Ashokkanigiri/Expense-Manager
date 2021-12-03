@@ -34,4 +34,7 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expense WHERE expenseMonthId =:expenseMonthId")
     suspend fun getAllExpensesByExpenseMonthId(expenseMonthId: Int): List<Expense>
+
+    @Query("DELETE FROM expense WHERE expenseCategoryId =:expenseCategoryId")
+    suspend fun deleteAllExpensesForACategory(expenseCategoryId: Int)
 }

@@ -1,5 +1,6 @@
 package com.ashok.kanigiri.expensemanager.feature.manageexpenses.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class ManageExpensesFragment : Fragment() {
@@ -63,7 +65,9 @@ class ManageExpensesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        roomRepository.getCategoryDao().getAllCategorysByExpenseMonth(viewmodel.getCurrentExpenseMonth()?.expenseMonthId?:1).asLiveData(Dispatchers.Main)
+        roomRepository.getCategoryDao()
+            .getAllCategorysByExpenseMonth(viewmodel.getCurrentExpenseMonth()?.expenseMonthId ?: 1)
+            .asLiveData(Dispatchers.Main)
             .observe(viewLifecycleOwner, Observer {
                 viewmodel.loadAdapter(it)
             })
@@ -83,15 +87,35 @@ class ManageExpensesFragment : Fragment() {
                 )
             )
         })
-        viewmodel.event.observe(viewLifecycleOwner, Observer { event->
-            when(event){
-                is ManageExpensesViewmodelEvent.OnEditExpenseCategoryClicked ->{
+        viewmodel.event.observe(viewLifecycleOwner, Observer { event ->
+            when (event) {
+                is ManageExpensesViewmodelEvent.OnEditExpenseCategoryClicked -> {
                     this.findNavController().navigate(
-                        ManageExpensesFragmentDirections.actionAddExpenseFragmentToEditCategoryBottomSheet(event.expenseCategoryId)
+                        ManageExpensesFragmentDirections.actionAddExpenseFragmentToEditCategoryBottomSheet(
+                            event.expenseCategoryId
+                        )
                     )
+                }
+                is ManageExpensesViewmodelEvent.ShowDeleteCategoryDialog -> {
+                    showDeleteCategoryDialog(event.expenseCategoryId)
                 }
             }
         })
+    }
+
+    private fun showDeleteCategoryDialog(expenseCategoryId: Int) {
+        AlertDialog.Builder(context)
+            .setTitle("Are you sure to delete this category ?")
+            .setMessage("This change will delete all the expenses in this category for this month")
+            .setPositiveButton("Delete Category",
+                { dialog, which ->
+                    viewmodel.deleteCategory(expenseCategoryId)
+                })
+            .setNegativeButton(android.R.string.no, { dialog, which ->
+                dialog?.dismiss()
+            })
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     private fun setupActionBar() {

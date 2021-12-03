@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/bg_rounded_edittext.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_accessibility_new_24.xml" value="0.24307692307692308" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.262037037037037" />
+        <entry key="app/src/main/res/drawable/ic_baseline_cancel_24.xml" value="0.15104166666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.246875" />
         <entry key="app/src/main/res/drawable/ic_baseline_emoji_transportation_24.xml" value="0.2101851851851852" />
         <entry key="app/src/main/res/drawable/ic_baseline_fastfood_24.xml" value="0.24307692307692308" />
@@ -38,6 +39,7 @@
         <entry key="app/src/main/res/layout/item_expandable_list_parent.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/item_expense_manager.xml" value="0.28688524590163933" />
         <entry key="app/src/main/res/layout/layout_child_expandable_all_expenses.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_dialog_update_salary.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/layout_edit_category_bottomsheet.xml" value="0.375" />
         <entry key="app/src/main/res/layout/layout_edit_expense_bottomsheet.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_empty_data.xml" value="0.1609375" />
