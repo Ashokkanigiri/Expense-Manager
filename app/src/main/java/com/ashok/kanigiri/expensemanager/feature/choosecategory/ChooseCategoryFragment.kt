@@ -102,6 +102,10 @@ class ChooseCategoryFragment: Fragment() {
     }
 
     private fun setUpRecyclerView() {
+        val itemAdapter = viewmodel.itemAdapter
+        if(!itemAdapter.hasObservers()){
+            itemAdapter.setHasStableIds(true)
+        }
         binding.rvChooseCategory.layoutManager = GridLayoutManager(requireContext(), 2)
         viewmodel.submitAddAdapterData()
     }

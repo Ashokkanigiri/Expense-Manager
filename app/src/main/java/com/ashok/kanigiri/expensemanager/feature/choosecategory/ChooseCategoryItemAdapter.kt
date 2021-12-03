@@ -24,6 +24,10 @@ class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewMode
     override fun onBindViewHolder(holder: ChooseCategoryItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).expenseCategoryId.toLong()
+    }
 }
 
 class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val viewmodel: ChooseCategoryViewModel): RecyclerView.ViewHolder(binding.root){
