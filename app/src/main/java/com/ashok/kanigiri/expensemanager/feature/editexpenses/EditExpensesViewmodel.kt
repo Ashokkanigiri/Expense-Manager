@@ -55,6 +55,7 @@ class EditExpensesViewmodel @Inject constructor(
         if (totalExpenses.get() ?: 0 >= salary) {
             event.postValue(EditExpensesViewModelEvent.ShowSalaryLimitReachedSnackbar)
         } else {
+            clearUnUsedCategorys()
             event.postValue(EditExpensesViewModelEvent.NavigateToMainActivity)
             createExpenseMonth()
         }
@@ -91,4 +92,11 @@ class EditExpensesViewmodel @Inject constructor(
     fun cancelButtonClicked() {
         event.postValue(EditExpensesViewModelEvent.HandleCancelButtonClicked)
     }
+
+    fun clearUnUsedCategorys(){
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.getCategoryDao().deleteUnUsedCategorys()
+        }
+    }
+
 }
