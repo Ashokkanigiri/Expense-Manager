@@ -108,7 +108,7 @@ class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepos
             expenseCategoryName = categoryName,
             createdDate = System.currentTimeMillis().toString(),
             expenseMonthId = 1,
-            isSelected = false
+            isSelected = true
         )
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getCategoryDao().insert(expenseCategory)
