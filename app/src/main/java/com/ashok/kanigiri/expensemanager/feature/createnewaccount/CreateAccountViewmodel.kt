@@ -19,7 +19,7 @@ class CreateAccountViewmodel @Inject constructor(@ApplicationContext val context
 
 
     fun createAccount() {
-        if (userLoginModel.dateOfBirth != null  && userLoginModel.salary.trim() != "" && userLoginModel.name.trim() != "") {
+        if (selectedDate != null  && userLoginModel.salary.trim() != "" && userLoginModel.name.trim() != "") {
             SharedPreferenceService.putUserLoginModel(context, userLoginModel)
             event.postValue(CreateAccountViewmodelEvent.NavigateToChooseCategoryScreen)
         }else{

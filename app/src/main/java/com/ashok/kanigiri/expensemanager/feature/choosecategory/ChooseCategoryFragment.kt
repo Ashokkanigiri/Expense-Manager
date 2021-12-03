@@ -84,9 +84,11 @@ class ChooseCategoryFragment: Fragment() {
             }
         })
 
-        viewmodel.roomRepository.getCategoryDao().getAllExpenseCategorys().asLiveData().observe(viewLifecycleOwner, Observer {
-            Log.d("wflwfmwlfm", "FRAGMENT :: DATA:: ${it?.size?:0}")
+        viewmodel.roomRepository.getCategoryDao().getAllSelectedExpenseCategorys().asLiveData().observe(viewLifecycleOwner, Observer {
             viewmodel.selectedCategorys = it
+        })
+
+        viewmodel.roomRepository.getCategoryDao().getAllExpenseCategorys().asLiveData().observe(viewLifecycleOwner, Observer {
             viewmodel.submitItemAdapterData(it)
         })
     }
