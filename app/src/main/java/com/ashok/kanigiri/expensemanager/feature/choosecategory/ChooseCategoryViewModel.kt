@@ -66,7 +66,8 @@ class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepos
                 totalUtilizedPrice = 0.0,
                 expenseCategoryName = it,
                 createdDate = System.currentTimeMillis().toString(),
-                expenseMonthId = 1
+                expenseMonthId = 1,
+                isSelected = false
             )
             categoryList.add(expenseCategory)
         }
@@ -74,7 +75,11 @@ class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepos
     }
 
     fun injectDefaultCategorysList() {
-        submitItemAdapterData(getDefaultCategoryList())
+        viewModelScope.launch {
+            if(roomRepository.getCategoryDao().getTotalAllotedCategoryPrice() == null){
+                roomRepository.getCategoryDao().insert(getDefaultCategoryList())
+            }
+        }
     }
 
     fun openCreateExpenseDialog() {
@@ -91,22 +96,9 @@ class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepos
 
     fun updateCategorySelectionStatus(isCategorySelected: Boolean, expenseCategory: ExpenseCategory) {
         viewModelScope.launch(Dispatchers.IO) {
-           if(isCategorySelected){
-               createNewCategory(expenseCategory)
-           }else{
-               deleteCategory(expenseCategory)
-           }
+           roomRepository.getCategoryDao().updateCategorySelectionStatus(expenseCategory.expenseCategoryId, isCategorySelected)
         }
     }
-
-    suspend fun createNewCategory(expenseCategory: ExpenseCategory){
-        roomRepository.getCategoryDao().insert(expenseCategory)
-    }
-
-    suspend fun deleteCategory(expenseCategory: ExpenseCategory){
-        roomRepository.getCategoryDao().deleteCategoryByName(expenseCategory.expenseCategoryName)
-    }
-
 
     fun insertNewCategory(categoryName: String) {
         val expenseCategory = ExpenseCategory(
@@ -114,7 +106,8 @@ class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepos
             totalUtilizedPrice = 0.0,
             expenseCategoryName = categoryName,
             createdDate = System.currentTimeMillis().toString(),
-            expenseMonthId = 1
+            expenseMonthId = 1,
+            isSelected = false
         )
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getCategoryDao().insert(expenseCategory)

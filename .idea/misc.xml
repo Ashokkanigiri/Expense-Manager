@@ -49,7 +49,7 @@
         <entry key="app/src/main/res/layout/layout_fragment_create_account.xml" value="0.2858120251847125" />
         <entry key="app/src/main/res/layout/layout_fragment_create_expense.xml" value="0.375" />
         <entry key="app/src/main/res/layout/layout_fragment_create_new_expense_category.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/layout_fragment_edit_expenses.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/layout_fragment_edit_expenses.xml" value="0.2408839779005525" />
         <entry key="app/src/main/res/layout/layout_fragment_expense_list.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/layout_fragment_login.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/layout_fragment_manage_expenses.xml" value="0.19814814814814816" />

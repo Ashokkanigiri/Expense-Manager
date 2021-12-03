@@ -27,19 +27,16 @@ class ChooseCategoryItemdapter constructor(val viewmodel: ChooseCategoryViewMode
 }
 
 class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val viewmodel: ChooseCategoryViewModel): RecyclerView.ViewHolder(binding.root){
-    val showShowSelectedMask = ObservableField<Boolean>()
     fun bind(expenseLitral: ExpenseCategory){
         binding.expense = expenseLitral
         binding.viewmodel = viewmodel
         binding.viewholder = this
 
         binding.clMainLayout.setOnClickListener {
-            showShowSelectedMask.set(true)
             viewmodel.seletedExpenseCategorys.add(expenseLitral)
             viewmodel.updateCategorySelectionStatus(true, expenseLitral)
         }
         binding.clCheckedLayout.setOnClickListener {
-            showShowSelectedMask.set(false)
             viewmodel.seletedExpenseCategorys.remove(expenseLitral)
             viewmodel.updateCategorySelectionStatus(false, expenseLitral)
         }

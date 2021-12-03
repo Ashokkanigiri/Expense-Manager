@@ -13,6 +13,9 @@ interface ExpenseCategoryDao {
     @Query("SELECT * FROM expensecategory")
     fun getAllExpenseCategorys(): Flow<List<ExpenseCategory>>
 
+    @Query("SELECT * FROM expensecategory WHERE isSelected =:isSelected")
+    fun getAllSelectedExpenseCategorys(isSelected: Boolean = true): Flow<List<ExpenseCategory>>
+
     @Query("SELECT * FROM expensecategory WHERE expenseMonthId =:expenseMonthId")
     fun getAllCategorysByExpenseMonth(expenseMonthId: Int): Flow<List<ExpenseCategory>>
 
@@ -51,5 +54,11 @@ interface ExpenseCategoryDao {
 
     @Query("SELECT * FROM expensecategory WHERE expenseCategoryId =:categoryId")
     fun getCategory(categoryId: Int): ExpenseCategory
+
+    @Query("UPDATE expensecategory SET isSelected =:isSelected WHERE expenseCategoryId =:categoryId")
+    suspend fun updateCategorySelectionStatus(categoryId: Int, isSelected: Boolean)
+
+    @Query("DELETE FROM expensecategory WHERE isSelected =:isSelected")
+    suspend fun deleteUnUsedCategorys(isSelected: Boolean = false)
 
 }

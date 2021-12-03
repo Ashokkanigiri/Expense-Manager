@@ -79,7 +79,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_rounded_edittext"
             android:backgroundTint="@color/transparent_black"
-            android:visibility="@{viewholder.showShowSelectedMask  ? View.VISIBLE: View.GONE}"
+            android:visibility="@{expense.isSelected  ? View.VISIBLE: View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_category_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

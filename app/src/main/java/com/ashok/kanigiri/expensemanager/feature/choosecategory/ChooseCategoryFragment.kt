@@ -85,7 +85,7 @@ class ChooseCategoryFragment: Fragment() {
         })
 
         viewmodel.roomRepository.getCategoryDao().getAllExpenseCategorys().asLiveData().observe(viewLifecycleOwner, Observer {
-            viewmodel.submitItemAdapterData(viewmodel.getDefaultCategoryList()+it)
+            viewmodel.submitItemAdapterData(it)
         })
     }
 
