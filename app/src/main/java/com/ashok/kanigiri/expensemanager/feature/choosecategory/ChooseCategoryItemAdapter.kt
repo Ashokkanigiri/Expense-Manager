@@ -33,11 +33,9 @@ class ChooseCategoryItemViewHolder(val binding: ItemChooseCategoryBinding, val v
         binding.viewholder = this
 
         binding.clMainLayout.setOnClickListener {
-            viewmodel.seletedExpenseCategorys.add(expenseLitral)
             viewmodel.updateCategorySelectionStatus(true, expenseLitral)
         }
         binding.clCheckedLayout.setOnClickListener {
-            viewmodel.seletedExpenseCategorys.remove(expenseLitral)
             viewmodel.updateCategorySelectionStatus(false, expenseLitral)
         }
     }
