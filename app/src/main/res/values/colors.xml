@@ -46,4 +46,14 @@
     <color name="bg_expense_list_7">#FFE4E1</color>
     <color name="transparent_black">#75000000</color>
 
+    <color name="colour_1">#f1eded</color>
+    <color name="colour_2">#d9e7db</color>
+    <color name="colour_3">#d6d0de</color>
+    <color name="colour_4">#c2c2ce</color>
+    <color name="colour_5">#edefee</color>
+    <color name="colour_6">#fff7db</color>
+    <color name="colour_8">#f0fecf</color>
+    <color name="colour_9">#c5d2ec</color>
+    <color name="colour_10">#fff3ff</color>
+
 </resources>
