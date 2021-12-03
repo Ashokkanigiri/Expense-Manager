@@ -106,7 +106,7 @@ class ManageExpensesFragment : Fragment() {
     private fun showDeleteCategoryDialog(expenseCategoryId: Int) {
         AlertDialog.Builder(context)
             .setTitle("Are you sure to delete this category ?")
-            .setMessage("This change will delete all the expenses in this category for this month")
+            .setMessage("This will delete all the expenses in this category")
             .setPositiveButton("Delete Category",
                 { dialog, which ->
                     viewmodel.deleteCategory(expenseCategoryId)
@@ -114,7 +114,6 @@ class ManageExpensesFragment : Fragment() {
             .setNegativeButton(android.R.string.no, { dialog, which ->
                 dialog?.dismiss()
             })
-            .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
 
