@@ -47,8 +47,13 @@ class CreateAccountFragment : Fragment() {
         binding.data = viewmodel.userLoginModel
         binding.viewmodel = viewmodel
         binding.fragment = this
+        initFragment()
         handleBackPressed()
         observeViewModel()
+    }
+
+    private fun initFragment() {
+        binding.selectedDate = viewmodel.selectedDate
     }
 
     private fun observeViewModel() {
@@ -85,7 +90,8 @@ class CreateAccountFragment : Fragment() {
     fun openDatePickerDialog() {
         AppUtils.getSelectedDateByDatePickerNormal(requireContext())
             .observe(viewLifecycleOwner, Observer {
-                binding.selectedDate = DateUtils.convertDateToDateFormat(it)
+                viewmodel.selectedDate = DateUtils.convertDateToDateFormat(it)
+                binding.selectedDate = viewmodel.selectedDate
                 viewmodel.saveDateOfBirthFromPicker(it)
             })
     }

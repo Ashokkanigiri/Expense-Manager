@@ -13,6 +13,9 @@ interface ExpenseCategoryDao {
     @Query("SELECT * FROM expensecategory")
     fun getAllExpenseCategorys(): Flow<List<ExpenseCategory>>
 
+    @Query("SELECT * FROM expensecategory")
+    suspend fun getAllExpenseCategorysRaw(): List<ExpenseCategory?>
+
     @Query("SELECT * FROM expensecategory WHERE isSelected =:isSelected")
     fun getAllSelectedExpenseCategorys(isSelected: Boolean = true): Flow<List<ExpenseCategory>>
 

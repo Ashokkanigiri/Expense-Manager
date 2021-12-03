@@ -41,8 +41,8 @@ class ChooseCategoryFragment: Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
         setUpRecyclerView()
-        viewmodel.injectDefaultCategorysList()
         observeViewmodel()
+        viewmodel.injectDefaultCategorysList()
         handleNewExpenseCategoryCreated()
     }
 
@@ -85,6 +85,7 @@ class ChooseCategoryFragment: Fragment() {
         })
 
         viewmodel.roomRepository.getCategoryDao().getAllExpenseCategorys().asLiveData().observe(viewLifecycleOwner, Observer {
+            Log.d("wflwfmwlfm", "FRAGMENT :: DATA:: ${it?.size?:0}")
             viewmodel.selectedCategorys = it
             viewmodel.submitItemAdapterData(it)
         })

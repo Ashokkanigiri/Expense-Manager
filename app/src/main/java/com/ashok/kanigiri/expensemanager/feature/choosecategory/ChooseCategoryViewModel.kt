@@ -75,8 +75,9 @@ class ChooseCategoryViewModel @Inject constructor( val roomRepository: RoomRepos
     }
 
     fun injectDefaultCategorysList() {
-        viewModelScope.launch {
-            if(roomRepository.getCategoryDao().getTotalAllotedCategoryPrice() == null){
+        viewModelScope.launch (Dispatchers.IO){
+            Log.d("wflwfmwlfm", "DATA:: ${roomRepository.getCategoryDao().getAllExpenseCategorysRaw()?.size?:0}")
+            if(roomRepository.getCategoryDao().getAllExpenseCategorysRaw()?.size?:0 <= 0){
                 roomRepository.getCategoryDao().insert(getDefaultCategoryList())
             }
         }
