@@ -116,12 +116,21 @@ object AppUtils {
         return monthNames.get(SimpleDateFormat("MM", Locale.getDefault()).format(Date()).toInt() -1)
     }
 
-    fun getDateInReadableFormat(currentDate: String?): String{
+    fun getNextMonthDate(currentDate: String?): String{
         val day = 1
         val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-d")
-        val date = LocalDate.parse(currentDate, formatter1)
-        val currentMonth: Int = date.month?.value?:0+1
+        var date = LocalDate.parse(currentDate, formatter1)
+        date = date?.plusMonths(2)
+        val currentMonth: Int = date.month?.value?:0+2
         val currentYear :Int= date.year
+        return "${currentYear}-${currentMonth}-${day}"
+    }
+
+    fun getCurrentDateInFormat(): String{
+        val date = LocalDate.now()
+        val currentMonth: Int = date.month?.value?:0
+        val currentYear :Int= date.year
+        val day = date.dayOfMonth
         return "${currentYear}-${currentMonth}-${day}"
     }
 
@@ -143,6 +152,7 @@ object AppUtils {
 
     fun shouldUpdateToNextMonth(savedDate: String?): Boolean{
         //if savedDate > getUpcommingMonthStarttingDate -> then return true else false
-        return getDateInReadableFormat(savedDate) > getUpcommingExpenseMonthUpdationDate(savedDate)
+        return getCurrentDateInFormat() >= getUpcommingExpenseMonthUpdationDate(savedDate)
+//        return getNextMonthDate(savedDate) >= getUpcommingExpenseMonthUpdationDate(savedDate)
     }
 }
