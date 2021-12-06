@@ -6,9 +6,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
+import java.lang.StringBuilder
 import java.sql.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -132,6 +134,26 @@ object AppUtils {
         val currentYear :Int= date.year
         val day = date.dayOfMonth
         return "${currentYear}-${currentMonth}-${day}"
+    }
+
+    fun getPreviousExpenseMonthDate(): String{
+        val fromCal = Calendar.getInstance()
+        fromCal.set(Calendar.DAY_OF_MONTH, 1)
+        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0))
+        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
+        fromCal.add(Calendar.MONTH, -1)
+
+        val month = fromCal.get(Calendar.MONTH)
+        val sb = StringBuilder()
+        if(month.toString().toCharArray().size <= 1){
+            sb.append(0)
+            sb.append(month)
+        }else{
+            sb.append(month)
+        }
+
+        sb.toString()
+        return "${fromCal.get(Calendar.YEAR)}-${sb.toString()}-01"
     }
 
 

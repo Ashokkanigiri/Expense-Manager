@@ -22,6 +22,9 @@ interface ExpenseCategoryDao {
     @Query("SELECT * FROM expensecategory WHERE expenseMonthId =:expenseMonthId")
     fun getAllCategorysByExpenseMonth(expenseMonthId: Int): Flow<List<ExpenseCategory>>
 
+    @Query("SELECT * FROM expensecategory WHERE expenseMonthId =:expenseMonthId")
+    suspend fun getAllCategorysByExpenseMonthRaw(expenseMonthId: Int): List<ExpenseCategory>
+
     @Query("SELECT * FROM expensecategory ORDER BY expenseCategoryName")
     fun getAllCategorysOrderByCategoryName(): Flow<List<ExpenseCategory>>
 

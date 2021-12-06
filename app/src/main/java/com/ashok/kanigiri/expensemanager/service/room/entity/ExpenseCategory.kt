@@ -5,14 +5,14 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = arrayOf(Index(value = ["expenseCategoryName"], unique = true)))
+@Entity
 data class ExpenseCategory(
     @PrimaryKey(autoGenerate = true)
-    val expenseCategoryId: Int = 0,
+    var expenseCategoryId: Int = 0,
     val expenseCategoryTargetPrice: Double?,
-    val totalUtilizedPrice: Double,
+    var totalUtilizedPrice: Double,
     val expenseCategoryName: String,
     val createdDate: String,
-    val expenseMonthId: Int,
+    var expenseMonthId: Int,
     var isSelected: Boolean
 )

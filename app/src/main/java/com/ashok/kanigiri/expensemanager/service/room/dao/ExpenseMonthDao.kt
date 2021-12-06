@@ -28,4 +28,7 @@ interface ExpenseMonthDao {
 
     @Query("UPDATE expensemonth SET salary =:salary WHERE expenseMonthId =:expenseMonthId")
     suspend fun updateSalaryForExpenseMonth(salary: Double, expenseMonthId: Int)
+
+    @Query("SELECT * FROM expensemonth WHERE fromDate =:fromDate")
+    suspend fun getPreviousMonthIdFromFromDate(fromDate: String): ExpenseMonth?
 }

@@ -15,8 +15,12 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMap
 import kotlinx.coroutines.launch
 import java.sql.Timestamp
+import java.time.LocalDate
 
 import java.util.*
 import javax.inject.Inject
@@ -27,26 +31,29 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    val getTotalExpenses = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.totalUtilizedPrice
+    val getTotalExpenses =
+        roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.totalUtilizedPrice
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
     init {
         insertExpenseMonth()
     }
 
-    fun updateSalary(){
+    fun updateSalary() {
         event.postValue(HomeViewModelEvent.ShouldUpdateSalary)
     }
 
-    fun updateSalaryInCurrentMonth(salary: Double){
+    fun updateSalaryInCurrentMonth(salary: Double) {
         viewModelScope.launch {
-            val expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
-            roomRepository.getExpenseMonthDao().updateSalaryForExpenseMonth(salary, expenseMonthId?:1)
+            val expenseMonthId =
+                roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
+            roomRepository.getExpenseMonthDao()
+                .updateSalaryForExpenseMonth(salary, expenseMonthId ?: 1)
         }
     }
 
     private fun insertExpenseMonth() {
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.fromDate?.let {
                 if (AppUtils.shouldUpdateToNextMonth(it)) {
                     val expenseMonth = ExpenseMonth(
@@ -58,7 +65,28 @@ class HomeViewModel @Inject constructor(
                         toDate = AppUtils.getLastDayOfMonthInDateFormat(),
                         totalUtilizedPrice = 0.0
                     )
+                    injectPreviousSelectedCategorys()
                     roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+                }
+            }
+        }
+    }
+
+    fun injectPreviousSelectedCategorys() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val expenseMonthData = roomRepository.getExpenseMonthDao().getAllExpenseMonthsData()
+            if (expenseMonthData.size > 1) {
+                val previousMonth = roomRepository.getExpenseMonthDao()
+                    .getPreviousMonthIdFromFromDate(AppUtils.getPreviousExpenseMonthDate())
+                previousMonth?.expenseMonthId?.let {
+                    roomRepository.getCategoryDao().getAllCategorysByExpenseMonthRaw(it).let {
+                        val currentExpenseMonth = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
+                        it.map { it.expenseMonthId = currentExpenseMonth?.expenseMonthId?:1 }
+                        it.map { it.totalUtilizedPrice = 0.0 }
+                        it.map { it.expenseCategoryId = 0 }
+                        roomRepository.getCategoryDao().insert(it)
+                    }
+
                 }
             }
         }
@@ -69,13 +97,16 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getListOfSelectedCategorysForExpenseMonth(): LiveData<List<ExpenseGraphModel>> {
-        val expenseMonthId = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
-        val data = roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0).asLiveData()
+        val expenseMonthId =
+            roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
+        val data =
+            roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0).asLiveData()
         return data
     }
 
-    fun getListOfAllCategorysOrderBy(): LiveData<List<ExpenseCategory>>{
-        return roomRepository.getCategoryDao().getAllCategorysOrderByCategoryName().asLiveData(Dispatchers.Main)
+    fun getListOfAllCategorysOrderBy(): LiveData<List<ExpenseCategory>> {
+        return roomRepository.getCategoryDao().getAllCategorysOrderByCategoryName()
+            .asLiveData(Dispatchers.Main)
     }
 
     fun getcategoryNameForId(categoryId: Int): String {
@@ -93,5 +124,5 @@ class HomeViewModel @Inject constructor(
 
 sealed class HomeViewModelEvent {
     object Logout : HomeViewModelEvent()
-    object ShouldUpdateSalary: HomeViewModelEvent()
+    object ShouldUpdateSalary : HomeViewModelEvent()
 }
