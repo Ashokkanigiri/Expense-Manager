@@ -169,6 +169,63 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun setUpPreviousMonthExpenditureGraph() {
+        binding.expenditureChartPrevMonth.setUsePercentValues(true)
+        binding.expenditureChartPrevMonth.description.isEnabled = true
+        binding.expenditureChartPrevMonth.isDragDecelerationEnabled = false
+        binding.expenditureChartPrevMonth.dragDecelerationFrictionCoef = 0.95f
+        binding.expenditureChartPrevMonth.isDrawHoleEnabled = false
+        binding.expenditureChartPrevMonth.setHoleColor(Color.WHITE)
+        binding.expenditureChartPrevMonth.transparentCircleRadius = 40f
+        binding.expenditureChartPrevMonth.isRotationEnabled = false
+        var freeHandMoney: Double = 0.0
+        val yValues = ArrayList<PieEntry>()
+        viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, { list ->
+
+            list?.forEach {
+                if (it.expensePrice > 0.0) {
+                    binding.expenditureChartPrevMonth.clear()
+                    freeHandMoney =
+                        (viewmodel.getCurrentMonthSalary()) - (list.map { it -> it.expensePrice }
+                            .sum())
+                    val percent: Float =
+                        ((it.expensePrice.toFloat()) / ((SharedPreferenceService.getUserLoginModel(
+                            requireContext()
+                        )?.salary?.toFloat()) ?: 0f))
+                    yValues.add(
+                        PieEntry(
+                            percent,
+                            viewmodel.getcategoryNameForId(it.expenseCategoryId)
+                        )
+                    )
+
+                }
+            }
+
+            val freeHandPercent: Float =
+                freeHandMoney.toFloat() / (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()
+                    ?: 0f)
+            yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
+            val pieDataSet = PieDataSet(yValues, "")
+            pieDataSet.sliceSpace = 1.5f
+            pieDataSet.selectionShift = 5f
+            pieDataSet.setColors(
+                AppConstants.graphColours.toIntArray(),
+                200
+            )
+            val pieData = PieData(pieDataSet)
+            pieData.setValueTextSize(10f)
+            pieData.setValueTextColor(Color.WHITE)
+
+            binding.expenditureChartPrevMonth.data = pieData
+            binding.expenditureChartPrevMonth.animateY(1500, Easing.EaseInOutCubic)
+            val desc = Description()
+            desc.isEnabled = false
+            binding.expenditureChartPrevMonth.description = desc
+        })
+    }
+
+
     private fun setUpAnuallyExpenditureGraph() {
         binding.anuallyExpenditureChart.setUsePercentValues(true)
         binding.anuallyExpenditureChart.description.isEnabled = true

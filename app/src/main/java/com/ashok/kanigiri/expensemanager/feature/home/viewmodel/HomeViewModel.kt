@@ -31,8 +31,8 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    val getTotalExpenses =
-        roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.totalUtilizedPrice
+    val previousMonthGraphVisibility = ObservableField<Boolean>()
+    val currentMonthGraphVisibility = ObservableField<Boolean>()
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
     init {
@@ -41,15 +41,6 @@ class HomeViewModel @Inject constructor(
 
     fun updateSalary() {
         event.postValue(HomeViewModelEvent.ShouldUpdateSalary)
-    }
-
-    fun updateSalaryInCurrentMonth(salary: Double) {
-        viewModelScope.launch {
-            val expenseMonthId =
-                roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
-            roomRepository.getExpenseMonthDao()
-                .updateSalaryForExpenseMonth(salary, expenseMonthId ?: 1)
-        }
     }
 
     private fun insertExpenseMonth() {
