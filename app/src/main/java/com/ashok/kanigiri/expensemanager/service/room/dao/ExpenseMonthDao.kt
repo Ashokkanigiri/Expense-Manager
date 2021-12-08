@@ -30,5 +30,5 @@ interface ExpenseMonthDao {
     suspend fun updateSalaryForExpenseMonth(salary: Double, expenseMonthId: Int)
 
     @Query("SELECT * FROM expensemonth WHERE fromDate =:fromDate")
-    suspend fun getPreviousMonthIdFromFromDate(fromDate: String): ExpenseMonth?
+    fun getPreviousMonthIdFromFromDate(fromDate: String): ExpenseMonth?
 }

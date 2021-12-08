@@ -137,23 +137,19 @@ object AppUtils {
     }
 
     fun getPreviousExpenseMonthDate(): String{
-        val fromCal = Calendar.getInstance()
-        fromCal.set(Calendar.DAY_OF_MONTH, 1)
-        fromCal.set(Calendar.MONTH, (SimpleDateFormat("MM").format(Date()).toInt() ?:0))
-        fromCal.set(Calendar.YEAR, SimpleDateFormat("YYYY").format(Date()).toInt() ?:0)
-        fromCal.add(Calendar.MONTH, -1)
+        var date = LocalDate.now()
+        date = date?.minusMonths(1)
+        val currentMonth: Int = date.month?.value?:0+2
+        val currentYear :Int= date.year
 
-        val month = fromCal.get(Calendar.MONTH)
-        val sb = StringBuilder()
-        if(month.toString().toCharArray().size <= 1){
-            sb.append(0)
-            sb.append(month)
+        val sbm = StringBuilder()
+        if(currentMonth.toString().toCharArray().size <= 1){
+            sbm.append(0)
+            sbm.append(currentMonth)
         }else{
-            sb.append(month)
+            sbm.append(currentMonth)
         }
-
-        sb.toString()
-        return "${fromCal.get(Calendar.YEAR)}-${sb.toString()}-01"
+        return "${currentYear}-${sbm}-01"
     }
 
 

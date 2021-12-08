@@ -78,6 +78,7 @@ class HomeFragment : Fragment() {
         observeViewModel()
         setupActionBar()
         setUpExpenditureGraph()
+        setUpPreviousMonthExpenditureGraph()
         setUpAnuallyExpenditureGraph()
     }
 
@@ -180,8 +181,13 @@ class HomeFragment : Fragment() {
         binding.expenditureChartPrevMonth.isRotationEnabled = false
         var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
-        viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, { list ->
+        viewmodel.getPreviousMonthCategorys().observe(viewLifecycleOwner, { list ->
 
+            if(list?.size?:0 >0){
+                viewmodel.previousMonthGraphVisibility.set(true)
+            }else{
+                viewmodel.previousMonthGraphVisibility.set(false)
+            }
             list?.forEach {
                 if (it.expensePrice > 0.0) {
                     binding.expenditureChartPrevMonth.clear()

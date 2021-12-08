@@ -36,6 +36,7 @@ class HomeViewModel @Inject constructor(
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
     init {
+        previousMonthGraphVisibility.set(false)
         insertExpenseMonth()
     }
 
@@ -85,6 +86,14 @@ class HomeViewModel @Inject constructor(
 
     fun logout() {
         event.postValue(HomeViewModelEvent.Logout)
+    }
+
+    fun getPreviousMonthCategorys(): LiveData<List<ExpenseGraphModel>> {
+        val expenseMonthId =
+            roomRepository.getExpenseMonthDao().getPreviousMonthIdFromFromDate(AppUtils.getPreviousExpenseMonthDate())?.expenseMonthId
+        val data =
+            roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0).asLiveData()
+        return data
     }
 
     fun getListOfSelectedCategorysForExpenseMonth(): LiveData<List<ExpenseGraphModel>> {
