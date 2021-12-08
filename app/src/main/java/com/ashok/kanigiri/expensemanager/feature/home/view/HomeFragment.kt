@@ -83,6 +83,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewmodel.roomRepository.getExpenseDao().getAllExpenses().asLiveData().observe(viewLifecycleOwner, Observer {
+            if(it?.size?:0 > 0){
+                viewmodel.emptyLayoutVisibility.set(false)
+            }else{
+                viewmodel.emptyLayoutVisibility.set(true)
+            }
+        })
         viewmodel.roomRepository.getExpenseMonthDao().getLatestExpenseMonthFlow().asLiveData(Dispatchers.Main).observe(viewLifecycleOwner, Observer {
             binding.expenseMonth = it
         })
@@ -126,7 +133,11 @@ class HomeFragment : Fragment() {
         var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
         viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, { list ->
-
+            if(list?.size?:0 > 0){
+                viewmodel.currentMonthGraphVisibility.set(true)
+            }else{
+                viewmodel.currentMonthGraphVisibility.set(false)
+            }
             list?.forEach {
                 if (it.expensePrice > 0.0) {
                     binding.expenditureChart.clear()

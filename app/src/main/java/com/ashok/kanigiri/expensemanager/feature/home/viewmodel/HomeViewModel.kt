@@ -32,6 +32,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val previousMonthGraphVisibility = ObservableField<Boolean>()
+    val emptyLayoutVisibility = ObservableField<Boolean>()
     val currentMonthGraphVisibility = ObservableField<Boolean>()
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
