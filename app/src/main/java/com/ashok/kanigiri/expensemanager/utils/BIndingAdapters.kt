@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.ashok.kanigiri.expensemanager.R
-import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 
 @BindingAdapter("setup_progressbar_tint")
@@ -168,4 +167,25 @@ fun TextView.loginButtonEnabledStatus(bool: Boolean) {
 @BindingAdapter("seekbarUtilizedProgress", "seekbarTotalProgress")
 fun SeekBar.ConvertDoubleToInt(utilizedProgress: Double, totalProgress: Double) {
     this.progress = ((utilizedProgress / totalProgress) * 100).toInt()
+}
+
+@BindingAdapter("set-gradient-background")
+fun View.setGradientBacground(expenseMonth: Int) {
+
+    fun br(expenseMonth: Int): Int = when(expenseMonth){
+        1->{ R.drawable.all_expenses_gradient_food}
+        2->{ R.drawable.all_expenses_gradient_free_hand_money}
+        3->{ R.drawable.all_expenses_gradient_gym}
+        4->{ R.drawable.all_expenses_gradient_house_rent}
+        5->{ R.drawable.all_expenses_gradient_investing}
+        6->{ R.drawable.all_expenses_gradient_medical}
+        7->{ R.drawable.all_expenses_gradient_monthly_emi}
+        8->{ R.drawable.all_expenses_gradient_shopping}
+        9->{ R.drawable.all_expenses_gradient_travel}
+        10->{ R.drawable.all_expenses_gradient_free_hand_money}
+        11->{ R.drawable.all_expenses_gradient_food}
+        12->{ R.drawable.all_expenses_gradient_gym}
+        else->{ R.drawable.all_expenses_gradient_investing}
+    }
+    this.setBackgroundResource(br(expenseMonth))
 }

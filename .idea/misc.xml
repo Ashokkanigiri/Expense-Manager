@@ -5,6 +5,18 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/bg_bottom_sheet_middle_bordered.xml" value="0.2625" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient.xml" value="0.1796875" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_food.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_free_hand_money.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_gym.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_house_rent.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_investing.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_medical.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_misc.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_month;y_emi.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_monthly_emi.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_shopping.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/drawable/all_expenses_gradient_travel.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/drawable/bg_bottom_sheet_bottom.xml" value="0.13802083333333334" />
         <entry key="app/src/main/res/drawable/bg_bottom_sheet_bottom_button.xml" value="0.13802083333333334" />
         <entry key="app/src/main/res/drawable/bg_bottom_sheet_middle.xml" value="0.13802083333333334" />
