@@ -72,7 +72,7 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
                     binding.reserveCash = it.reserveCash
                 }
                 is ExpenseCategoryDialogViewmodelEvent.SendCreatedCAtegoryNAme ->{
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.SEND_CREATED_EXPENSE_KEY, it)
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.SEND_CREATED_EXPENSE_KEY, it.name)
                     dialog?.dismiss()
                 }
             }

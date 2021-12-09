@@ -78,8 +78,10 @@ class CreateExpenseDialogViewModel @Inject constructor(
                     totalCategoryPrice
                 )
             } else {
-                Toast.makeText(applicationContext, "Please Enter Valid Details", Toast.LENGTH_SHORT)
-                    .show()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(applicationContext, "Please Enter Valid Details", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }
