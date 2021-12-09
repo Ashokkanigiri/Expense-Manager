@@ -86,7 +86,11 @@ class EditExpensesViewmodel @Inject constructor(
     }
 
     fun getTargetPriceForCategory(categoryId: Int): Double {
-        return  roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId)
+        return  roomRepository.getCategoryDao().getTotalExpensePriceForCategory(categoryId, getLatestExpenseMonth()?.expenseMonthId?:1)
+    }
+
+    fun getLatestExpenseMonth(): ExpenseMonth?{
+        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
     }
 
     fun cancelButtonClicked() {

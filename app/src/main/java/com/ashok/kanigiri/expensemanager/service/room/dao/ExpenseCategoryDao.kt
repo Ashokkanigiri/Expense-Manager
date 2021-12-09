@@ -34,11 +34,11 @@ interface ExpenseCategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: List<ExpenseCategory>)
 
-    @Query("SELECT expenseCategoryTargetPrice FROM ExpenseCategory WHERE expenseCategoryId =:categoryId")
-    fun getTotalExpensePriceForCategory(categoryId: Int): Double
+    @Query("SELECT expenseCategoryTargetPrice FROM ExpenseCategory WHERE expenseCategoryId =:categoryId AND expenseMonthId =:expenseMonthId")
+    fun getTotalExpensePriceForCategory(categoryId: Int, expenseMonthId: Int): Double
 
-    @Query("SELECT SUM(expenseCategoryTargetPrice) FROM expensecategory")
-    suspend fun getTotalAllotedCategoryPrice(): Double?
+    @Query("SELECT SUM(expenseCategoryTargetPrice) FROM expensecategory WHERE expenseMonthId =:expenseMonthId")
+    suspend fun getTotalAllotedCategoryPrice(expenseMonthId: Int): Double?
 
     @Query("UPDATE expensecategory SET totalUtilizedPrice =:total+totalUtilizedPrice WHERE expenseCategoryId =:categoryId")
     suspend fun updateUtilizedPriceForCategory(categoryId: Int, total: Double)

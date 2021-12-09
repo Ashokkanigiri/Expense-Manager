@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.service.room.entity.Expense
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import com.google.gson.Gson
@@ -49,8 +50,8 @@ class CreateExpenseDialogViewModel @Inject constructor(
 
     private suspend fun getReserveCash(expenseId: Int): Double{
         return roomRepository.getCategoryDao()
-            .getTotalExpensePriceForCategory(expenseId) - (roomRepository.getExpenseDao()
-            .getUtilizedPriceForCategory(expenseId)?:0.0)
+            .getTotalExpensePriceForCategory(expenseId, getLatestExpenseMonth()?.expenseMonthId?:1) - (roomRepository.getExpenseDao()
+            .getUtilizedPriceForCategoryForCurrentMonth(expenseId, getLatestExpenseMonth()?.expenseMonthId?:1)?:0.0)
     }
 
 
@@ -58,14 +59,19 @@ class CreateExpenseDialogViewModel @Inject constructor(
         showCalenderEvent.postValue(true)
     }
 
+    suspend fun getLatestExpenseMonth(): ExpenseMonth?{
+      return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
+    }
+
     fun createExpense() {
         viewModelScope.launch(Dispatchers.IO) {
             if (expensePrice?.trim() != null && expensePrice?.trim() != "" && selectedDate != null) {
+
                 val utilizedExpense = withContext(Dispatchers.IO) {
-                    roomRepository.getExpenseDao().getUtilizedPriceForCategory(expenseId!!)
+                    roomRepository.getExpenseDao().getUtilizedPriceForCategoryForCurrentMonth(expenseId?:1, getLatestExpenseMonth()?.expenseMonthId?:1)
                 }
                 val totalCategoryPrice = withContext(Dispatchers.IO) {
-                    roomRepository.getCategoryDao().getTotalExpensePriceForCategory(expenseId!!)
+                    roomRepository.getCategoryDao().getTotalExpensePriceForCategory(expenseId?:1, getLatestExpenseMonth()?.expenseMonthId?:1)
                 }
                 verifyExpensePriceIsNotExceedingTotalPriceAndInsert(
                     utilizedExpense?:0.0,

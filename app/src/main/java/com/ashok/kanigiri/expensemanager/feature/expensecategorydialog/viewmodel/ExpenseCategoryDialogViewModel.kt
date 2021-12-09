@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
+import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
 import com.ashok.kanigiri.expensemanager.utils.Event
@@ -29,29 +30,37 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+    val event = SingleLiveEvent<ExpenseCategoryDialogViewmodelEvent>()
     val expenseTargetPrice = ObservableField<String>()
     val expenseCategoryName = ObservableField<String>()
-    val event = SingleLiveEvent<Event<Boolean>>()
-    val sendCreatedExpenseNameEvent = SingleLiveEvent<String>()
     var shouldShowExpensePrice = false
     val getTotalAllocatedPrice: Double = runBlocking(Dispatchers.IO) {
-        (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice())?:0.0
+        (roomRepository.getCategoryDao().getTotalAllotedCategoryPrice(getLatestExpenseMonth()?.expenseMonthId?:1)) ?: 0.0
     }
 
+    fun populateReserveCash() {
+        event.postValue(ExpenseCategoryDialogViewmodelEvent.PopulateReserveCAsh(getReserveCash()))
+    }
 
-    fun reserveCash() = ((SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()
-        ?: 0.0) - getTotalAllocatedPrice)
+    private fun getReserveCash(): Double {
+        return ((getLatestExpenseMonth()?.salary ?: 0.0) - getTotalAllocatedPrice)
+    }
+
+    fun getLatestExpenseMonth(): ExpenseMonth? {
+        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
+    }
+
 
     fun insertExpenseCategory() {
         if (!shouldShowExpensePrice) {
             //
-            sendCreatedExpenseNameEvent.postValue(expenseCategoryName.get())
+                event.postValue(ExpenseCategoryDialogViewmodelEvent.SendCreatedCAtegoryNAme(expenseCategoryName.get()))
         } else {
             if (expenseTargetPrice.get()?.trim() != "" && expenseTargetPrice.get()
                     ?.trim() != null
             ) {
                 val totalPriceGivenForAllCategorys =
-                  getTotalAllocatedPrice
+                    getTotalAllocatedPrice
                 if ((totalPriceGivenForAllCategorys + (expenseTargetPrice.get()?.toDouble()
                         ?: 0.0)) <= SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0
                 ) {
@@ -61,14 +70,14 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
                         totalUtilizedPrice = 0.0,
                         expenseCategoryName = expenseCategoryName.get() ?: "",
                         createdDate = System.currentTimeMillis().toString(),
-                        expenseMonthId = getLatestMonth?.expenseMonthId?:1,
+                        expenseMonthId = getLatestMonth?.expenseMonthId ?: 1,
                         isSelected = true
                     )
 
                     viewModelScope.launch(Dispatchers.IO) {
                         roomRepository.getCategoryDao().insert(expenseCategory)
                     }
-                    event.postValue(Event(true))
+                    event.postValue(ExpenseCategoryDialogViewmodelEvent.DismissDialog)
                 } else {
                     val diff =
                         SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()
@@ -93,4 +102,10 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
         expenseTargetPrice.set(char.toString())
     }
 
+}
+
+sealed class ExpenseCategoryDialogViewmodelEvent {
+    data class PopulateReserveCAsh(val reserveCash: Double) : ExpenseCategoryDialogViewmodelEvent()
+    data class SendCreatedCAtegoryNAme(val name: String?): ExpenseCategoryDialogViewmodelEvent()
+    object DismissDialog: ExpenseCategoryDialogViewmodelEvent()
 }

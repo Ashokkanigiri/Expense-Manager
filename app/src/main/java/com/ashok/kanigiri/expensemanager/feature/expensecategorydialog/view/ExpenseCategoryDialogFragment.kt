@@ -15,6 +15,7 @@ import com.ashok.kanigiri.expensemanager.BaseActivity
 import com.ashok.kanigiri.expensemanager.R
 import com.ashok.kanigiri.expensemanager.databinding.LayoutFragmentCreateNewExpenseCategoryBinding
 import com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.viewmodel.ExpenseCategoryDialogViewModel
+import com.ashok.kanigiri.expensemanager.feature.expensecategorydialog.viewmodel.ExpenseCategoryDialogViewmodelEvent
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseTypes
 import com.ashok.kanigiri.expensemanager.utils.AppConstants
 import com.ashok.kanigiri.expensemanager.utils.AppUtils
@@ -50,6 +51,7 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = dialogViewModel
+        dialogViewModel.populateReserveCash()
         loadArguments()
         observeViewModel()
     }
@@ -62,22 +64,24 @@ class ExpenseCategoryDialogFragment: BottomSheetDialogFragment() {
 
     private fun observeViewModel() {
         dialogViewModel.event.observe(viewLifecycleOwner, Observer {
-            if(it.peekContent()){
-                dialog?.dismiss()
+            when(it){
+                ExpenseCategoryDialogViewmodelEvent.DismissDialog ->{
+                    dialog?.dismiss()
+                }
+                is ExpenseCategoryDialogViewmodelEvent.PopulateReserveCAsh ->{
+                    binding.reserveCash = it.reserveCash
+                }
+                is ExpenseCategoryDialogViewmodelEvent.SendCreatedCAtegoryNAme ->{
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.SEND_CREATED_EXPENSE_KEY, it)
+                    dialog?.dismiss()
+                }
             }
-        })
-        dialogViewModel.reserveCash().let {
-            binding.reserveCash = it
-        }
-        dialogViewModel.sendCreatedExpenseNameEvent.observe(viewLifecycleOwner, Observer {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstants.SEND_CREATED_EXPENSE_KEY, it)
-            dialog?.dismiss()
+
         })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dialogViewModel.sendCreatedExpenseNameEvent.removeObservers(viewLifecycleOwner)
         dialogViewModel.event.removeObservers(viewLifecycleOwner)
         findNavController().previousBackStackEntry?.savedStateHandle?.remove<String>(AppConstants.SEND_CREATED_EXPENSE_KEY)
     }

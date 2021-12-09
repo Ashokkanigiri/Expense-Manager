@@ -29,8 +29,8 @@ interface ExpenseDao {
     @Insert
     suspend fun insertExpenses(expense: Expense)
 
-    @Query("SELECT SUM(expensePrice) from expense WHERE expenseCategoryId =:expenseCategoryId")
-    suspend fun getUtilizedPriceForCategory(expenseCategoryId: Int): Double?
+    @Query("SELECT SUM(expensePrice) from expense WHERE expenseCategoryId =:expenseCategoryId AND expenseMonthId =:expenseMonthId")
+    suspend fun getUtilizedPriceForCategoryForCurrentMonth(expenseCategoryId: Int, expenseMonthId: Int): Double?
 
     @Query("DELETE FROM expense WHERE expenseId =:expenseId")
     suspend fun deleteExpense(expenseId: Int)
