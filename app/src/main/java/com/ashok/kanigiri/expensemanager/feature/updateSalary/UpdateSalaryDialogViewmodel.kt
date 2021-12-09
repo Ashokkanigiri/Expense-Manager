@@ -7,11 +7,14 @@ import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseMonth
 import com.ashok.kanigiri.expensemanager.service.room.repository.RoomRepository
 import com.ashok.kanigiri.expensemanager.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdateSalaryDialogViewmodel @Inject constructor(private val roomRepository: RoomRepository): ViewModel() {
+class UpdateSalaryDialogViewmodel @Inject constructor(private val roomRepository: RoomRepository) :
+    ViewModel() {
     val event = SingleLiveEvent<UpdateSalaryDialogViewmodelEvent>()
     val showErrorText = ObservableField<Boolean>()
 
@@ -19,32 +22,40 @@ class UpdateSalaryDialogViewmodel @Inject constructor(private val roomRepository
         showErrorText.set(false)
     }
 
-    fun onUpdateSalaryClicked(){
+    fun onUpdateSalaryClicked() {
         event.postValue(UpdateSalaryDialogViewmodelEvent.UpdateSalary)
     }
 
-    fun updateCurrentSalary(newSalary: Double){
-        if(newSalary > getCurrentExpenseMonth()?.salary?:0.0){
-            viewModelScope.launch {
-                roomRepository.getExpenseMonthDao().updateSalaryForExpenseMonth(newSalary, getCurrentExpenseMonth()?.expenseMonthId?:1)
+    fun updateCurrentSalary(newSalary: Double) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (newSalary > getCurrentAllocatedExpensesForMonth() ?: 0.0) {
+                roomRepository.getExpenseMonthDao().updateSalaryForExpenseMonth(
+                    newSalary,
+                    getCurrentExpenseMonth()?.expenseMonthId ?: 1
+                )
+                dismissDialog()
+            } else {
+                showErrorText.set(true)
             }
-            dismissDialog()
-        }else{
-            showErrorText.set(true)
         }
     }
 
-    fun getCurrentExpenseMonth(): ExpenseMonth?{
+    suspend fun getCurrentAllocatedExpensesForMonth(): Double? {
+        return roomRepository.getCategoryDao()
+            .getTotalAllotedCategoryPrice(getCurrentExpenseMonth()?.expenseMonthId ?: 1)
+    }
+
+    fun getCurrentExpenseMonth(): ExpenseMonth? {
         return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
     }
 
-    fun dismissDialog(){
+    fun dismissDialog() {
         event.postValue(UpdateSalaryDialogViewmodelEvent.DismissDialog)
     }
 
 }
 
-sealed class UpdateSalaryDialogViewmodelEvent(){
-    object UpdateSalary: UpdateSalaryDialogViewmodelEvent()
-    object DismissDialog: UpdateSalaryDialogViewmodelEvent()
+sealed class UpdateSalaryDialogViewmodelEvent() {
+    object UpdateSalary : UpdateSalaryDialogViewmodelEvent()
+    object DismissDialog : UpdateSalaryDialogViewmodelEvent()
 }
