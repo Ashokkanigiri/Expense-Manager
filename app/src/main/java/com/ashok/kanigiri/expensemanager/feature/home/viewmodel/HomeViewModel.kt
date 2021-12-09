@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
+import androidx.room.Room
 import com.ashok.kanigiri.expensemanager.service.SharedPreferenceService
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseCategory
 import com.ashok.kanigiri.expensemanager.service.room.entity.ExpenseGraphModel
@@ -24,6 +25,7 @@ import java.time.LocalDate
 
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -37,15 +39,15 @@ class HomeViewModel @Inject constructor(
     var event = SingleLiveEvent<HomeViewModelEvent>()
 
     init {
+        currentMonthGraphVisibility.set(false)
         previousMonthGraphVisibility.set(false)
-        insertExpenseMonth()
     }
 
     fun updateSalary() {
         event.postValue(HomeViewModelEvent.ShouldUpdateSalary)
     }
 
-    private fun insertExpenseMonth() {
+    fun insertExpenseMonth() {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.fromDate?.let {
                 if (AppUtils.shouldUpdateToNextMonth(it)) {
@@ -58,8 +60,8 @@ class HomeViewModel @Inject constructor(
                         toDate = AppUtils.getLastDayOfMonthInDateFormat(),
                         totalUtilizedPrice = 0.0
                     )
-                    injectPreviousSelectedCategorys()
                     roomRepository.getExpenseMonthDao().insertExpenseMonth(expenseMonth)
+                    injectPreviousSelectedCategorys()
                 }
             }
         }
@@ -67,20 +69,31 @@ class HomeViewModel @Inject constructor(
 
     fun injectPreviousSelectedCategorys() {
         viewModelScope.launch(Dispatchers.IO) {
-            val expenseMonthData = roomRepository.getExpenseMonthDao().getAllExpenseMonthsData()
-            if (expenseMonthData.size > 1) {
-                val previousMonth = roomRepository.getExpenseMonthDao()
-                    .getPreviousMonthIdFromFromDate(AppUtils.getPreviousExpenseMonthDate())
-                previousMonth?.expenseMonthId?.let {
-                    roomRepository.getCategoryDao().getAllCategorysByExpenseMonthRaw(it).let {
-                        val currentExpenseMonth = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
-                        it.map { it.expenseMonthId = currentExpenseMonth?.expenseMonthId?:1 }
-                        it.map { it.totalUtilizedPrice = 0.0 }
-                        it.map { it.expenseCategoryId = 0 }
-                        roomRepository.getCategoryDao().insert(it)
+            val previousMonth = roomRepository.getExpenseMonthDao()
+                .getPreviousMonthIdFromFromDate(AppUtils.getPreviousExpenseMonthDate())
+
+            previousMonth?.expenseMonthId?.let {
+                roomRepository.getCategoryDao().getAllCategorysByExpenseMonthRaw(it).let {
+                    val currentExpenseMonth =
+                        roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
+                    currentExpenseMonth?.let { currentMonth ->
+                        val catList = ArrayList<ExpenseCategory>()
+                        it.forEach {
+                            val cat = ExpenseCategory(
+                                expenseCategoryTargetPrice = it.expenseCategoryTargetPrice,
+                                totalUtilizedPrice = 0.0,
+                                expenseCategoryName = it.expenseCategoryName,
+                                createdDate = System.currentTimeMillis().toString(),
+                                isSelected = true,
+                                expenseMonthId = currentMonth.expenseMonthId
+                            )
+                            catList.add(cat)
+                        }
+                        roomRepository.getCategoryDao().insert(catList)
                     }
 
                 }
+
             }
         }
     }
@@ -89,17 +102,10 @@ class HomeViewModel @Inject constructor(
         event.postValue(HomeViewModelEvent.Logout)
     }
 
-    fun getPreviousMonthCategorys(): LiveData<List<ExpenseGraphModel>> {
+    fun getCategorysListForExpenseMonthDate(date: String): LiveData<List<ExpenseGraphModel>> {
         val expenseMonthId =
-            roomRepository.getExpenseMonthDao().getPreviousMonthIdFromFromDate(AppUtils.getPreviousExpenseMonthDate())?.expenseMonthId
-        val data =
-            roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0).asLiveData()
-        return data
-    }
-
-    fun getListOfSelectedCategorysForExpenseMonth(): LiveData<List<ExpenseGraphModel>> {
-        val expenseMonthId =
-            roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.expenseMonthId
+            roomRepository.getExpenseMonthDao()
+                .getPreviousMonthIdFromFromDate(date)?.expenseMonthId
         val data =
             roomRepository.getExpenseDao().getExpensesByCategory(expenseMonthId ?: 0).asLiveData()
         return data
@@ -126,4 +132,5 @@ class HomeViewModel @Inject constructor(
 sealed class HomeViewModelEvent {
     object Logout : HomeViewModelEvent()
     object ShouldUpdateSalary : HomeViewModelEvent()
+    object PopulateGraphs : HomeViewModelEvent()
 }

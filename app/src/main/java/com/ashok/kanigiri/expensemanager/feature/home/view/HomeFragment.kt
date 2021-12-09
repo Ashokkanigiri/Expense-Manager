@@ -75,6 +75,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewmodel
+        viewmodel.insertExpenseMonth()
         observeViewModel()
         setupActionBar()
         setUpExpenditureGraph()
@@ -101,6 +102,9 @@ class HomeFragment : Fragment() {
                 }
                 is HomeViewModelEvent.ShouldUpdateSalary ->{
                     showUpdateSalaryDialog()
+                }
+                is HomeViewModelEvent.PopulateGraphs ->{
+
                 }
             }
         })
@@ -132,7 +136,7 @@ class HomeFragment : Fragment() {
         binding.expenditureChart.isRotationEnabled = false
         var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
-        viewmodel.getListOfSelectedCategorysForExpenseMonth().observe(viewLifecycleOwner, { list ->
+        viewmodel.getCategorysListForExpenseMonthDate(AppUtils.getCurrentDateInRoomFormat()).observe(viewLifecycleOwner, { list ->
             if(list?.size?:0 > 0){
                 viewmodel.currentMonthGraphVisibility.set(true)
             }else{
@@ -192,7 +196,7 @@ class HomeFragment : Fragment() {
         binding.expenditureChartPrevMonth.isRotationEnabled = false
         var freeHandMoney: Double = 0.0
         val yValues = ArrayList<PieEntry>()
-        viewmodel.getPreviousMonthCategorys().observe(viewLifecycleOwner, { list ->
+        viewmodel.getCategorysListForExpenseMonthDate(AppUtils.getPreviousExpenseMonthDate()).observe(viewLifecycleOwner, { list ->
 
             if(list?.size?:0 >0){
                 viewmodel.previousMonthGraphVisibility.set(true)

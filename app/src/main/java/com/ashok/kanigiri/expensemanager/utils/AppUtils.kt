@@ -136,6 +136,20 @@ object AppUtils {
         return "${currentYear}-${currentMonth}-${day}"
     }
 
+    fun getCurrentDateInRoomFormat(): String{
+        val date = LocalDate.now()
+        val currentMonth: Int = date.month?.value?:0
+        val currentYear :Int= date.year
+        val sbm = StringBuilder()
+        if(currentMonth.toString().toCharArray().size <= 1){
+            sbm.append(0)
+            sbm.append(currentMonth)
+        }else{
+            sbm.append(currentMonth)
+        }
+        return "${currentYear}-${sbm}-01"
+    }
+
     fun getPreviousExpenseMonthDate(): String{
         var date = LocalDate.now()
         date = date?.minusMonths(1)
@@ -154,23 +168,16 @@ object AppUtils {
 
 
     fun getUpcommingExpenseMonthUpdationDate(currentDate: String?): String{
-        val day = 1
-        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-d")
-        val date = LocalDate.parse(currentDate, formatter1)
-        var currentMonth: Int = date.month?.value?:0+1
-        var currentYear :Int= date.year
-        if(currentMonth == 12){
-            currentYear = currentYear+1
-            currentMonth = 1
-        }else{
-            currentMonth = currentMonth+1
-        }
-       return "${currentYear}-${currentMonth}-${day}"
+        val formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var date = LocalDate.parse(currentDate, formatter1)
+        date = date?.plusMonths(1)
+        val currentMonth: Int = date.month.value
+        val currentYear :Int= date.year
+
+       return "${currentYear}-${currentMonth}-01"
     }
 
     fun shouldUpdateToNextMonth(savedDate: String?): Boolean{
-        //if savedDate > getUpcommingMonthStarttingDate -> then return true else false
         return getCurrentDateInFormat() >= getUpcommingExpenseMonthUpdationDate(savedDate)
-//        return getNextMonthDate(savedDate) >= getUpcommingExpenseMonthUpdationDate(savedDate)
     }
 }
