@@ -54,8 +54,7 @@ class HomeViewModel @Inject constructor(
                     val expenseMonth = ExpenseMonth(
                         createdDate = System.currentTimeMillis(),
                         expenseMonth = AppUtils.getCurrentMonthInInt(),
-                        salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()
-                            ?: 0.0,
+                        salary = getCurrentMonthSalary(),
                         fromDate = AppUtils.getFirstDayOnMonthInDateFormat(),
                         toDate = AppUtils.getLastDayOfMonthInDateFormat(),
                         totalUtilizedPrice = 0.0
@@ -124,8 +123,8 @@ class HomeViewModel @Inject constructor(
         return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.salary ?: 0.0
     }
 
-    fun loadSalaryFromCurrentMonth(): Double {
-        return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.salary ?: 0.0
+    fun getPreviousMonthSalary(): Double{
+        return roomRepository.getExpenseMonthDao().getPreviousMonthIdFromFromDate(AppUtils.getPreviousExpenseMonthDate())?.salary?:0.0
     }
 }
 

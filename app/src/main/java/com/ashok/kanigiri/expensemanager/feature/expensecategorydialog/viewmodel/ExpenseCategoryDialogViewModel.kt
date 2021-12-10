@@ -50,6 +50,16 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
         return roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
     }
 
+    fun getSalary(): Double{
+        var salary = 0.0
+        if(shouldShowExpensePrice){
+            salary = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()?.salary?:0.0
+        }else{
+            salary = SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0
+        }
+        return salary
+    }
+
 
     fun insertExpenseCategory() {
         if (!shouldShowExpensePrice) {
@@ -62,7 +72,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
                 val totalPriceGivenForAllCategorys =
                     getTotalAllocatedPrice
                 if ((totalPriceGivenForAllCategorys + (expenseTargetPrice.get()?.toDouble()
-                        ?: 0.0)) <= SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble() ?: 0.0
+                        ?: 0.0)) <= getSalary()
                 ) {
                     val getLatestMonth = roomRepository.getExpenseMonthDao().getLatestExpenseMonth()
                     val expenseCategory = ExpenseCategory(
@@ -80,8 +90,7 @@ class ExpenseCategoryDialogViewModel @Inject constructor(
                     event.postValue(ExpenseCategoryDialogViewmodelEvent.DismissDialog)
                 } else {
                     val diff =
-                        SharedPreferenceService.getUserLoginModel(context)?.salary?.toDouble()
-                            ?: 0.0 - (totalPriceGivenForAllCategorys)
+                        getSalary() - (totalPriceGivenForAllCategorys)
                     if (diff == 0.0) {
                         Toast.makeText(context, "MONTHLY SALARY EXHAUSTED, ", Toast.LENGTH_SHORT)
                             .show()

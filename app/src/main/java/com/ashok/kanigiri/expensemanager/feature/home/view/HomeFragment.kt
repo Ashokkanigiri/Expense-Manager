@@ -149,9 +149,7 @@ class HomeFragment : Fragment() {
                         (viewmodel.getCurrentMonthSalary()) - (list.map { it -> it.expensePrice }
                             .sum())
                     val percent: Float =
-                        ((it.expensePrice.toFloat()) / ((SharedPreferenceService.getUserLoginModel(
-                            requireContext()
-                        )?.salary?.toFloat()) ?: 0f))
+                        ((it.expensePrice.toFloat()) / (viewmodel.getCurrentMonthSalary().toFloat()))
                     yValues.add(
                         PieEntry(
                             percent,
@@ -163,8 +161,7 @@ class HomeFragment : Fragment() {
             }
 
             val freeHandPercent: Float =
-                freeHandMoney.toFloat() / (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()
-                    ?: 0f)
+                freeHandMoney.toFloat() / (viewmodel.getCurrentMonthSalary().toFloat())
             yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
             val pieDataSet = PieDataSet(yValues, "")
             pieDataSet.sliceSpace = 1.5f
@@ -210,9 +207,7 @@ class HomeFragment : Fragment() {
                         (viewmodel.getCurrentMonthSalary()) - (list.map { it -> it.expensePrice }
                             .sum())
                     val percent: Float =
-                        ((it.expensePrice.toFloat()) / ((SharedPreferenceService.getUserLoginModel(
-                            requireContext()
-                        )?.salary?.toFloat()) ?: 0f))
+                        ((it.expensePrice.toFloat()) / (viewmodel.getPreviousMonthSalary().toFloat()))
                     yValues.add(
                         PieEntry(
                             percent,
@@ -224,8 +219,7 @@ class HomeFragment : Fragment() {
             }
 
             val freeHandPercent: Float =
-                freeHandMoney.toFloat() / (SharedPreferenceService.getUserLoginModel(requireContext())?.salary?.toFloat()
-                    ?: 0f)
+                freeHandMoney.toFloat() / (viewmodel.getPreviousMonthSalary().toFloat())
             yValues.add(PieEntry(freeHandPercent, "Free Hand Money"))
             val pieDataSet = PieDataSet(yValues, "")
             pieDataSet.sliceSpace = 1.5f
