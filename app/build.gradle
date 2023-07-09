@@ -14,8 +14,8 @@ android {
         applicationId "com.ashok.kanigiri.expensemanager"
         minSdk 26
         targetSdk 31
-        versionCode 8
-        versionName "1.1.8"
+        versionCode 10
+        versionName "1.1.10"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -90,6 +90,11 @@ dependencies {
 // LiveData
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    implementation 'com.google.android.play:app-update:2.1.0'
+
+    // For Kotlin users also add the Kotlin extensions library for Play In-App Update:
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
 
 }
 
