@@ -34,11 +34,11 @@ class WelcomeActivity : BaseActivity() {
             finish()
         }else {
             if(!isUserEnterSalaryDetails){
-                graph.startDestination = R.id.createAccountFragment
+                graph.setStartDestination(R.id.createAccountFragment)
             }else if (!isUserChoosedCategorys){
-                graph.startDestination = R.id.chooseCategoryFragment
+                graph.setStartDestination(R.id.chooseCategoryFragment)
             }else if(!isUserEditedCategorys){
-                graph.startDestination = R.id.editExpenseFragment
+                graph.setStartDestination(R.id.editExpenseFragment)
             }
         }
 
